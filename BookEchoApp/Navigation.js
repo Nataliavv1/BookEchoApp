@@ -38,6 +38,7 @@ function MyStack() {
                 name="Stack"
                 component={StackScreen}
             />
+
         </HomeStackNavigator.Navigator>
     );
 }

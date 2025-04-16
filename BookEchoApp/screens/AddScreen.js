@@ -20,7 +20,7 @@ const AddScreen = () => {
            </View>
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.option} onPress={() => navigation.navigate("Stack")}>
+            <TouchableOpacity style={styles.option} onPress={() => navigation.navigate("ScanScreen")}>
            <View>
                 <View style={styles.row}>
                     <AntDesign name="camerao" size={24} color="black" />
