@@ -12,36 +12,12 @@ import LibraryScreen from "./screens/LibraryScreen";
 import AddScreen from "./screens/AddScreen";
 import ChallengeScreen from "./screens/ChallengeScreen";
 import ProfileScreen from "./screens/ProfileScreen";
-import StackScreen from "./screens/StackScreen";
+//import StackScreen from "./screens/StackScreen";
 
 // Importamos los íconos de Expo
 import AntDesign from '@expo/vector-icons/AntDesign';
 
 //-----------------------------------------------------STACK NAVIGATOR-------------------------------------------------------
-// Creamos una variable que contenga nuestro Stack Navigator
-const HomeStackNavigator = createNativeStackNavigator();
-
-// Definimos el Stack Navigator
-function MyStack() {
-    return (
-        <HomeStackNavigator.Navigator
-            initialRouteName="HomeScreen" // La pantalla inicial dentro del Stack
-        >
-            {/* Pantalla HomeScreen dentro del Stack */}
-            <HomeStackNavigator.Screen
-                name="HomeScreen"
-                component={HomeScreen}
-            />
-
-            {/* Pantalla StackScreen dentro del Stack */}
-            <HomeStackNavigator.Screen
-                name="Stack"
-                component={StackScreen}
-            />
-
-        </HomeStackNavigator.Navigator>
-    );
-}
 
 //----------------------------------------------------TAB NAVIGATOR----------------------------------------------------------
 // Creamos el Bottom Tab Navigator
