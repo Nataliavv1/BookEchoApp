@@ -1,14 +1,25 @@
-import * as React from 'react';
+import { useState } from 'react';  // Asegúrate de importar useState
 import { Text, TouchableOpacity, StyleSheet, View } from 'react-native';
 import { AntDesign } from '@expo/vector-icons'; // Asegúrate de importar AntDesign
 import DelatePopup from './DelatePopup'; // Asegúrate de importar DelatePopup
 
 export default function EditDelateOptions({ title, delateText, editText }) {
 
+    const [showDelatePopup, setShowDelatePopup] = useState(false);
+
     const handleEditPress = () => {
-        // Aquí puedes poner la lógica para mostrar el componente DelatePopup
-        // Ejemplo:
-        // setShowPopup(true);
+        // Aquí puedes poner la lógica para mostrar el componente de editar
+        // (Puedes agregar la lógica que necesites aquí)
+    };
+
+    const handleDelatePress = () => {
+        // Al presionar la opción de eliminar, mostramos el popup
+        setShowDelatePopup(true);
+    };
+
+    const handleClosePopup = () => {
+        // Cuando el popup se cierre, ocultamos el popup
+        setShowDelatePopup(false);
     };
 
     return (
@@ -17,7 +28,7 @@ export default function EditDelateOptions({ title, delateText, editText }) {
             <Text style={styles.title}>{title}</Text>
 
             {/* Opción de eliminar */}
-            <TouchableOpacity style={styles.option} onPress={() => {}}>
+            <TouchableOpacity style={styles.option} onPress={handleDelatePress}>
                 <View style={styles.row}>
                     <AntDesign name="delete" size={24} color="black" />
                     <Text style={styles.buttonText}>{delateText}</Text>
@@ -32,8 +43,15 @@ export default function EditDelateOptions({ title, delateText, editText }) {
                 </View>
             </TouchableOpacity>
 
-            {/* Aquí puedes colocar el código para mostrar DelatePopup si es necesario */}
-            {/* <DelatePopup /> */}
+            {/* Mostrar el popup de eliminar solo cuando showDelatePopup es true */}
+            {showDelatePopup && (
+                <DelatePopup
+                    title="Confirmar Eliminación"
+                    text="¿Estás seguro de que deseas eliminar este elemento?"
+                    visible={showDelatePopup}
+                    onClose={handleClosePopup}
+                />
+            )}
         </View>
     );
 }

@@ -4,6 +4,7 @@ import Button from "../components/buttons/button";
 import ButtonReadState from "../components/buttons/buttonReadState";
 import IconButton from "../components/buttons/iconbutton";
 import Overlay from "../components/overlays&popups/Overlay";
+import Toggle from "../components/buttons/toggle";
 
 const LibraryScreen = () => {
     return (
@@ -14,6 +15,14 @@ const LibraryScreen = () => {
             <ButtonReadState/>
             <IconButton/>
             <Overlay title={'Opcions de llista'} delateText={'Eliminar llista'} editText={'Editar llista'} contentType={'EditDelate'}/>
+            <Toggle
+  text1="Activar"
+  text2="Desactivar"
+  icon1="toggle-switch"
+  icon2="toggle-switch-off"
+  color="orange"
+/>
+
         </View>
     );
 };

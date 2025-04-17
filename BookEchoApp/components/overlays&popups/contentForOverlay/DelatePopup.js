@@ -7,29 +7,26 @@ import Button from '../../buttons/button'; // Asegúrate de que Button esté cor
 import IconButton from '../../buttons/iconbutton'; // Asegúrate de que IconButton esté correctamente importado
 
 export default function DelatePopup({ title, text }) {
-    const [visible, setVisible] = useState(false);
+    const [visible, setVisible] = useState(true);
 
     // Función para cerrar el modal
     const onCancel = () => {
         setVisible(false);
     };
 
-    // Función para mostrar el modal (si es necesario en tu código)
-    const show = () => {
-        setVisible(true);
-    };
-
     return (
         <Modal visible={visible} transparent={true} animationType="fade">
             <View style={styles.modalContainer}>
                 <BlurView style={styles.blurBackground} blurType="dark" blurAmount={10} />
-                
+
                 <View style={styles.modalContent}>
                     <Text style={styles.title}>{title}</Text>
                     <Text style={styles.text}>{text}</Text>
+                    <View style={styles.buttonsContainer}>
+                        <Button title="Cancelar" onPress={onCancel} color={'#EFEFEF'} fontcolor={'#626262'}/>
+                        <Button title="Eliminar" onPress={() => { /* Acción de eliminación */ }} />
+                    </View>
 
-                    <Button title="Cancelar" onPress={onCancel} />
-                    <Button title="Eliminar" onPress={() => { /* Acción de eliminación */ }} />
                 </View>
             </View>
         </Modal>
@@ -49,8 +46,8 @@ const styles = StyleSheet.create({
     modalContent: {
         backgroundColor: 'white',
         padding: 20,
-        borderRadius: 10,
-        alignItems: 'center',
+        borderRadius: 5,
+        alignItems: 'flex-start',
         zIndex: 1, // Asegura que el contenido del modal esté sobre el fondo borroso
     },
     title: {
@@ -62,5 +59,10 @@ const styles = StyleSheet.create({
         fontSize: 16,
         color: '#626262',
         marginBottom: 20,
+    },
+    buttonsContainer: {
+        width: '100%',
+        flexDirection: 'row',
+        gap: '31',
     },
 });
