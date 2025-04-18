@@ -12,6 +12,7 @@ import LibraryScreen from "./screens/LibraryScreen";
 import AddScreen from "./screens/AddScreen";
 import ChallengeScreen from "./screens/ChallengeScreen";
 import ProfileScreen from "./screens/ProfileScreen";
+
 //import StackScreen from "./screens/StackScreen";
 
 // Importamos los íconos de Expo
