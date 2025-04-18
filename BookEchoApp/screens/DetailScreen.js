@@ -1,25 +1,52 @@
 import React from "react";
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import { View, Text, Image, StyleSheet } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-// Importamos los íconos de Expo
-import { Ionicons, AntDesign } from '@expo/vector-icons';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+// Importamos los íconos de Expo (aunque no se usan aún)
+import { Ionicons, AntDesign, MaterialCommunityIcons } from '@expo/vector-icons';
 
-const DetailScreen = (titol, imatge, puntuacio) => {
-    const navigation = useNavigation();
-    return (
-        <View>
-            <Image
-                source={{ imatge }}
-                style={styles.thumbnail}
-            />
-            <Text>{titol}</Text>
-            <Text>{autor}</Text>
-            <Text>{puntuacio}</Text>
-            <View>
+const DetailScreen = ({ route }) => {
+  const navigation = useNavigation();
+  const { titol, imatge, autors } = route.params;
+ // const { titol, imatge, puntuacio, autor } = route.params;
+  return (
+    <View style={styles.container}>
+      <Image
+        source={{ uri: imatge }}
+        style={styles.thumbnail}
+      />
+      <Text style={styles.title}>{titol}</Text>
+      <Text style={styles.author}>Autor: {autors}</Text>
 
-            </View>
+    </View>
+  );
+};
 
-        </View>
-    )
-}
+const styles = StyleSheet.create({
+  container: {
+    padding: 16,
+    backgroundColor: '#fff',
+    flex: 1,
+  },
+  thumbnail: {
+    width: '100%',
+    height: 200,
+    resizeMode: 'cover',
+    marginBottom: 16,
+  },
+  title: {
+    fontSize: 20,
+    fontWeight: 'bold',
+  },
+  author: {
+    fontSize: 16,
+    color: '#666',
+    marginTop: 4,
+  },
+  rating: {
+    fontSize: 16,
+    color: '#888',
+    marginTop: 4,
+  },
+});
+
+export default DetailScreen;

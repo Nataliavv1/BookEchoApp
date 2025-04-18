@@ -12,39 +12,33 @@ import LibraryScreen from "./screens/LibraryScreen";
 import AddScreen from "./screens/AddScreen";
 import ChallengeScreen from "./screens/ChallengeScreen";
 import ProfileScreen from "./screens/ProfileScreen";
-
-//import StackScreen from "./screens/StackScreen";
+import DetailScreen from "./screens/DetailScreen";
 
 // Importamos los íconos de Expo
 import AntDesign from '@expo/vector-icons/AntDesign';
 
-//-----------------------------------------------------STACK NAVIGATOR-------------------------------------------------------
 
 //----------------------------------------------------TAB NAVIGATOR----------------------------------------------------------
 // Creamos el Bottom Tab Navigator
 const Tab = createBottomTabNavigator();
 
-// Definimos el Tab Navigator
 function MyTabs() {
     return (
         <Tab.Navigator
-            initialRouteName="Inici" // Define la pantalla inicial del Tab Navigator
+            initialRouteName="Inici"
             screenOptions={{
-                // Estilo del footer (barra de navegación inferior)
                 tabBarStyle: {
-                    backgroundColor: "#47AC9E", // Color de fondo
-                    height: 115, // Altura de la barra
-                    borderTopLeftRadius: 10, // Bordes redondeados superiores
+                    backgroundColor: "#47AC9E",
+                    height: 115,
+                    borderTopLeftRadius: 10,
                     borderTopRightRadius: 10,
-                    position: "absolute", // Asegura un buen renderizado de los bordes
+                    position: "absolute",
                     left: 0,
                     right: 0,
                     bottom: 0,
-                    paddingBottom: 10, // Espaciado inferior para los íconos
-                    paddingTop: 25, // Espaciado superior
+                    paddingBottom: 10,
+                    paddingTop: 25,
                 },
-
-                // Estilo de los íconos y etiquetas
                 tabBarActiveTintColor: "#F7F7F7",
                 tabBarInactiveTintColor: "#FFFFFF",
                 tabBarLabelStyle: {
@@ -53,67 +47,62 @@ function MyTabs() {
                     padding: 5,
                 }
             }}>
-
-            {/* Tab de Inicio con el Stack Navigator */}
             <Tab.Screen
                 name="Inici"
-                component={HomeScreen} // Aquí cargamos el Stack Navigator en lugar de un solo componente
+                component={HomeScreen}
                 options={{
                     tabBarLabel: 'Inici',
                     tabBarIcon: ({ color }) => (<AntDesign name="home" size={24} color={color} />),
-                    headerShown: false, // Ocultamos el header en este tab
+                    headerShown: false,
                 }} />
-
-            {/* Tab de Biblioteca */}
             <Tab.Screen
                 name="Biblioteca"
                 component={LibraryScreen}
                 options={{
                     tabBarLabel: 'Biblioteca',
                     tabBarIcon: ({ color }) => (<AntDesign name="book" size={24} color={color} />),
-                    headerShown: false, // Ocultamos el header en este tab
+                    headerShown: false,
                 }} />
-
-            {/* Tab de Agregar */}
             <Tab.Screen
                 name="Afegeix"
                 component={AddScreen}
                 options={{
                     tabBarLabel: 'Afegeix',
                     tabBarIcon: ({ color }) => (<AntDesign name="plus" size={24} color={color} />),
-                    headerShown: false, // Ocultamos el header en este tab
+                    headerShown: false,
                 }} />
-
-            {/* Tab de Retos */}
             <Tab.Screen
                 name="Reptes"
                 component={ChallengeScreen}
                 options={{
                     tabBarLabel: 'Reptes',
                     tabBarIcon: ({ color }) => (<AntDesign name="staro" size={24} color={color} />),
-                    tabBarBadge: 3, // Muestra un contador en el ícono
-                    headerShown: false, // Ocultamos el header en este tab
+                    tabBarBadge: 3,
+                    headerShown: false,
                 }} />
-
-            {/* Tab de Perfil */}
             <Tab.Screen
                 name="Perfil"
                 component={ProfileScreen}
                 options={{
                     tabBarLabel: 'Perfil',
                     tabBarIcon: ({ color }) => (<AntDesign name="user" size={24} color={color} />),
-                    headerShown: false, // Ocultamos el header en este tab
+                    headerShown: false,
                 }} />
         </Tab.Navigator>
     );
 }
 
-//------------------------------------------------------EXPORTACIÓN-----------------------------------------------------------
-// Exportamos el componente principal de la navegación
+//-----------------------------------------------------STACK NAVIGATOR-------------------------------------------------------
+const Stack = createNativeStackNavigator();
+
 export default function Navigation() {
     return (
-        <NavigationContainer initialRouteName="Inici">
-            <MyTabs />
+        <NavigationContainer>
+            <Stack.Navigator>
+                <Stack.Screen name="Tabs" component={MyTabs} options={{ headerShown: false }} />
+                <Stack.Screen name="Details" component={DetailScreen} />
+            </Stack.Navigator>
         </NavigationContainer>
     );
+
 }

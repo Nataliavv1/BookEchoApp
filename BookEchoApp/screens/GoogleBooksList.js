@@ -1,11 +1,13 @@
 // GoogleBooksList.js
 import React, { useEffect, useState } from "react";
-import { View, Text, FlatList, Image, StyleSheet } from "react-native";
+import { useNavigation } from '@react-navigation/native';
+import { View, Text, FlatList, Image, StyleSheet, TouchableOpacity } from "react-native";
 
 const API_KEY = "AIzaSyAdrMfk5xKeXebgngAXQjrKshHuhAAklyM";
 
 const GoogleBooksList = ({ query }) => {
     const [books, setBooks] = useState([]);
+    const navigation = useNavigation();
 
     useEffect(() => {
         if (query.length < 3) return; // no busques si la palabra es muy corta
@@ -36,20 +38,28 @@ const GoogleBooksList = ({ query }) => {
                     renderItem={({ item }) => {
                         const volume = item.volumeInfo;
                         return (
-                            <View style={styles.bookItem}>
-                                {volume.imageLinks?.thumbnail && (
-                                    <Image
-                                        source={{ uri: volume.imageLinks.thumbnail }}
-                                        style={styles.thumbnail}
-                                    />
-                                )}
-                                <View style={styles.textContainer}>
-                                    <Text style={styles.title}>{volume.title}</Text>
-                                    {volume.authors && (
-                                        <Text style={styles.author}>{volume.authors.join(', ')}</Text>
+                            <TouchableOpacity onPress={() => navigation.navigate('Details', {
+                                titol: volume.title,
+                                autors: volume.authors,
+                             //   description: volume.description,  // Puedes agregar más parámetros si lo necesitas
+                                imatge: volume.imageLinks?.thumbnail,
+                            })}>
+                                <View style={styles.bookItem}>
+                                    {volume.imageLinks?.thumbnail && (
+                                        <Image
+                                            source={{ uri: volume.imageLinks.thumbnail }}
+                                            style={styles.thumbnail}
+                                        />
                                     )}
+                                    <View style={styles.textContainer}>
+                                        <Text style={styles.title}>{volume.title}</Text>
+                                        {volume.authors && (
+                                            <Text style={styles.author}>{volume.authors.join(', ')}</Text>
+                                        )}
+                                    </View>
                                 </View>
-                            </View>
+                            </TouchableOpacity>
+
                         );
                     }}
                 />
