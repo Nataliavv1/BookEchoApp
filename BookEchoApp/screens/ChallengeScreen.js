@@ -14,7 +14,7 @@ export default function ChallengeScreen({ navigation }) {
       backgroundColor: '#FEF2ED',
       progressColor: '#F8794A',
     },
-    {  
+    {
       id: '2',
       image: require('../assets/multitasca.png'),
       title: 'Multitasca Literària',
@@ -22,7 +22,7 @@ export default function ChallengeScreen({ navigation }) {
       completed: 1,
       total: 2,
       backgroundColor: '#FEF8E6',
-      progressColor: '#F8BD0', 
+      progressColor: '#F8BD01', 
     },
     {
       id: '3',
