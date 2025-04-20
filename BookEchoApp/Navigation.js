@@ -13,6 +13,7 @@ import AddScreen from "./screens/AddScreen";
 import ChallengeScreen from "./screens/ChallengeScreen";
 import ProfileScreen from "./screens/ProfileScreen";
 import DetailScreen from "./screens/DetailScreen";
+import ScanScreen from "./screens/ScanScreen";
 
 // Importamos los íconos de Expo
 import AntDesign from '@expo/vector-icons/AntDesign';
@@ -100,7 +101,9 @@ export default function Navigation() {
         <NavigationContainer>
             <Stack.Navigator>
                 <Stack.Screen name="Tabs" component={MyTabs} options={{ headerShown: false }} />
-                <Stack.Screen name="Details" component={DetailScreen} />
+                <Stack.Screen name="Details" component={DetailScreen}/>
+                <Stack.Screen name="ScanScreen" component={ScanScreen} />
+
             </Stack.Navigator>
         </NavigationContainer>
     );
