@@ -6,6 +6,11 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
+// Importamos las pantallas de autenticación
+import WelcomeScreen from './screens/Supabase/WelcomeScreen';
+import LoginScreen from './screens/Supabase/LoginScreen';
+import RegisterScreen from './screens/Supabase/RegisterScreen';
+
 // Importamos las pantallas (screens)
 import HomeScreen from "./screens/HomeScreen";
 import LibraryScreen from "./screens/LibraryScreen";
@@ -99,7 +104,15 @@ const Stack = createNativeStackNavigator();
 export default function Navigation() {
     return (
         <NavigationContainer>
-            <Stack.Navigator>
+            <Stack.Navigator initialRouteName="Welcome">
+                {/*Pantalla de 1º Welcome*/}
+                <Stack.Screen name="Welcome" component={WelcomeScreen} options={{headerShown:false}}/>
+
+                {/*Pantalla de 2º Registre i 3º Login*/}
+                <Stack.Screen name="Login" component={LoginScreen} options={{headerShown:false}}/>
+                <Stack.Screen name="Register" component={RegisterScreen} options={{headerShown:false}}/>
+
+                {/* Pantallas principales de la app después del login */}
                 <Stack.Screen name="Tabs" component={MyTabs} options={{ headerShown: false }} />
                 <Stack.Screen name="Details" component={DetailScreen}/>
              
