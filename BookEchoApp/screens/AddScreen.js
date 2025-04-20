@@ -11,7 +11,7 @@ const AddScreen = () => {
         <View style={styles.container}>
             <Text style={styles.title}>Afegir llibre</Text>
            
-            <TouchableOpacity style={styles.option} onPress={() => navigation.navigate('ScanScreen')}>
+            <TouchableOpacity style={styles.option} onPress={() => navigation.navigate()}>
            <View>
                 <View style={styles.row}>
                     <AntDesign name="search1" size={24} color="black" />
@@ -20,7 +20,7 @@ const AddScreen = () => {
            </View>
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.option} onPress={() => navigation.navigate('ScanScreen')}>
+            <TouchableOpacity style={styles.option} onPress={() => navigation.navigate()}>
 
  
 
@@ -32,7 +32,7 @@ const AddScreen = () => {
            </View>
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.option} onPress={() => navigation.navigate('ScanScreen')}>
+            <TouchableOpacity style={styles.option} onPress={() => navigation.navigate()}>
            <View>
                 <View style={styles.row}>
                 <MaterialCommunityIcons name="keyboard-outline" size={24} color="black" />
