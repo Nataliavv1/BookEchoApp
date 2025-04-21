@@ -1,52 +1,148 @@
+// ... imports (iguales)
 import React, { useState } from 'react';
-import {View,Text,TouchableOpacity,Image,StyleSheet, ScrollView,} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Alert,
+  ScrollView,
+  TouchableOpacity,
+  Image,
+} from 'react-native';
 
-//S'ha tingut que instal·lar per poder agafar la imatge
+import { supabase } from './lib/supabaseClient';
 import * as ImagePicker from 'expo-image-picker';
-
-//Component del formulari
 import FormInput from '../../components/inputs/FormInput';
 
 export default function RegisterScreen({ navigation }) {
-  // Establecemos el estado para todos los campos del formulario
   const [name, setName] = useState('');
-  const [lastName, setLastName] = useState('');
+  const [surname, setSurname] = useState('');
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [image, setImage] = useState(null);
+  const [loading, setLoading] = useState(false);
 
-  // Función para manejar la selección de imagen
   const pickImage = async () => {
-    // Pide permisos y abre la galería
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      quality: 1,
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: [ImagePicker.MediaTypeOptions.Images], // ✅ mejor forma
       allowsEditing: true,
+      quality: 1,
       aspect: [1, 1],
     });
 
     if (!result.canceled) {
-      setImage(result.assets[0].uri); // Guardamos la imagen seleccionada
+      setImage(result.assets[0].uri);
     }
   };
 
-  // Función para manejar el registro
-  const handleRegister = () => {
-    if (!name || !lastName || !username || !email || !password || !image) {
-      // Validación básica para asegurarse de que todos los campos estén llenos
-      alert('Por favor, completa todos los campos');
+  const uploadAvatar = async (userId, imageUri) => {
+    const response = await fetch(imageUri);
+    const blob = await response.blob();
+    const filePath = `avatars/${userId}_${Date.now()}.jpg`;
+
+    const { error: uploadError } = await supabase.storage
+      .from('avatars')
+      .upload(filePath, blob, {
+        contentType: 'image/jpeg',
+        upsert: true,
+      });
+
+    if (uploadError) throw uploadError;
+
+    const { data: urlData } = supabase.storage
+      .from('avatars')
+      .getPublicUrl(filePath);
+
+    return urlData.publicUrl;
+  };
+
+  const checkUniqueFields = async () => {
+    const { data: usernameData, error: usernameError } = await supabase
+      .from('profiles')
+      .select('username')
+      .eq('username', username)
+      .maybeSingle();
+
+    if (usernameData) return 'El nom d\'usuari ja està en ús';
+
+    const { data: emailData, error: emailError } = await supabase
+      .from('profiles')
+      .select('email')
+      .eq('email', email)
+      .maybeSingle();
+
+    if (emailData) return 'El correu electrònic ja està en ús';
+
+    return null;
+  };
+
+  const handleRegister = async () => {
+    if (!email || !password || !username || !name || !surname) {
+      Alert.alert('Error', 'Omple tots els camps');
       return;
     }
-    // Aquí va tu lógica de registro
-    console.log('Nombre:', name, 'Apellido:', lastName, 'Usuario:', username, 'Email:', email, 'Password:', password, 'Imagen:', image);
+
+    const uniqueError = await checkUniqueFields();
+    if (uniqueError) {
+      Alert.alert('Error', uniqueError);
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      // ✅ SIGNUP bien estructurado
+      const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
+        email,
+        password,
+      });
+
+      if (signUpError) {
+        Alert.alert('Error', signUpError.message);
+        setLoading(false);
+        return;
+      }
+
+      const userId = signUpData.user.id;
+      let avatarUrl = null;
+
+      if (image) {
+        avatarUrl = await uploadAvatar(userId, image);
+      }
+
+      // ✅ INSERT correctamente con nombres
+      const { error: profileError } = await supabase.from('profiles').insert([{
+        id: userId,
+        name: name,
+        last_name: surname,
+        username: username,
+        email: email,
+        avatar_url: avatarUrl,
+      }]);
+
+      if (profileError) {
+        Alert.alert('Error al guardar el perfil', profileError.message);
+        setLoading(false);
+        return;
+      }
+
+      // Alertamos al usuario que debe verificar su correo
+      Alert.alert('Compte creat', 'Comprova el teu correu electrònic per activar el compte.');
+
+      // Después de mostrar la alerta, redirige al login
+      navigation.navigate('Login');
+    } catch (err) {
+      Alert.alert('Error inesperat', err.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.title}>Crea el teu compte</Text>
 
-      {/* Imagen de perfil */}
       <TouchableOpacity style={styles.imagePicker} onPress={pickImage}>
         {image ? (
           <Image source={{ uri: image }} style={styles.image} />
@@ -55,46 +151,18 @@ export default function RegisterScreen({ navigation }) {
         )}
       </TouchableOpacity>
 
-      {/* Campos del formulario */}
-      <FormInput
-        placeholder="Nom complet"
-        value={name}
-        onChangeText={setName}
-        icon="user"
-      />
-      <FormInput
-        placeholder="Cognom"
-        value={lastName}
-        onChangeText={setLastName}
-        icon="user"
-      />
-      <FormInput
-        placeholder="Nom d'usuari"
-        value={username}
-        onChangeText={setUsername}
-        icon="user"
-      />
-      <FormInput
-        placeholder="Correu electrònic"
-        value={email}
-        onChangeText={setEmail}
-        icon="mail"
-        keyboardType="email-address"
-      />
-      <FormInput
-        placeholder="Contrasenya"
-        value={password}
-        onChangeText={setPassword}
-        icon="lock"
-        secureTextEntry={true}
-      />
+      <FormInput placeholder="Nom" value={name} onChangeText={setName} icon="user" />
+      <FormInput placeholder="Cognoms" value={surname} onChangeText={setSurname} icon="user" />
+      <FormInput placeholder="Nom d'usuari" value={username} onChangeText={setUsername} icon="user" />
+      <FormInput placeholder="Correu electrònic" value={email} onChangeText={setEmail} icon="mail" keyboardType="email-address" />
+      <FormInput placeholder="Contrasenya" value={password} onChangeText={setPassword} icon="lock" secureTextEntry />
 
-      {/* Botón de registrar */}
-      <TouchableOpacity style={styles.button} onPress={handleRegister}>
-        <Text style={styles.buttonText}>Registrar-se</Text>
+      <TouchableOpacity style={styles.button} onPress={handleRegister} disabled={loading}>
+        <Text style={styles.buttonText}>
+          {loading ? 'Cargando...' : 'Registrar-se'}
+        </Text>
       </TouchableOpacity>
 
-      {/* Enlace para ir a login */}
       <TouchableOpacity onPress={() => navigation.navigate('Login')}>
         <Text style={styles.link}>Ja tens compte? Inicia sessió</Text>
       </TouchableOpacity>
@@ -102,7 +170,7 @@ export default function RegisterScreen({ navigation }) {
   );
 }
 
-// Estilos
+// Estils (sin cambios)
 const styles = StyleSheet.create({
   container: {
     paddingHorizontal: 30,

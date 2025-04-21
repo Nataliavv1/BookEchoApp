@@ -1,83 +1,120 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-//Component del formulari
+import {
+  View,
+  Text,
+  StyleSheet,
+  Alert,
+  TouchableOpacity,
+} from 'react-native';
+
+// Importem Supabase
+import { supabase } from './lib/supabaseClient';
+
+// Component del formulari
 import FormInput from '../../components/inputs/FormInput';
 
 export default function LoginScreen({ navigation }) {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);  // Estado de carga
 
-    //Estat per guardar email i contrassenya
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+  // Manejador de inicio de sesión
+  const handleLogin = async () => {
+    if (!email || !password) {
+      Alert.alert('Error', 'Omple tots els camps');
+      return;
+    }
 
-    const handleLogin = () => {
-        console.log('Email:', email);
-        console.log('Password:', password);
-    };
+    setLoading(true); // Empieza el loading
 
-    return (
-        <View style={styles.container}>
-            <Text style={styles.title}>Inicia Sessió</Text>
+    try {
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
 
-            {/* Campo de email */}
-            <FormInput
-                placeholder="Correu electrònic"
-                value={email}
-                onChangeText={setEmail}
-                icon="mail"
-                keyboardType="email-address"
-            />
+      setLoading(false); // Termina el loading
 
-            {/* Campo de contraseña */}
-            <FormInput
-                placeholder="Contrasenya"
-                value={password}
-                onChangeText={setPassword}
-                icon="lock"
-                secureTextEntry={true}
-            />
+      if (error) {
+        Alert.alert('Error', error.message); // Muestra el error si existe
+        return;
+      }
 
-            {/* Botón de iniciar sesión */}
-            <TouchableOpacity style={styles.button} onPress={handleLogin}>
-                <Text style={styles.buttonText}>Iniciar sessió</Text>
-            </TouchableOpacity>
+      // Verificar si el correo está confirmado
+      if (!data.user.email_confirmed_at) {
+        Alert.alert('Error', 'Per poder iniciar sessió, has de confirmar el teu correu electrònic.');
+        return;
+      }
 
-            {/* Enlace para ir a Registro */}
-            <TouchableOpacity onPress={() => navigation.navigate('Register')}>
-                <Text style={styles.link}>No tens compte? Registra't</Text>
-            </TouchableOpacity>
-        </View>
-    );
+      navigation.replace('Tabs'); // Si el login es exitoso, navega a las tabs
+    } catch (error) {
+      setLoading(false); // Termina el loading en caso de error
+      Alert.alert('Error', 'Ha ocorregut un error inesperat'); // Error general
+    }
+  };
+
+  return (
+    <View style={styles.container}>
+      <Text style={styles.title}>Inicia sessió</Text>
+
+      <FormInput
+        placeholder="Correu electrònic"
+        value={email}
+        onChangeText={setEmail}
+        icon="mail"
+      />
+      <FormInput
+        placeholder="Contrasenya"
+        value={password}
+        onChangeText={setPassword}
+        icon="lock"
+        secureTextEntry={true}
+      />
+
+      <TouchableOpacity style={styles.button} onPress={handleLogin} disabled={loading}>
+        {loading ? (
+          <Text style={styles.buttonText}>Cargando...</Text>
+        ) : (
+          <Text style={styles.buttonText}>Entrar</Text>
+        )}
+      </TouchableOpacity>
+
+      <TouchableOpacity onPress={() => navigation.navigate('Register')}>
+        <Text style={styles.link}>Encara no tens compte? Registra't</Text>
+      </TouchableOpacity>
+    </View>
+  );
 }
 
+// Estilos
 const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      justifyContent: 'center',
-      paddingHorizontal: 30,
-      backgroundColor: '#fff',
-    },
-    title: {
-      fontSize: 24,
-      fontWeight: 'bold',
-      color: '#358177',
-      marginBottom: 30,
-      textAlign: 'center',
-    },
-    button: {
-      backgroundColor: '#47AC9E',
-      padding: 15,
-      borderRadius: 10,
-      alignItems: 'center',
-      marginTop: 10,
-    },
-    buttonText: {
-      color: '#fff',
-      fontWeight: 'bold',
-      fontSize: 16,
-    },
-    link: {
-      color: '#47AC9E',
-      marginTop: 15,
-      textAlign: 'center',
-    },
-  });
+  container: {
+    paddingHorizontal: 30,
+    paddingVertical: 40,
+    backgroundColor: '#fff',
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#358177',
+    marginBottom: 25,
+    textAlign: 'center',
+  },
+  button: {
+    backgroundColor: '#47AC9E',
+    padding: 15,
+    borderRadius: 10,
+    alignItems: 'center',
+    marginTop: 15,
+  },
+  buttonText: {
+    color: '#fff',
+    fontWeight: 'bold',
+    fontSize: 16,
+  },
+  link: {
+    color: '#47AC9E',
+    marginTop: 20,
+    textAlign: 'center',
+  },
+});
