@@ -39,22 +39,22 @@ export default function RegisterScreen({ navigation }) {
   const uploadAvatar = async (userId, imageUri) => {
     const response = await fetch(imageUri);
     const blob = await response.blob();
-    const filePath = `avatars/${userId}_${Date.now()}.jpg`;
+    const filePath = `avatars/${userId}_${Date.now()}.jpg`;  // Asegúrate de que el nombre de archivo sea único
 
     const { error: uploadError } = await supabase.storage
-      .from('avatars')
+      .from('avatars')  // Nombre del bucket
       .upload(filePath, blob, {
         contentType: 'image/jpeg',
-        upsert: true,
+        upsert: true,  // Para que sobrescriba si el archivo ya existe
       });
 
     if (uploadError) throw uploadError;
 
     const { data: urlData } = supabase.storage
       .from('avatars')
-      .getPublicUrl(filePath);
+      .getPublicUrl(filePath);  // Obtener la URL pública de la imagen
 
-    return urlData.publicUrl;
+    return urlData.publicUrl;  // Retornar la URL pública para almacenarla en el perfil
   };
 
   const checkUniqueFields = async () => {
@@ -92,7 +92,7 @@ export default function RegisterScreen({ navigation }) {
     setLoading(true);
 
     try {
-      // ✅ SIGNUP bien estructurado
+      // ✅ REGISTRO bien estructurado
       const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
         email,
         password,
@@ -108,10 +108,10 @@ export default function RegisterScreen({ navigation }) {
       let avatarUrl = null;
 
       if (image) {
-        avatarUrl = await uploadAvatar(userId, image);
+        avatarUrl = await uploadAvatar(userId, image);  // Subir la imagen y obtener URL
       }
 
-      // ✅ INSERT correctamente con nombres
+      // ✅ INSERT correctamente con nombres y URL de avatar
       const { error: profileError } = await supabase.from('profiles').insert([{
         id: userId,
         name: name,
@@ -170,7 +170,7 @@ export default function RegisterScreen({ navigation }) {
   );
 }
 
-// Estils (sin cambios)
+// Estilos
 const styles = StyleSheet.create({
   container: {
     paddingHorizontal: 30,
