@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, FlatList, StyleSheet, Text } from 'react-native';
+import { View, FlatList, StyleSheet, Text, TouchableOpacity, Image } from 'react-native';
 import ChallengeCard from '../components/cards/ChallengeCard';
 
 export default function ChallengeScreen({ navigation }) {
@@ -34,6 +34,16 @@ export default function ChallengeScreen({ navigation }) {
       backgroundColor: '#F7EDF7',
       progressColor: '#AC47AC',
     },
+    {
+      id: '4',
+      image: require('../assets/bibliotecari.png'),
+      title: 'El Bibliotecari',
+      description: 'Afegeix 5 llibres a la llista de lectura.',
+      completed: 4,
+      total: 5,
+      backgroundColor: '#EDF7F5',
+      progressColor: '#47AC9E',
+    },
   ];
 
   const handlePress = (challenge) => {
@@ -41,11 +51,26 @@ export default function ChallengeScreen({ navigation }) {
     // navigation.navigate('ChallengeDetail', { challengeId: challenge.id });
   };
 
+  const handleSeeAll = () => {
+    navigation.navigate('AllChallengesScreen'); 
+  };
+
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>Els meus reptes</Text>
+      <View style={styles.headerContainer}>
+        <Text style={styles.header}>Els meus reptes</Text>
+        <TouchableOpacity style={styles.seeMoreButton} onPress={handleSeeAll}>
+          <Text style={styles.seeMoreText}>Veure més</Text>
+          <Image 
+            source={require('../assets/next.png')}
+            style={styles.arrowImage}
+            resizeMode="contain"
+          />
+        </TouchableOpacity>
+      </View>
+
       <FlatList
-        data={challenges}
+        data={challenges.slice(0, 3)} 
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
           <ChallengeCard
@@ -54,9 +79,9 @@ export default function ChallengeScreen({ navigation }) {
             description={item.description}
             completed={item.completed}
             total={item.total}
-            onPress={() => handlePress(item)}
             backgroundColor={item.backgroundColor}
             progressColor={item.progressColor}
+            onPress={() => handlePress(item)}
           />
         )}
         contentContainerStyle={styles.list}
@@ -76,6 +101,7 @@ const styles = StyleSheet.create({
     fontSize: 28,
     fontWeight: 'bold',
     marginLeft: 20,
+    marginTop: 36,
     marginBottom: 10,
     color: '#358177',
   },

@@ -18,6 +18,7 @@ import AddScreen from "./screens/AddScreen";
 import ChallengeScreen from "./screens/ChallengeScreen";
 import ProfileScreen from "./screens/ProfileScreen";
 import DetailScreen from "./screens/DetailScreen";
+import AllChallengesScreen from "./screens/AllChallengesScreen";
 //import ScanScreen from "./screens/ScanScreen";
 
 // Importamos los íconos de Expo
@@ -115,8 +116,9 @@ export default function Navigation() {
                 {/* Pantallas principales de la app después del login */}
                 <Stack.Screen name="Tabs" component={MyTabs} options={{ headerShown: false }} />
                 <Stack.Screen name="Details" component={DetailScreen}/>
+                <Stack.Screen name="AllChallengesScreen" component={AllChallengesScreen}options={{headerShown:false}}/>
+                
              
-
             </Stack.Navigator>
         </NavigationContainer>
     );
