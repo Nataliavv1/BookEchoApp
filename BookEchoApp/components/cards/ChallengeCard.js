@@ -1,11 +1,11 @@
 import React from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, Image } from 'react-native';
 
-export default function ChallengeCard({ image, title, description, completed, total, onPress, backgroundColor, progressColor }) {
+export default function ChallengeCard({ image, title, description, completed, total, backgroundColor, progressColor }) {
   const progress = completed / total;
 
   return (
-    <TouchableOpacity style={[styles.card, { backgroundColor }]} onPress={onPress}>
+    <View style={[styles.card, { backgroundColor }]}>
       <Image source={image} style={styles.image} resizeMode="cover" />
       <View style={styles.content}>
         <Text style={styles.title}>{title}</Text>
@@ -14,7 +14,7 @@ export default function ChallengeCard({ image, title, description, completed, to
           <View style={[styles.progressBar, { width: `${progress * 100}%`, backgroundColor: progressColor }]} />
         </View>
       </View>
-    </TouchableOpacity>
+    </View>
   );
 }
 
@@ -68,4 +68,3 @@ const styles = StyleSheet.create({
     height: '100%',
   },
 });
-
