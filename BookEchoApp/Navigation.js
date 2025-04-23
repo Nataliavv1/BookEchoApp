@@ -9,6 +9,9 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 // Importamos AsyncStorage para guardar si el onboarding fue completado
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+// Importamos el ChallengeProvider
+import { ChallengeProvider } from './context/ChallengeContext';
+
 // Importamos el componente de onboarding
 import Onboarding from './components/onboarding/Onboarding';
 
@@ -131,30 +134,30 @@ export default function Navigation() {
     if (onboardingCompleted === null) return null;
 
     return (
-        <NavigationContainer>
+        <ChallengeProvider>
+            <NavigationContainer>
+                <Stack.Navigator initialRouteName={onboardingCompleted ? "Welcome" : "Onboarding"}>
+                    {/* Pantalla de Onboarding (solo la primera vez) */}
+                    <Stack.Screen
+                        name="Onboarding"
+                        options={{ headerShown: false }}
+                    >
+                        {props => <Onboarding {...props} onFinish={handleOnboardingFinish} />}
+                    </Stack.Screen>
 
-            <Stack.Navigator initialRouteName={onboardingCompleted ? "Welcome" : "Onboarding"}>
-                {/* Pantalla de Onboarding (solo la primera vez) */}
-                <Stack.Screen
-                    name="Onboarding"
-                    options={{ headerShown: false }}
-                >
-                    {props => <Onboarding {...props} onFinish={handleOnboardingFinish} />}
-                </Stack.Screen>
+                    {/*Pantalla de 1º Welcome*/}
+                    <Stack.Screen name="Welcome" component={WelcomeScreen} options={{ headerShown: false }} />
 
-                {/*Pantalla de 1º Welcome*/}
-                <Stack.Screen name="Welcome" component={WelcomeScreen} options={{ headerShown: false }} />
+                    {/*Pantalla de 2º Registre i 3º Login*/}
+                    <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
+                    <Stack.Screen name="Register" component={RegisterScreen} options={{ headerShown: false }} />
 
-                {/*Pantalla de 2º Registre i 3º Login*/}
-                <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
-                <Stack.Screen name="Register" component={RegisterScreen} options={{ headerShown: false }} />
-
-                {/* Pantallas principales de la app después del login */}
-                <Stack.Screen name="Tabs" component={MyTabs} options={{ headerShown: false }} />
-                <Stack.Screen name="Details" component={DetailScreen} />
-                <Stack.Screen name="AllChallengesScreen" component={AllChallengesScreen} options={{ headerShown: false }} />
-
-            </Stack.Navigator>
-        </NavigationContainer>
+                    {/* Pantallas principales de la app después del login */}
+                    <Stack.Screen name="Tabs" component={MyTabs} options={{ headerShown: false }} />
+                    <Stack.Screen name="Details" component={DetailScreen} />
+                    <Stack.Screen name="AllChallengesScreen" component={AllChallengesScreen} options={{ headerShown: false }} />
+                </Stack.Navigator>
+            </NavigationContainer>
+        </ChallengeProvider> 
     );
 }
