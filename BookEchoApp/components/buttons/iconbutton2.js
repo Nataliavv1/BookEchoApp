@@ -2,21 +2,24 @@ import * as React from 'react';
 import { Pressable, StyleSheet } from 'react-native';
 import { cloneElement } from 'react';
 
+// Importar colores
+import colors from '../../styles/colors';
+
 export default function IconButton({ onPress, children }) {
     const [isHovered, setIsHovered] = React.useState(false);
     const [isPressed, setIsPressed] = React.useState(false);
 
-    // Clona el icono y le fuerza el color blanco
+    // Clona la icona i li aplica el color definit al sistema de disseny
     const whiteIcon = React.isValidElement(children)
-        ? cloneElement(children, { color: 'white' })
+        ? cloneElement(children, { color: colors.LightWhite })
         : children;
 
-    // Estilo dinámico basado en estado
+    // Estilo dinámico basado en el estado del botón
     const backgroundColor = isPressed
-        ? '#C6613B'
+        ? colors.NormalActiveOrange
         : isHovered
-        ? '#DF6D43'
-        : '#F8794A';
+        ? colors.NormalHoverOrange
+        : colors.NormalOrange;
 
     return (
         <Pressable

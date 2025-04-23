@@ -3,12 +3,16 @@ import { View, Text, StyleSheet, Image, useWindowDimensions } from 'react-native
 import { useNavigation } from '@react-navigation/native';
 import Button from '../../components/buttons/button';
 
+// Importem els arxius d'estil
+import typography from '../../styles/typography';
+import colors from '../../styles/colors';
+
 export default function OnboardingItem({ item, isLastSlide }) {
     const { width, height } = useWindowDimensions();
     const navigation = useNavigation();
 
     const handlePress = () => {
-        navigation.navigate('Welcome'); //WelcomeScreen
+        navigation.navigate('Welcome'); // Navigate to Welcome Screen
     };
 
     return (
@@ -21,15 +25,16 @@ export default function OnboardingItem({ item, isLastSlide }) {
 
                 {isLastSlide && (
                     <View style={styles.finalSlide}>
-                        <Text style={styles.finalTitle}>
+                        <Text style={styles.finalTitle }>
                             Gaudeix de la lectura i converteix-te en un superlector!
                         </Text>
 
                         <Button
                             title="Començar ara!"
                             onPress={handlePress}
-                            color="#493d8a"
+                            color={colors.NormalTurquoise}
                             fontcolor="#fff"
+                            icon="book"
                         />
                     </View>
                 )}
@@ -45,32 +50,33 @@ const styles = StyleSheet.create({
     },
     image: {
         resizeMode: 'contain',
+        marginBottom:25,
     },
     textContainer: {
         justifyContent: 'center',
         paddingHorizontal: 20,
     },
     title: {
-        fontWeight: '800',
-        fontSize: 28,
-        marginBottom: 10,
-        color: '#493d8a',
+        ...typography.H2ExtraBold,
+        color: colors.DarkGrey,
+        marginBottom: 25,
         textAlign: 'center',
     },
+
     description: {
-        fontWeight: '300',
-        color: '#62656b',
+        ...typography.subtitleMedium,
+        color: colors.DarkGrey,
         textAlign: 'center',
         paddingHorizontal: 20,
+        marginBottom: 25,
     },
     finalSlide: {
         marginTop: 20,
         alignItems: 'center',
     },
     finalTitle: {
-        fontSize: 20,
-        fontWeight: '600',
-        color: '#493d8a',
+        ...typography.H3ExtraBold,
+        color: colors.DarkGrey,
         textAlign: 'center',
         marginBottom: 20,
         paddingHorizontal: 20,

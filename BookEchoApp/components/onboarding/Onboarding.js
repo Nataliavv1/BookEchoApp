@@ -1,14 +1,16 @@
 import React, { useState, useRef } from 'react';
 import { View, StyleSheet, FlatList, Animated } from 'react-native';
 
-import slides from './slides';
+import slides from './slides';  // Asegúrate de que este es el archivo correcto donde está tu array "slides"
 import OnboardingItem from './OnboardingItem';
 import Paginator from './Paginator';
 
-//Importem el botó amb icona
+// Importamos los colores
+import colors from '../../styles/colors';
+
+// Importamos el botón con icono
 import IconButton from '../buttons/iconbutton2';
 import AntDesign from '@expo/vector-icons/AntDesign';
-
 
 export default function Onboarding({ navigation }) {
     const [currentIndex, setCurrentIndex] = useState(0);
@@ -26,18 +28,16 @@ export default function Onboarding({ navigation }) {
     };
 
     return (
-        <View style={{ flex: 3 }}>
+        <View style={styles.container}> 
             {/* Botón para cerrar onboarding */}
             <View style={styles.closeButtonContainer}>
-                <IconButton
-                    onPress={handleFinish}  // Usamos handleFinish directamente aquí
-                >
+                <IconButton onPress={handleFinish}>
                     <AntDesign name="close" size={24} color="black" />
                 </IconButton>
             </View>
 
             <FlatList
-                data={slides}
+                data={slides}  // Asegúrate de que no se esté modificando el array "slides" en ningún otro lado
                 renderItem={({ item, index }) => (
                     <OnboardingItem
                         item={item}
@@ -69,11 +69,12 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
+        backgroundColor: colors.LightHoverTurquoise,
     },
     closeButtonContainer: {
         position: 'absolute',
         top: 40,
         right: 20,
         zIndex: 10,
-      }
+    }
 });

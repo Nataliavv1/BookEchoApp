@@ -2,67 +2,58 @@
 
 const typography = {
     // Fonts base Urbanist i Raleway
-    fontFamilyUrbanist: {
-      light: 'Urbanist_300Light',
-      regular: 'Urbanist_400Regular',
-      medium: 'Urbanist_500Medium',
-      semibold: 'Urbanist_600SemiBold',
-      bold: 'Urbanist_700Bold',
-      extrabold: 'Urbanist_800ExtraBold',
-      black: 'Urbanist_900Black',
-    },
-    fontFamilyRaleway: {
-      light: 'Raleway_300Light',
-      regular: 'Raleway_400Regular',
-      medium: 'Raleway_500Medium',
-      semibold: 'Raleway_600SemiBold',
-      bold: 'Raleway_700Bold',
-      extrabold: 'Raleway_800ExtraBold',
-      black: 'Raleway_900Black',
-    },
+    fontFamilyUrbanist: 'Urbanist',
+    fontFamilyRaleway: 'Raleway',
   
     // H1
     H1Light: {
       fontSize: 24,
       lineHeight: 28,
       letterSpacing: 0,
-      fontFamily: 'Urbanist_300Light',
+      fontFamily: 'Urbanist',
+      fontWeight: '300', // Light
     },
     H1Regular: {
       fontSize: 24,
       lineHeight: 28,
       letterSpacing: 0,
-      fontFamily: 'Urbanist_400Regular',
+      fontFamily: 'Urbanist',
+      fontWeight: '400', // Regular
     },
     H1Medium: {
       fontSize: 24,
       lineHeight: 28,
       letterSpacing: 0,
-      fontFamily: 'Urbanist_500Medium',
+      fontFamily: 'Urbanist',
+      fontWeight: '500', // Medium
     },
     H1SemiBold: {
       fontSize: 24,
       lineHeight: 28,
       letterSpacing: 0,
-      fontFamily: 'Urbanist_600SemiBold',
+      fontFamily: 'Urbanist',
+      fontWeight: '600', // SemiBold
     },
     H1Bold: {
       fontSize: 24,
       lineHeight: 28,
       letterSpacing: 0,
-      fontFamily: 'Urbanist_700Bold',
+      fontFamily: 'Urbanist',
+      fontWeight: '700', // Bold
     },
     H1ExtraBold: {
       fontSize: 24,
       lineHeight: 28,
       letterSpacing: 0,
-      fontFamily: 'Urbanist_800ExtraBold',
+      fontFamily: 'Urbanist',
+      fontWeight: '800', // ExtraBold
     },
     H1Black: {
       fontSize: 24,
       lineHeight: 28,
       letterSpacing: 0,
-      fontFamily: 'Urbanist_900Black',
+      fontFamily: 'Urbanist',
+      fontWeight: '900', // Black
     },
   
     // H2
@@ -70,43 +61,50 @@ const typography = {
       fontSize: 20,
       lineHeight: 24,
       letterSpacing: 0,
-      fontFamily: 'Urbanist_300Light',
+      fontFamily: 'Urbanist',
+      fontWeight: '300', // Light
     },
     H2Regular: {
       fontSize: 20,
       lineHeight: 24,
       letterSpacing: 0,
-      fontFamily: 'Urbanist_400Regular',
+      fontFamily: 'Urbanist',
+      fontWeight: '400', // Regular
     },
     H2Medium: {
       fontSize: 20,
       lineHeight: 24,
       letterSpacing: 0,
-      fontFamily: 'Urbanist_500Medium',
+      fontFamily: 'Urbanist',
+      fontWeight: '500', // Medium
     },
     H2SemiBold: {
       fontSize: 20,
       lineHeight: 24,
       letterSpacing: 0,
-      fontFamily: 'Urbanist_600SemiBold',
+      fontFamily: 'Urbanist',
+      fontWeight: '600', // SemiBold
     },
     H2Bold: {
       fontSize: 20,
       lineHeight: 24,
       letterSpacing: 0,
-      fontFamily: 'Urbanist_700Bold',
+      fontFamily: 'Urbanist',
+      fontWeight: '700', // Bold
     },
     H2ExtraBold: {
       fontSize: 20,
       lineHeight: 24,
       letterSpacing: 0,
-      fontFamily: 'Urbanist_800ExtraBold',
+      fontFamily: 'Urbanist',
+      fontWeight: '800', // ExtraBold
     },
     H2Black: {
       fontSize: 20,
       lineHeight: 24,
       letterSpacing: 0,
-      fontFamily: 'Urbanist_900Black',
+      fontFamily: 'Urbanist',
+      fontWeight: '900', // Black
     },
   
     // H3
@@ -114,43 +112,50 @@ const typography = {
       fontSize: 18,
       lineHeight: 22,
       letterSpacing: 0,
-      fontFamily: 'Urbanist_300Light',
+      fontFamily: 'Urbanist',
+      fontWeight: '300', // Light
     },
     H3Regular: {
       fontSize: 18,
       lineHeight: 22,
       letterSpacing: 0,
-      fontFamily: 'Urbanist_400Regular',
+      fontFamily: 'Urbanist',
+      fontWeight: '400', // Regular
     },
     H3Medium: {
       fontSize: 18,
       lineHeight: 22,
       letterSpacing: 0,
-      fontFamily: 'Urbanist_500Medium',
+      fontFamily: 'Urbanist',
+      fontWeight: '500', // Medium
     },
     H3SemiBold: {
       fontSize: 18,
       lineHeight: 22,
       letterSpacing: 0,
-      fontFamily: 'Urbanist_600SemiBold',
+      fontFamily: 'Urbanist',
+      fontWeight: '600', // SemiBold
     },
     H3Bold: {
       fontSize: 18,
       lineHeight: 22,
       letterSpacing: 0,
-      fontFamily: 'Urbanist_700Bold',
+      fontFamily: 'Urbanist',
+      fontWeight: '700', // Bold
     },
     H3ExtraBold: {
       fontSize: 18,
       lineHeight: 22,
       letterSpacing: 0,
-      fontFamily: 'Urbanist_800ExtraBold',
+      fontFamily: 'Urbanist',
+      fontWeight: '800', // ExtraBold
     },
     H3Black: {
       fontSize: 18,
       lineHeight: 22,
       letterSpacing: 0,
-      fontFamily: 'Urbanist_900Black',
+      fontFamily: 'Urbanist',
+      fontWeight: '900', // Black
     },
   
     // Subtitle
@@ -158,43 +163,50 @@ const typography = {
       fontSize: 16,
       lineHeight: 20,
       letterSpacing: 0,
-      fontFamily: 'Raleway_300Light',
+      fontFamily: 'Raleway',
+      fontWeight: '300', // Light
     },
     subtitleRegular: {
       fontSize: 16,
       lineHeight: 20,
       letterSpacing: 0,
-      fontFamily: 'Raleway_400Regular',
+      fontFamily: 'Raleway',
+      fontWeight: '400', // Regular
     },
     subtitleMedium: {
       fontSize: 16,
       lineHeight: 20,
       letterSpacing: 0,
-      fontFamily: 'Raleway_500Medium',
+      fontFamily: 'Raleway',
+      fontWeight: '500', // Medium
     },
     subtitleSemiBold: {
       fontSize: 16,
       lineHeight: 20,
       letterSpacing: 0,
-      fontFamily: 'Raleway_600SemiBold',
+      fontFamily: 'Raleway',
+      fontWeight: '600', // SemiBold
     },
     subtitleBold: {
       fontSize: 16,
       lineHeight: 20,
       letterSpacing: 0,
-      fontFamily: 'Raleway_700Bold',
+      fontFamily: 'Raleway',
+      fontWeight: '700', // Bold
     },
     subtitleExtraBold: {
       fontSize: 16,
       lineHeight: 20,
       letterSpacing: 0,
-      fontFamily: 'Raleway_800ExtraBold',
+      fontFamily: 'Raleway',
+      fontWeight: '800', // ExtraBold
     },
     subtitleBlack: {
       fontSize: 16,
       lineHeight: 20,
       letterSpacing: 0,
-      fontFamily: 'Raleway_900Black',
+      fontFamily: 'Raleway',
+      fontWeight: '900', // Black
     },
   
     // Body
@@ -202,43 +214,50 @@ const typography = {
       fontSize: 16,
       lineHeight: 20,
       letterSpacing: 0,
-      fontFamily: 'Raleway_300Light',
+      fontFamily: 'Raleway',
+      fontWeight: '300', // Light
     },
     bodyRegular: {
       fontSize: 16,
       lineHeight: 20,
       letterSpacing: 0,
-      fontFamily: 'Raleway_400Regular',
+      fontFamily: 'Raleway',
+      fontWeight: '400', // Regular
     },
     bodyMedium: {
       fontSize: 16,
       lineHeight: 20,
       letterSpacing: 0,
-      fontFamily: 'Raleway_500Medium',
+      fontFamily: 'Raleway',
+      fontWeight: '500', // Medium
     },
     bodySemiBold: {
       fontSize: 16,
       lineHeight: 20,
       letterSpacing: 0,
-      fontFamily: 'Raleway_600SemiBold',
+      fontFamily: 'Raleway',
+      fontWeight: '600', // SemiBold
     },
     bodyBold: {
       fontSize: 16,
       lineHeight: 20,
       letterSpacing: 0,
-      fontFamily: 'Raleway_700Bold',
+      fontFamily: 'Raleway',
+      fontWeight: '700', // Bold
     },
     bodyExtraBold: {
       fontSize: 16,
       lineHeight: 20,
       letterSpacing: 0,
-      fontFamily: 'Raleway_800ExtraBold',
+      fontFamily: 'Raleway',
+      fontWeight: '800', // ExtraBold
     },
     bodyBlack: {
       fontSize: 16,
       lineHeight: 20,
       letterSpacing: 0,
-      fontFamily: 'Raleway_900Black',
+      fontFamily: 'Raleway',
+      fontWeight: '900', // Black
     },
   
     // Button
@@ -246,37 +265,43 @@ const typography = {
       fontSize: 16,
       lineHeight: 20,
       letterSpacing: 0,
-      fontFamily: 'Urbanist_300Light',
+      fontFamily: 'Urbanist',
+      fontWeight: '300', // Light
     },
     buttonRegular: {
       fontSize: 16,
       lineHeight: 20,
       letterSpacing: 0,
-      fontFamily: 'Urbanist_400Regular',
+      fontFamily: 'Urbanist',
+      fontWeight: '400', // Regular
     },
     buttonMedium: {
       fontSize: 16,
       lineHeight: 20,
       letterSpacing: 0,
-      fontFamily: 'Urbanist_500Medium',
+      fontFamily: 'Urbanist',
+      fontWeight: '500', // Medium
     },
     buttonSemiBold: {
       fontSize: 16,
       lineHeight: 20,
       letterSpacing: 0,
-      fontFamily: 'Urbanist_600SemiBold',
+      fontFamily: 'Urbanist',
+      fontWeight: '600', // SemiBold
     },
     buttonBold: {
       fontSize: 16,
       lineHeight: 20,
       letterSpacing: 0,
-      fontFamily: 'Urbanist_700Bold',
+      fontFamily: 'Urbanist',
+      fontWeight: '700', // Bold
     },
     buttonExtraBold: {
       fontSize: 16,
       lineHeight: 20,
       letterSpacing: 0,
-      fontFamily: 'Urbanist_800ExtraBold',
+      fontFamily: 'Urbanist',
+      fontWeight: '800', // ExtraBold
     },
   
     // Label
@@ -284,43 +309,50 @@ const typography = {
       fontSize: 14,
       lineHeight: 18,
       letterSpacing: 0,
-      fontFamily: 'Raleway_300Light',
+      fontFamily: 'Raleway',
+      fontWeight: '300', // Light
     },
     labelRegular: {
       fontSize: 14,
       lineHeight: 18,
       letterSpacing: 0,
-      fontFamily: 'Raleway_400Regular',
+      fontFamily: 'Raleway',
+      fontWeight: '400', // Regular
     },
     labelMedium: {
       fontSize: 14,
       lineHeight: 18,
       letterSpacing: 0,
-      fontFamily: 'Raleway_500Medium',
+      fontFamily: 'Raleway',
+      fontWeight: '500', // Medium
     },
     labelSemiBold: {
       fontSize: 14,
       lineHeight: 18,
       letterSpacing: 0,
-      fontFamily: 'Raleway_600SemiBold',
+      fontFamily: 'Raleway',
+      fontWeight: '600', // SemiBold
     },
     labelBold: {
       fontSize: 14,
       lineHeight: 18,
       letterSpacing: 0,
-      fontFamily: 'Raleway_700Bold',
+      fontFamily: 'Raleway',
+      fontWeight: '700', // Bold
     },
     labelExtraBold: {
       fontSize: 14,
       lineHeight: 18,
       letterSpacing: 0,
-      fontFamily: 'Raleway_800ExtraBold',
+      fontFamily: 'Raleway',
+      fontWeight: '800', // ExtraBold
     },
     labelBlack: {
       fontSize: 14,
       lineHeight: 20,
       letterSpacing: 0,
-      fontFamily: 'Raleway_900Black',
+      fontFamily: 'Raleway',
+      fontWeight: '900', // Black
     },
   
     // Footer
@@ -328,43 +360,50 @@ const typography = {
       fontSize: 12,
       lineHeight: 16,
       letterSpacing: 0,
-      fontFamily: 'Raleway_300Light',
+      fontFamily: 'Raleway',
+      fontWeight: '300', // Light
     },
     footerRegular: {
       fontSize: 12,
       lineHeight: 16,
       letterSpacing: 0,
-      fontFamily: 'Raleway_400Regular',
+      fontFamily: 'Raleway',
+      fontWeight: '400', // Regular
     },
     footerMedium: {
       fontSize: 12,
       lineHeight: 16,
       letterSpacing: 0,
-      fontFamily: 'Raleway_500Medium',
+      fontFamily: 'Raleway',
+      fontWeight: '500', // Medium
     },
     footerSemiBold: {
       fontSize: 12,
       lineHeight: 16,
       letterSpacing: 0,
-      fontFamily: 'Raleway_600SemiBold',
+      fontFamily: 'Raleway',
+      fontWeight: '600', // SemiBold
     },
     footerBold: {
       fontSize: 12,
       lineHeight: 16,
       letterSpacing: 0,
-      fontFamily: 'Raleway_700Bold',
+      fontFamily: 'Raleway',
+      fontWeight: '700', // Bold
     },
     footerExtraBold: {
       fontSize: 12,
       lineHeight: 16,
       letterSpacing: 0,
-      fontFamily: 'Raleway_800ExtraBold',
+      fontFamily: 'Raleway',
+      fontWeight: '800', // ExtraBold
     },
     footerBlack: {
       fontSize: 12,
       lineHeight: 16,
       letterSpacing: 0,
-      fontFamily: 'Raleway_900Black',
+      fontFamily: 'Raleway',
+      fontWeight: '900', // Black
     },
   };
   
