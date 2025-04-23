@@ -1,3 +1,4 @@
+//Botó simple només logo.
 import * as React from 'react';
 import { Pressable, StyleSheet } from 'react-native';
 import { cloneElement } from 'react';

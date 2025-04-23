@@ -1,11 +1,12 @@
 import React from 'react';
 import { View, Text, StyleSheet, Image, useWindowDimensions } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import Button from '../../components/buttons/button';
+import Button from '../../components/buttons/TextButton';
 
 // Importem els arxius d'estil
 import typography from '../../styles/typography';
 import colors from '../../styles/colors';
+import TextButton from '../buttons/TextButton';
 
 export default function OnboardingItem({ item, isLastSlide }) {
     const { width, height } = useWindowDimensions();
@@ -29,12 +30,11 @@ export default function OnboardingItem({ item, isLastSlide }) {
                             Gaudeix de la lectura i converteix-te en un superlector!
                         </Text>
 
-                        <Button
+                        <TextButton
                             title="Començar ara!"
                             onPress={handlePress}
-                            color={colors.NormalTurquoise}
-                            fontcolor="#fff"
-                            icon="book"
+                            variant="filledTurquoise"
+                            style={{ width: '50%' }} // Com en el component TextButtom s'ha passat style, podem definir la mesura que colem posar.
                         />
                     </View>
                 )}
