@@ -27,7 +27,6 @@ export default function OnboardingItem({ item, isLastSlide }) {
 
                         <Button
                             title="Començar ara!"
-                            icon="book-open-page-variant"
                             onPress={handlePress}
                             color="#493d8a"
                             fontcolor="#fff"

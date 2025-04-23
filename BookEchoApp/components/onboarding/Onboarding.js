@@ -5,50 +5,64 @@ import slides from './slides';
 import OnboardingItem from './OnboardingItem';
 import Paginator from './Paginator';
 
+//Importem el botó amb icona
+import IconButton from '../buttons/iconbutton2';
+import AntDesign from '@expo/vector-icons/AntDesign';
+
+
 export default function Onboarding({ navigation }) {
     const [currentIndex, setCurrentIndex] = useState(0);
     const scrollX = useRef(new Animated.Value(0)).current;
     const slidesRef = useRef(null);
-  
+
     const viewableItemsChanged = useRef(({ viewableItems }) => {
-      setCurrentIndex(viewableItems[0].index);
+        setCurrentIndex(viewableItems[0].index);
     }).current;
-  
+
     const viewConfig = useRef({ viewAreaCoveragePercentThreshold: 50 }).current;
-  
+
     const handleFinish = () => {
-      navigation.replace('Welcome');
+        navigation.replace('Welcome');
     };
-  
+
     return (
-      <View style={{ flex: 3 }}>
-        <FlatList
-          data={slides}
-          renderItem={({ item, index }) => (
-            <OnboardingItem
-              item={item}
-              isLastSlide={index === slides.length - 1}
-              onFinish={handleFinish}
+        <View style={{ flex: 3 }}>
+            {/* Botón para cerrar onboarding */}
+            <View style={styles.closeButtonContainer}>
+                <IconButton
+                    onPress={handleFinish}  // Usamos handleFinish directamente aquí
+                >
+                    <AntDesign name="close" size={24} color="black" />
+                </IconButton>
+            </View>
+
+            <FlatList
+                data={slides}
+                renderItem={({ item, index }) => (
+                    <OnboardingItem
+                        item={item}
+                        isLastSlide={index === slides.length - 1}
+                        onFinish={handleFinish}
+                    />
+                )}
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                pagingEnabled
+                bounces={false}
+                keyExtractor={(item) => item.id}
+                onScroll={Animated.event(
+                    [{ nativeEvent: { contentOffset: { x: scrollX } } }],
+                    { useNativeDriver: false }
+                )}
+                scrollEventThrottle={32}
+                onViewableItemsChanged={viewableItemsChanged}
+                viewabilityConfig={viewConfig}
+                ref={slidesRef}
             />
-          )}
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          pagingEnabled
-          bounces={false}
-          keyExtractor={(item) => item.id}
-          onScroll={Animated.event(
-            [{ nativeEvent: { contentOffset: { x: scrollX } } }],
-            { useNativeDriver: false }
-          )}
-          scrollEventThrottle={32}
-          onViewableItemsChanged={viewableItemsChanged}
-          viewabilityConfig={viewConfig}
-          ref={slidesRef}
-        />
-        <Paginator data={slides} scrollX={scrollX} />
-      </View>
+            <Paginator data={slides} scrollX={scrollX} />
+        </View>
     );
-  }
+}
 
 const styles = StyleSheet.create({
     container: {
@@ -56,4 +70,10 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     },
+    closeButtonContainer: {
+        position: 'absolute',
+        top: 40,
+        right: 20,
+        zIndex: 10,
+      }
 });
