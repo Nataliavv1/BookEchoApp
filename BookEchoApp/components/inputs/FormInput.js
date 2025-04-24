@@ -1,57 +1,102 @@
 import React, { useState } from 'react';
-import { View, TextInput, StyleSheet } from 'react-native';
+import { View, TextInput, StyleSheet, Pressable, Text } from 'react-native';
 import AntDesign from '@expo/vector-icons/AntDesign';
+import Entypo from '@expo/vector-icons/Entypo';
 
-//Creem el component reutilitzable
+// Importem els estils
+import colors from '../../styles/colors';
+import typography from '../../styles/typography';
+
 export default function FormInput({
-    value,                 // Valor del camp (controlat pel component pare)
-    onChangeText,          // Funció que s'executa quan l'usuari escriu
-    placeholder = '',      // Text que apareix quan el camp està buit
-    icon = 'edit',         // Nom de l'icona que es mostrarà
-    secureTextEntry = false, // Si és true, el text s'oculta (per contrasenyes)
-    keyboardType = 'default', // Tipus de teclat (email-address, numeric, etc.)
+  label = '',
+  value,
+  onChangeText,
+  placeholder = '',
+  icon = 'edit',
+  secureTextEntry = false,
+  keyboardType = 'default',
 }) {
-//Estat per controlar si l'usuari fa clic
-const [isFocused, setIsFocused] = useState(false);
+  const [isFocused, setIsFocused] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+
+  const isPassword = secureTextEntry;
 
   return (
-    <View style={[styles.container, isFocused && styles.focusedContainer]}>
-      <AntDesign name={icon} size={18} color="#888" style={styles.icon} />
-      <TextInput
-        style={styles.input}
-        placeholder={placeholder}
-        value={value}
-        onChangeText={onChangeText}
-        onFocus={() => setIsFocused(true)}
-        onBlur={() => setIsFocused(false)} // Quan el focus es perd, es reinicia l'estat
-        secureTextEntry={secureTextEntry}
-        keyboardType={keyboardType}
-      />
+    <View style={styles.wrapper}>
+      {/* Etiqueta del camp */}
+      {label ? (
+        <Text style={[styles.label, typography.labelMedium, { color: colors.DarkerGrey }]}>
+          {label}
+        </Text>
+      ) : null}
+
+      <View style={[styles.container, isFocused && styles.focusedContainer]}>
+        {/* Icono a l'esquerra (només si no és contrasenya) */}
+        {!isPassword && (
+          <AntDesign name={icon} size={18} color={colors.NormalGrey} style={styles.icon} />
+        )}
+
+        <TextInput
+          style={[
+            styles.input,
+            typography.labelRegular,
+            { color: colors.NormalGrey, paddingRight: isPassword ? 35 : 0 },
+          ]}
+          placeholder={placeholder}
+          placeholderTextColor={colors.NormalGrey}
+          value={value}
+          onChangeText={onChangeText}
+          secureTextEntry={isPassword && !showPassword}
+          keyboardType={keyboardType}
+          onFocus={() => setIsFocused(true)}
+          onBlur={() => setIsFocused(false)}
+        />
+
+        {/* Icono per mostrar/ocultar contrasenya */}
+        {isPassword && (
+          <Pressable onPress={() => setShowPassword(!showPassword)} style={styles.eyeIcon}>
+            <Entypo
+              name={showPassword ? 'eye' : 'eye-with-line'}
+              size={18}
+              color={colors.NormalGrey}
+            />
+          </Pressable>
+        )}
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  wrapper: {
+    marginBottom: 20,
+  },
+  label: {
+    marginBottom: 6,
+  },
   container: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#FFF',
+    backgroundColor: colors.LightWhite,
     borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 8,
+    borderColor: colors.NormalOrange,
+    borderRadius: 5,
     paddingHorizontal: 12,
     paddingVertical: 10,
-    marginBottom: 15,
   },
   focusedContainer: {
-    borderColor: '#47AC9E',
+    borderColor: colors.NormalHoverOrange,
   },
   icon: {
     marginRight: 8,
   },
   input: {
     flex: 1,
-    fontSize: 16,
-    color: '#333',
+    outlineStyle: 'none',
+  },
+  eyeIcon: {
+    position: 'absolute',
+    right: 12,
+
   },
 });

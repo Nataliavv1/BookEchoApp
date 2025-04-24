@@ -5,6 +5,8 @@ import {
   StyleSheet,
   Alert,
   TouchableOpacity,
+  ScrollView,
+  Image,
 } from 'react-native';
 
 // Importem Supabase
@@ -12,20 +14,24 @@ import { supabase } from './lib/supabaseClient';
 
 // Component del formulari
 import FormInput from '../../components/inputs/FormInput';
+import TextButton from '../../components/buttons/TextButton';
+
+// Importem colors, tipografia i botons
+import colors from '../../styles/colors';
+import typography from '../../styles/typography';
 
 export default function LoginScreen({ navigation }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [loading, setLoading] = useState(false);  // Estado de carga
+  const [loading, setLoading] = useState(false);
 
-  // Manejador de inicio de sesión
   const handleLogin = async () => {
     if (!email || !password) {
       Alert.alert('Error', 'Omple tots els camps');
       return;
     }
 
-    setLoading(true); // Empieza el loading
+    setLoading(true);
 
     try {
       const { data, error } = await supabase.auth.signInWithPassword({
@@ -33,88 +39,133 @@ export default function LoginScreen({ navigation }) {
         password,
       });
 
-      setLoading(false); // Termina el loading
+      setLoading(false);
 
       if (error) {
-        Alert.alert('Error', error.message); // Muestra el error si existe
+        Alert.alert('Error', error.message);
         return;
       }
 
-      // Verificar si el correo está confirmado
       if (!data.user.email_confirmed_at) {
         Alert.alert('Error', 'Per poder iniciar sessió, has de confirmar el teu correu electrònic.');
         return;
       }
 
-      navigation.replace('Tabs'); // Si el login es exitoso, navega a las tabs
+      navigation.replace('Tabs');
     } catch (error) {
-      setLoading(false); // Termina el loading en caso de error
-      Alert.alert('Error', 'Ha ocorregut un error inesperat'); // Error general
+      setLoading(false);
+      Alert.alert('Error', 'Ha ocorregut un error inesperat');
     }
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Inicia sessió</Text>
+    <ScrollView contentContainerStyle={styles.container} style={{ flex: 1 }}>
+      <View style={styles.logoWrapper}>
+        <Image source={require('../../assets/images/Logo.png')} style={styles.logo} />
+      </View>
 
-      <FormInput
-        placeholder="Correu electrònic"
-        value={email}
-        onChangeText={setEmail}
-        icon="mail"
-      />
-      <FormInput
-        placeholder="Contrasenya"
-        value={password}
-        onChangeText={setPassword}
-        icon="lock"
-        secureTextEntry={true}
-      />
+      <View style={styles.inicialText}>
+        <Text style={[styles.text1, typography.H1SemiBold]}>Hola de nou!</Text>
+        <Text style={[styles.text2, typography.H3Regular]}>T’hem trobat a faltar.</Text>
+      </View>
 
-      <TouchableOpacity style={styles.button} onPress={handleLogin} disabled={loading}>
-        {loading ? (
-          <Text style={styles.buttonText}>Cargando...</Text>
-        ) : (
-          <Text style={styles.buttonText}>Entrar</Text>
-        )}
-      </TouchableOpacity>
+      <View style={styles.loginBox}>
+        <Text style={[styles.title, typography.H2SemiBold]}>Inicia sessió</Text>
 
-      <TouchableOpacity onPress={() => navigation.navigate('Register')}>
-        <Text style={styles.link}>Encara no tens compte? Registra't</Text>
-      </TouchableOpacity>
-    </View>
+        <FormInput
+          label="Correu electrònic:"
+          placeholder="Correu electrònic"
+          value={email}
+          onChangeText={setEmail}
+          icon="mail"
+          keyboardType="email-address"
+          autoCapitalize="none"
+        />
+        <FormInput
+          label="Contrasenya:"
+          placeholder="Contrasenya"
+          value={password}
+          onChangeText={setPassword}
+          icon="lock"
+          secureTextEntry
+        />
+
+        <TouchableOpacity style={styles.button} onPress={handleLogin} disabled={loading}>
+          <TextButton
+            title={loading ? 'Carregant...' : 'Entrar'}
+            onPress={handleLogin}
+            variant="filledTurquoise"
+            style={{ width: '50%' }}
+          />
+        </TouchableOpacity>
+
+        <TouchableOpacity onPress={() => navigation.navigate('Register')}>
+          <Text style={styles.link}>
+            <Text style={[typography.labelRegular, styles.link1]}>Encara no tens compte? </Text>
+            <Text style={[typography.labelBold, styles.link2]}>Registra't</Text>
+          </Text>
+        </TouchableOpacity>
+      </View>
+    </ScrollView>
   );
 }
 
 // Estilos
 const styles = StyleSheet.create({
   container: {
-    paddingHorizontal: 30,
-    paddingVertical: 40,
-    backgroundColor: '#fff',
+    backgroundColor: colors.NormalTurquoise,
+    flexGrow: 1,
+  },
+  logoWrapper: {
+    alignItems: 'flex-end',
+    marginBottom: 40,
+    paddingHorizontal: 27,
+    paddingTop: 36,
+  },
+  logo: {
+    width: 72,
+    resizeMode: 'contain',
+  },
+  inicialText: {
+    paddingHorizontal: 27,
+    marginBottom: 30,
+  },
+  text1: {
+    color: colors.NormalWhite,
+    textAlign: 'left',
+    marginBottom: 10,
+  },
+  text2: {
+    color: colors.NormalWhite,
+    textAlign: 'left',
+    marginBottom: 40,
+  },
+  loginBox: {
+    backgroundColor: colors.NormalWhite,
+    paddingHorizontal: 27,
+    paddingVertical: 45,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    flex: 1,
+    justifyContent: 'flex-start',
   },
   title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#358177',
+    color: colors.DarkerGrey,
     marginBottom: 25,
     textAlign: 'center',
   },
   button: {
-    backgroundColor: '#47AC9E',
-    padding: 15,
-    borderRadius: 10,
     alignItems: 'center',
     marginTop: 15,
   },
-  buttonText: {
-    color: '#fff',
-    fontWeight: 'bold',
-    fontSize: 16,
-  },
   link: {
-    color: '#47AC9E',
     marginTop: 20,
     textAlign: 'center',
+  },
+  link1: {
+    color: colors.DarkerGrey,
+  },
+  link2: {
+    color: colors.NormalTurquoise,
   },
 });

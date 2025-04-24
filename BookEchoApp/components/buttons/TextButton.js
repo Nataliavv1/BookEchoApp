@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { Pressable, Text, StyleSheet } from 'react-native';
 
-// Importar colors I tipografIa
+// Importar colors i tipografia
 import colors from '../../styles/colors';
 import typography from '../../styles/typography';
 
