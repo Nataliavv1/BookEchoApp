@@ -8,6 +8,7 @@ import { Ionicons, AntDesign, MaterialCommunityIcons } from '@expo/vector-icons'
 import Overlay from "../components/overlays&popups/Overlay";
 import Toggle from "../components/buttons/toggle";
 import ToggleReadState from "../components/buttons/toggleReadState";
+import Rates from "../components/detailScreenComp/rates";
 
 const DetailScreen = ({ route }) => {
   const navigation = useNavigation();
@@ -30,7 +31,8 @@ const DetailScreen = ({ route }) => {
   return (
     <View style={styles.container}>
 
-      <Image source={{ uri: imatge }} style={styles.thumbnail} />
+<View style={styles.mainInfo}>
+<Image source={{ uri: imatge }} style={styles.thumbnail} />
       <Text style={styles.title}>{titol}</Text>
       <Text style={styles.author}>
        {Array.isArray(autors) ? autors.join(', ') : autors}
@@ -39,12 +41,33 @@ const DetailScreen = ({ route }) => {
         <Ionicons name="star" size={24} color={'#F8BD01'}></Ionicons>
         <Text>Puntuacio</Text>
       </View>
+</View>
+      
 
       <View style={styles.containerInfo}>
         <ToggleReadState></ToggleReadState>
         <Toggle text1={'Informació'} text2={'Ressenyes(143)'}></Toggle>
+
+        <View style={styles.dynamicContainer}>
+  {/* Si el boton 1 de presiona abrir contenido1
+  Si el boton 2 se presiona abrir contenido2*/}
+  </View>
+
+  <View style={styles.content1}>
+<Text>Puntuacions</Text>
+<Rates rate={3.6} users={123} distribution={[5, 20, 30, 40, 28]} />
+
+
+<Text>Ressenyes d'altres usuaris</Text>
+  </View>
+
       </View>
+
+
+
     </View>
+
+    
   );
 };
 
@@ -62,11 +85,17 @@ const styles = StyleSheet.create({
     right: 0,
     bottom: 0,
   },
+  mainInfo: {
+    marginHorizontal: 20,
+    flex: 1,
+    alignItems: 'center',
+  },
   thumbnail: {
-    width: '158',
+    width: 158,
     height: 237,
     resizeMode: 'cover',
     marginBottom: 16,
+    borderRadius: 5,
   },
   title: {
     fontSize: 20,

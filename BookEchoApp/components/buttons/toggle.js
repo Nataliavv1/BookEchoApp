@@ -4,7 +4,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 export default function Toggle({ text1, text2, icon1, icon2, color }) {
   // Mantener el estado del toggle
-  const [selected, setSelected] = useState('false');
+  const [selected, setSelected] = useState('option1');
 
   // Lógica para definir el color dependiendo del estado
   const options = [
@@ -31,8 +31,10 @@ export default function Toggle({ text1, text2, icon1, icon2, color }) {
             {option.label}
           </Text>
         </TouchableOpacity>
+        
       ))}
     </View>
+    
   );
 }
 
@@ -42,6 +44,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#FEF2ED',
     width: 332,
     padding: 3,
+    borderRadius: 9,
   },
   option: {
     flexDirection: 'row',
@@ -56,7 +59,7 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 16,
-    color: '#FFFFFF',
+    color: '#f8794a',
     marginLeft: 10,
   },
   optionSelected: {
