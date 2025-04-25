@@ -12,13 +12,13 @@ export default function Header({ searchQuery, setSearchQuery }) {
     <View style={styles.container}>
       <View style={styles.userInfo}>
         <FontAwesome name="user-circle-o" size={42} color="gray" />
-        <Text style={styles.userText}>Blanca V. </Text> {/* TENIR EN COMPTE QUE QUAN ES FACI EL LOG IN HA DE CANVIAR-SE PEL NOM DEL USUARI*/}
+        <Text style={styles.userText}>User</Text> {/* TENIR EN COMPTE QUE QUAN ES FACI EL LOG IN HA DE CANVIAR-SE PEL NOM DEL USUARI*/}
       </View>
 
       <View style={styles.searchRow}>
         <SearchInput value={searchQuery} onChangeText={setSearchQuery} />
         <IconButton onPress={() => console.log('Filtrar')}>
-          <AntDesign name="filter" size={20} color="black" />
+          <AntDesign name="filter" size={24} color="black" />
         </IconButton>
       </View>
 
@@ -29,7 +29,7 @@ export default function Header({ searchQuery, setSearchQuery }) {
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: 18,
+    paddingTop: 45,
     paddingHorizontal: 27,
     width: '100%',
     backgroundColor: '#fff',
