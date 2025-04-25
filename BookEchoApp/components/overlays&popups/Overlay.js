@@ -15,7 +15,7 @@ import IconButton from '../buttons/iconbutton';
 import DelatePopup from './contentForOverlay/DelatePopup';
 import EditDelateOptions from './contentForOverlay/edit&delate';
 
-export default function Overlay({ title, delateText, editText, contentType }) {
+export default function Overlay({ title, delateText, editText, contentType, color, icon }) {
     const [visible, setVisible] = useState(false);
     const fadeAnim = useRef(new Animated.Value(0)).current;
     const slideAnim = useRef(new Animated.Value(0)).current;
@@ -71,7 +71,7 @@ export default function Overlay({ title, delateText, editText, contentType }) {
 
     return (
         <SafeAreaView style={styles.fill}>
-            <IconButton onPress={show} />
+            <IconButton onPress={show} color={color} icon={icon} />
 
             <Modal visible={visible} transparent animationType="none">
                 {/* Fondo con fade */}

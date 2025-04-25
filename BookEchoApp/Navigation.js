@@ -32,6 +32,7 @@ import AllChallengesScreen from "./screens/AllChallengesScreen";
 
 // Importamos los íconos de Expo
 import AntDesign from '@expo/vector-icons/AntDesign';
+import Overlay from "./components/overlays&popups/Overlay";
 
 
 //----------------------------------------------------TAB NAVIGATOR----------------------------------------------------------
@@ -84,7 +85,10 @@ function MyTabs() {
                 component={AddScreen}
                 options={{
                     tabBarLabel: 'Afegeix',
-                    tabBarIcon: ({ color }) => (<AntDesign name="plus" size={24} color={color} />),
+                    tabBarIcon: ({ color }) => (
+                        <Overlay color={color} icon={'plus'} />  // Usa tu componente Overlay aquí 
+                        
+                    ),
                     headerShown: false,
                 }} />
             <Tab.Screen
