@@ -42,6 +42,7 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     alignItems: 'center',
+    flex: 1,
   },
   left: {
     alignItems: 'center',
@@ -62,11 +63,12 @@ const styles = StyleSheet.create({
   row: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 6,
+    marginBottom: 0,
   },
   stars: {
     flexDirection: 'row',
     width: 60,
+    
   },
   barContainer: {
     flex: 1,

@@ -154,7 +154,7 @@ export default function Navigation() {
 
                     {/* Pantallas principales de la app después del login */}
                     <Stack.Screen name="Tabs" component={MyTabs} options={{ headerShown: false }} />
-                    <Stack.Screen name="Details" component={DetailScreen} />
+                    <Stack.Screen name="Details" component={DetailScreen} options={{ headerShown: false }} />
                     <Stack.Screen name="AllChallengesScreen" component={AllChallengesScreen} options={{ headerShown: false }} />
                 </Stack.Navigator>
             </NavigationContainer>
