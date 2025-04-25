@@ -3,8 +3,10 @@ import React , {useState, useEffect, useRef} from "react";
 import { View, Text } from "react-native-web";
 import { Camera, CameraType } from 'expo-camera';
 import * as MediaLibrary from 'expo-media-library';
+import Toggle from "../components/buttons/toggle";
 
-const ScanScreen = () => {
+const ScanScreen = ({ route }) => {
+      const navigation = useNavigation();
  {/*    const [hasCameraPermission, setHasCameraPermission] = useState(null)
 const [image, setImage] = useState(null);
 const [type, setType] = useState(Camera.Constants.Type.back);
@@ -22,6 +24,15 @@ useEffect(() =>{
 return(
     <View>
         <Text>Escanejar Llibre</Text>
+        
+         <Toggle
+  text1="Escanejar"
+  text2="Escanejats(1)"
+  icon1="camera-outline" 
+  icon2="book-outline"
+  color="#F8794A"  // Puedes cambiar este color si deseas
+/>
+
        {/*   <Camera style={StyleSheet.camera}
         type={type}
         flashMode={flash}

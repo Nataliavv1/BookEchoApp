@@ -5,23 +5,24 @@ import ButtonReadState from "../components/buttons/buttonReadState";
 import IconButton from "../components/buttons/iconbutton";
 import Overlay from "../components/overlays&popups/Overlay";
 import Toggle from "../components/buttons/toggle";
+import Dropdown from "../components/buttons/dropDown";
 
 const LibraryScreen = () => {
     return (
         <View style={styles.container}>
 
             <Text style={styles.title}>Library Screen</Text>
-            <Button title={'Library'} icon="camera-outline"/>
-            <ButtonReadState/>
-            <IconButton/>
-            <Overlay title={'Opcions de llista'} delateText={'Eliminar llista'} editText={'Editar llista'} contentType={'EditDelate'}/>
-            <Toggle
-  text1="Activar"
-  text2="Desactivar"
-  icon1="toggle-switch"
-  icon2="toggle-switch-off"
-  color="orange"
-/>
+<Toggle text1="Les meves llistes" text2="Tots els llibres"></Toggle>
+<View>
+    
+<IconButton icon={'view-list'}></IconButton>
+        <Text>Default</Text>
+       
+        <IconButton icon={'plus'}></IconButton>
+
+    <Dropdown></Dropdown>
+
+</View>
 
         </View>
     );
@@ -36,6 +37,7 @@ const styles = StyleSheet.create({
     title: {
         fontSize: 30,
         textAlign: "center",
+      //  color: colors. NormalTurquoise,
     },
 });
 
