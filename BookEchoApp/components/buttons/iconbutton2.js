@@ -39,7 +39,7 @@ export default function IconButton({ onPress, children }) {
 const styles = StyleSheet.create({
     iconButton: {
         width: 32,
-        height: 32,
+        height:32,
         borderRadius: 5,
         alignItems: 'center',
         justifyContent: 'center',

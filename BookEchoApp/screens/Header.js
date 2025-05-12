@@ -7,6 +7,10 @@ import IconButton from '../components/buttons/iconbutton2';
 import AntDesign from '@expo/vector-icons/AntDesign';  // Icono para el filtro
 import FontAwesome from '@expo/vector-icons/FontAwesome';  // Icono d'usuari TENIR EN COMPTE QUE QUAN ES FACI EL LOG IN S'HA DE CANVIAR PER LA IMATGE DE L'USUARI
 
+import colors from '../styles/colors';
+import typography from '../styles/typography';
+
+
 export default function Header({ searchQuery, setSearchQuery }) {
   return (
     <View style={styles.container}>
@@ -18,7 +22,7 @@ export default function Header({ searchQuery, setSearchQuery }) {
       <View style={styles.searchRow}>
         <SearchInput value={searchQuery} onChangeText={setSearchQuery} />
         <IconButton onPress={() => console.log('Filtrar')}>
-          <AntDesign name="filter" size={24} color="black" />
+          <AntDesign name="filter" size={22} color="black" />
         </IconButton>
       </View>
 
@@ -39,7 +43,7 @@ const styles = StyleSheet.create({
   userInfo: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 25,
+    marginBottom: 20,
     paddingLeft: 15, // Añadí paddingLeft para asegurarse de que el espacio sea consistente
   },
   userText: {
