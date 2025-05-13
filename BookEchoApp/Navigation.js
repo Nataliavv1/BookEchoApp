@@ -30,13 +30,15 @@ import DetailScreen from "./screens/DetailScreen";
 import AllChallengesScreen from "./screens/AllChallengesScreen";
 import ScanScreen from "./screens/ScanScreen";
 
+// Pantallas nuevas para Topics y Books
+import TopicsBooks from './components/topics/TopicsBooks';  // Actualiza la ruta aquí
+import BooksByTopicScreen from './components/topics/BooksByTopicsScreen';  // Actualiza la ruta aquí
+
 // Importamos los íconos de Expo
 import AntDesign from '@expo/vector-icons/AntDesign';
 import Overlay from "./components/overlays&popups/Overlay";
 
-
 //----------------------------------------------------TAB NAVIGATOR----------------------------------------------------------
-// Creamos el Bottom Tab Navigator
 const Tab = createBottomTabNavigator();
 
 function MyTabs() {
@@ -87,7 +89,6 @@ function MyTabs() {
                     tabBarLabel: 'Afegeix',
                     tabBarIcon: ({ color }) => (
                         <Overlay color={color} icon={'plus'} />  // Usa tu componente Overlay aquí 
-                        
                     ),
                     headerShown: false,
                 }} />
@@ -111,7 +112,6 @@ function MyTabs() {
         </Tab.Navigator>
     );
 }
-
 
 //-----------------------------------------------------STACK NAVIGATOR-------------------------------------------------------
 const Stack = createNativeStackNavigator();
@@ -149,10 +149,10 @@ export default function Navigation() {
                         {props => <Onboarding {...props} onFinish={handleOnboardingFinish} />}
                     </Stack.Screen>
 
-                    {/*Pantalla de 1º Welcome*/}
+                    {/* Pantalla de Welcome */}
                     <Stack.Screen name="Welcome" component={WelcomeScreen} options={{ headerShown: false }} />
 
-                    {/*Pantalla de 2º Registre i 3º Login*/}
+                    {/* Pantallas de Login y Registro */}
                     <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
                     <Stack.Screen name="Register" component={RegisterScreen} options={{ headerShown: false }} />
 
@@ -161,8 +161,12 @@ export default function Navigation() {
                     <Stack.Screen name="Details" component={DetailScreen} options={{ headerShown: false }} />
                     <Stack.Screen name="Scan" component={ScanScreen} options={{ headerShown: false }} />
                     <Stack.Screen name="AllChallengesScreen" component={AllChallengesScreen} options={{ headerShown: false }} />
+
+                    {/* Agregar las nuevas pantallas de Topics y Books */}
+                    <Stack.Screen name="Topics" component={TopicsBooks} options={{ headerShown: false }} />
+                    <Stack.Screen name="BooksByTopic" component={BooksByTopicScreen} options={{ headerShown: false }} />
                 </Stack.Navigator>
             </NavigationContainer>
-        </ChallengeProvider> 
+        </ChallengeProvider>
     );
 }

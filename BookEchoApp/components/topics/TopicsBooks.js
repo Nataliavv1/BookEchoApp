@@ -1,84 +1,122 @@
-// components/TopicsBooks.js
-
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
-import { Ionicons } from '@expo/vector-icons'; // Usamos Ionicons para los iconos
-
-// Importamos colores y tipografía
+import {
+    View,
+    Text,
+    StyleSheet,
+    ScrollView,
+    Pressable,
+    Image,
+} from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import colors from '../../styles/colors';
 import typography from '../../styles/typography';
 
 export default function TopicsBooks() {
-  // Datos de ejemplo para géneros de libros
-  const topics = [
-    { id: 1, name: 'Ficción', icon: 'book', color: colors.NormalOrange, subtitle: 'Libros de narrativa' },
-    { id: 2, name: 'Misterio', icon: 'search', color: colors.LightActiveGrey, subtitle: 'Historias intrigantes' },
-    { id: 3, name: 'Fantasía', icon: 'magic', color: colors.NormalOrange, subtitle: 'Mundos mágicos' },
-    { id: 4, name: 'Ciencia', icon: 'ios-planet', color: colors.LightActiveGrey, subtitle: 'Explora el universo' },
-    // Puedes agregar más géneros aquí
-  ];
+    const navigation = useNavigation();
 
-  return (
-    <View style={styles.container}>
-      {/* Título del apartado de géneros */}
-      <Text style={[styles.title, typography.labelRegular]}>Temas de Libros</Text>
+    const topics = [
+        {
+            id: 1,
+            name: 'Ficción',
+            image: require('../../assets/images/Topics/gift.png'),
+            color: colors.NormalTurquoise,
+            activeColor: colors.NormalActiveTurquoise,
+            subtitle: 'Ficció',
+        },
+        {
+            id: 2,
+            name: 'Misterio',
+            image: require('../../assets/images/Topics/globe.png'),
+            color: colors.NormalOrange,
+            activeColor: colors.NormalActiveOrange,
+            subtitle: 'Misteri',
+        },
+        {
+            id: 3,
+            name: 'Fantasía',
+            image: require('../../assets/images/Topics/emoji-happy.png'),
+            color: colors.NormalYellow,
+            activeColor: colors.NormalActiveYellow,
+            subtitle: 'Fantasia',
+        },
+        {
+            id: 4,
+            name: 'Ciencia',
+            image: require('../../assets/images/Topics/sparkles.png'),
+            color: colors.NormalPurple,
+            activeColor: colors.NormalActivePurple,
+            subtitle: 'Ciencia',
+        },
+        {
+            id: 5,
+            name: 'Suspenso',
+            image: require('../../assets/images/Topics/eye-off.png'),
+            color: colors.NormalGreen,
+            activeColor: colors.NormalActiveGreen,
+            subtitle: 'Suspens',
+        },
+        {
+            id: 6,
+            name: 'Películas',
+            image: require('../../assets/images/Topics/film.png'),
+            color: colors.NormalRed,
+            activeColor: colors.NormalActiveRed,
+            subtitle: 'Cinema',
+        },
+    ];
 
-      {/* Contenedor de los géneros con Scroll Horizontal */}
-      <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.scrollContainer}>
-        {topics.map((topic) => (
-          <TouchableOpacity key={topic.id} style={[styles.topicCard, { backgroundColor: topic.color }]}>
-            {/* Icono */}
-            <Ionicons name={topic.icon} size={30} color="#fff" style={styles.icon} />
-            {/* Subtítulo */}
-            <Text style={styles.subtitle}>{topic.subtitle}</Text>
-            {/* Nombre del tema */}
-            <Text style={styles.topicName}>{topic.name}</Text>
-          </TouchableOpacity>
-        ))}
-      </ScrollView>
-    </View>
-  );
+    return (
+        <View style={styles.container}>
+            <Text style={[styles.title, typography.H2Bold]}>Topics</Text>
+
+            <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                {topics.map((topic) => (
+                    <Pressable
+                        key={topic.id}
+                        onPress={() =>
+                            navigation.navigate('BooksByTopic', { topic: topic.name })
+                        }
+                        style={({ pressed }) => [
+                            styles.topicCard,
+                            {
+                                backgroundColor: pressed ? topic.activeColor : topic.color,
+                            },
+                        ]}
+                    >
+                        <Image source={topic.image} style={styles.image} resizeMode="contain" />
+                        <Text style={[typography.footerSemiBold, { color: colors.NormalWhite }]}>
+                            {topic.subtitle}
+                        </Text>
+                    </Pressable>
+                ))}
+            </ScrollView>
+        </View>
+    );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 20,
-  },
-  title: {
-    fontSize: 24,
-    color: colors.NormalOrange,  // Título con color Naranja
-    marginBottom: 15,
-  },
-  scrollContainer: {
-    flexDirection: 'row',
-  },
-  topicCard: {
-    width: 150,
-    height: 180,
-    borderRadius: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: 15,  // Espacio entre los botones
-    padding: 10,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 5,
-    elevation: 5,  // Para efectos de sombra en Android
-  },
-  icon: {
-    marginBottom: 10,
-  },
-  subtitle: {
-    fontSize: 12,
-    color: '#fff',
-    textAlign: 'center',
-  },
-  topicName: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: '#fff',
-    marginTop: 5,
-  },
+    container: {
+        flex: 1,
+        paddingVertical: 20,
+        paddingHorizontal: 20,
+    },
+    title: {
+        fontSize: 24,
+        color: colors.DarkHoverGrey,
+        marginBottom: 15,
+    },
+    topicCard: {
+        width: 70,
+        height: 70,
+        borderRadius: 8,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginRight: 15,
+        padding: 10,
+    },
+    image: {
+        width: 30,
+        height: 30,
+        marginBottom: 5,
+    },
 });
