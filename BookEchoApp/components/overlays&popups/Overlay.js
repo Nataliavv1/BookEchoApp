@@ -14,6 +14,7 @@ import { AntDesign } from '@expo/vector-icons';
 import IconButton from '../buttons/iconbutton';
 import DelatePopup from './contentForOverlay/DelatePopup';
 import EditDelateOptions from './contentForOverlay/edit&delate';
+import AddBook from './contentForOverlay/Addbook';
 
 export default function Overlay({ title, delateText, editText, contentType, color, icon }) {
     const [visible, setVisible] = useState(false);
@@ -70,6 +71,7 @@ export default function Overlay({ title, delateText, editText, contentType, colo
     ).current;
 
     return (
+        
         <SafeAreaView style={styles.fill}>
             <IconButton onPress={show} color={color} icon={icon} />
 
@@ -101,16 +103,18 @@ export default function Overlay({ title, delateText, editText, contentType, colo
                     pointerEvents="box-none"
                 >
                     <TouchableOpacity style={styles.topSlide} onPress={hide} />
-   {/* Aquest View conté el contingut del overlay */}
-   {contentType === 'EditDelate' ? (
-            <EditDelateOptions
-              title={title}
-              delateText={delateText}
-              editText={editText}
-            />
-          ) : (
-            <Text>No selected type</Text>
-          )}        
+                    {/* Aquest View conté el contingut del overlay */}
+                    {contentType === 'EditDelate' ? (
+                        <EditDelateOptions
+                            title={title}
+                            delateText={delateText}
+                            editText={editText}
+                        />
+                    ) : contentType === 'AddBook' ? (
+                        <AddBook />
+                    ) : (
+                        <Text>No selected type</Text>
+                    )}
 
                 </Animated.View>
             </Modal>
@@ -155,5 +159,5 @@ const styles = StyleSheet.create({
         marginBottom: 10,
         textAlign: 'center',
     },
-   
+
 });

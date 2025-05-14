@@ -22,7 +22,7 @@ export default function Header({ searchQuery, setSearchQuery }) {
       <View style={styles.searchRow}>
         <SearchInput value={searchQuery} onChangeText={setSearchQuery} />
         <IconButton onPress={() => console.log('Filtrar')}>
-          <AntDesign name="filter" size={22} color="black" />
+          <AntDesign name="filter" size={22} color="black"></AntDesign>
         </IconButton>
       </View>
 

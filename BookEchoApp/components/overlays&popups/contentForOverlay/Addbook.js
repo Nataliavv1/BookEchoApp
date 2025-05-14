@@ -5,13 +5,15 @@ import { useNavigation } from "@react-navigation/native";
 import { Ionicons, AntDesign } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
-const AddScreen = () => {
+
+export default function AddBook() {
     const navigation = useNavigation();
-    return (
+
+   return (
         <View style={styles.container}>
             <Text style={styles.title}>Afegir llibre</Text>
            
-            <TouchableOpacity style={styles.option} onPress={() => navigation.navigate('Scan')}>
+            <TouchableOpacity style={styles.option} onPress={() => navigation.navigate('Entrada')}>
            <View>
                 <View style={styles.row}>
                     <AntDesign name="search1" size={24} color="black" />
@@ -41,7 +43,7 @@ const AddScreen = () => {
 
         </View>
     );
-};
+}
 
 const styles = StyleSheet.create({
     container: {
@@ -73,5 +75,3 @@ const styles = StyleSheet.create({
       },
 
 });
-
-export default AddScreen;

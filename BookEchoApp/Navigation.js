@@ -29,6 +29,7 @@ import ProfileScreen from "./screens/ProfileScreen";
 import DetailScreen from "./screens/DetailScreen";
 import AllChallengesScreen from "./screens/AllChallengesScreen";
 import ScanScreen from "./screens/ScanScreen";
+import EntradaScreen from "./screens/EntradaScreen";
 
 // Pantallas nuevas para Topics y Books
 import TopicsBooks from './components/topics/TopicsBooks';  // Actualiza la ruta aquí
@@ -88,7 +89,7 @@ function MyTabs() {
                 options={{
                     tabBarLabel: 'Afegeix',
                     tabBarIcon: ({ color }) => (
-                        <Overlay color={color} icon={'plus'} />  // Usa tu componente Overlay aquí 
+                        <Overlay color={color} icon={'plus'} contentType={'AddBook'}/>  // Usa tu componente Overlay aquí 
                     ),
                     headerShown: false,
                 }} />
@@ -160,6 +161,7 @@ export default function Navigation() {
                     <Stack.Screen name="Tabs" component={MyTabs} options={{ headerShown: false }} />
                     <Stack.Screen name="Details" component={DetailScreen} options={{ headerShown: false }} />
                     <Stack.Screen name="Scan" component={ScanScreen} options={{ headerShown: false }} />
+                    <Stack.Screen name="Entrada" component={EntradaScreen} options={{ headerShown: false }} />
                     <Stack.Screen name="AllChallengesScreen" component={AllChallengesScreen} options={{ headerShown: false }} />
 
                     {/* Agregar las nuevas pantallas de Topics y Books */}

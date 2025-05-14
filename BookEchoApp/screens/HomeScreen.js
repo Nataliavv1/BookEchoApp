@@ -11,8 +11,8 @@ const HomeScreen = () => {
 
     return (
         <View style={styles.container}>
-            <Header searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
-            <GoogleBooksList query={searchQuery} />
+           <Header searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
+             <GoogleBooksList query={searchQuery} /> 
             <TopicsBooks />
         </View>
     );
