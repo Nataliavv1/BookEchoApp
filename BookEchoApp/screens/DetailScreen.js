@@ -1,7 +1,10 @@
-import React from "react";
+
+import React, { useState, useLayoutEffect } from "react";
+
 import { View, Text, Image, StyleSheet } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { useLayoutEffect } from "react";
+
+
 
 // Si no los usás, mejor eliminar estos imports:
 import { Ionicons, AntDesign, MaterialCommunityIcons } from '@expo/vector-icons';
@@ -18,6 +21,7 @@ import BackButton from "../components/buttons/backbutton";
 const DetailScreen = ({ route }) => {
   const navigation = useNavigation();
   const { titol, imatge, autors } = route.params;
+  const [selectedOption, setSelectedOption] = useState("option1");
 
   return (
     <ScrollView style={styles.container}>
@@ -41,27 +45,38 @@ const DetailScreen = ({ route }) => {
         </Text>
         <View style={styles.puntuacio}>
           <Ionicons name="star" size={24} color={'#F8BD01'}></Ionicons>
-          <Text>Puntuacio</Text>
+          <Text >Puntuacio</Text>
         </View>
       </View>
 
 
       <View style={styles.containerInfo}>
         <ToggleReadState></ToggleReadState>
-        <Toggle text1={'Informació'} text2={'Ressenyes(143)'}></Toggle>
+        <Toggle text1={'Informació'} text2={'Ressenyes(143)'} selected={selectedOption} onChange={setSelectedOption}></Toggle>
 
         <View style={styles.dynamicContainer}>
+          {selectedOption === "option1" && (
+            <View style={[styles.content1, { color: colors.DarkerTurquoise}]}>
+              <Text style={typography.H3Bold}>Descripció</Text>
+              <Text style={typography.H3Bold}>Gèneres</Text>
+              <Text style={typography.H3Bold}>Número ISBN</Text>
+              <Text style={typography.H3Bold}>Similars</Text>
+            </View>
+          )}
+          {selectedOption === "option2" && (
+            <View>
+              <Text>Puntuacions</Text>
+              <Rates rate={3.6} users={123} distribution={[5, 20, 30, 40, 28]} />
+              <Text>Ressenyes d'altres usuaris</Text>
+            </View>
+          )}
           {/* Si el boton 1 de presiona abrir contenido1
   Si el boton 2 se presiona abrir contenido2*/}
+
+
+
         </View>
 
-        <View style={styles.content1}>
-          <Text>Puntuacions</Text>
-          <Rates rate={3.6} users={123} distribution={[5, 20, 30, 40, 28]} />
-
-
-          <Text>Ressenyes d'altres usuaris</Text>
-        </View>
 
       </View>
 
@@ -82,10 +97,10 @@ const styles = StyleSheet.create({
   },
   header: {
     flexDirection: 'row',
-   marginTop: 40,
-   marginBottom: 26,
-   gap: 18,
-  } ,
+    marginTop: 40,
+    marginBottom: 26,
+    gap: 18,
+  },
   overlay: {
     position: 'absolute',
     top: 0,

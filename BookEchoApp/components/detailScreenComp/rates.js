@@ -17,7 +17,7 @@ export default function Rates({ rate = 0, users = 0, distribution = [0, 0, 0, 0,
           <View key={star} style={styles.row}>
             <View style={styles.stars}>
               {[...Array(star)].map((_, i) => (
-                <Ionicons key={i} name="star" size={12} color="#F8BD01" />
+                <Ionicons key={`star-${star}-${i}`} name="star" size={12} color="#F8BD01" />
               ))}
             </View>
             <View style={styles.barContainer}>

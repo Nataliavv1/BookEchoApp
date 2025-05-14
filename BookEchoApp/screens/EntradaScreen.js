@@ -7,6 +7,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import FormInput from "../components/inputs/FormInput";
 import BackButton from "../components/buttons/backbutton";
 import colors from "../styles/colors";
+
 import Button from "../components/buttons/button";
 
 const EntradaScreen = () => {
