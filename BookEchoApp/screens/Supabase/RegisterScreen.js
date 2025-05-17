@@ -41,30 +41,26 @@ export default function RegisterScreen({ navigation }) {
     }
   };
 
-const uploadAvatar = async (userId, imageUri) => {
-  const response = await fetch(imageUri);
-  const blob = await response.blob();
+  const uploadAvatar = async (userId, imageUri) => {
+    const response = await fetch(imageUri);
+    const blob = await response.blob();
+    const filePath = `avatars/${userId}_${Date.now()}.jpg`;
 
-  const filePath = `${userId}_${Date.now()}.jpg`;
+    const { error: uploadError } = await supabase.storage
+      .from('avatars')
+      .upload(filePath, blob, {
+        contentType: 'image/jpeg',
+        upsert: true,
+      });
 
-  const { data, error } = await supabase.storage
-    .from('avatars')
-    .upload(filePath, blob, {
-      contentType: 'image/jpeg',
-      upsert: true,
-    });
+    if (uploadError) throw uploadError;
 
-  if (error) {
-    throw error;
-  }
+    const { data: urlData } = supabase.storage
+      .from('avatars')
+      .getPublicUrl(filePath);
 
-  const { data: urlData } = supabase.storage
-    .from('avatars')
-    .getPublicUrl(filePath);
-
-  return urlData.publicUrl;
-};
-
+    return urlData.publicUrl;
+  };
 
   const checkUniqueFields = async () => {
     const { data: usernameData } = await supabase
