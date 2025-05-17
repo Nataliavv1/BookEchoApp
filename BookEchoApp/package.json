@@ -26,6 +26,7 @@
     "expo-font": "~13.0.4",
     "expo-image-picker": "~16.0.6",
     "expo-media-library": "~17.0.6",
+    "expo-router": "~4.0.21",
     "expo-status-bar": "~2.0.1",
     "react": "18.3.1",
     "react-native": "0.76.8",
@@ -36,8 +37,7 @@
     "react-native-screens": "~4.4.0",
     "react-native-svg": "15.8.0",
     "react-native-vector-icons": "^10.2.0",
-    "react-native-web": "~0.19.13",
-    "expo-router": "~4.0.21"
+    "react-native-web": "~0.19.13"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
