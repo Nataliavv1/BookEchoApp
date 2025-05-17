@@ -63,9 +63,12 @@ export default function ProfileScreen() {
       <ScrollView contentContainerStyle={styles.scrollContent}>
 
         <View style={styles.profileHeader}>
+          <View style={styles.profileHeaderSettings}>
+           <Text>settings button</Text> 
+          </View>
           <Image
             //source={require('../assets/images/adaptive-icon.png')} més abaix:<Text style={styles.username}>{userName}</Text>
-            source={{url:'https://i.pravatar.cc/300'}}
+            source={{uri:'https://i.pravatar.cc/300'}}
             style={styles.avatar}
           />
           
@@ -134,8 +137,21 @@ const styles = StyleSheet.create({
     padding: 16,
   },
   profileHeader: {
+    padding: 10,
     alignItems: 'center',
+    alignSelf: 'center',
     marginBottom: 30,
+    borderColor:'#47AC9E',
+    borderRadius: 12,
+    borderWidth: 2,
+    backgroundColor:'#47AC9E',
+    minWidth: 300,
+    maxWidth: 510,
+  },
+  profileHeaderSettings:{
+    position: 'absolute',
+    top: 10,
+    right: 10,
   },
   avatar: {
     width: 120,
@@ -148,7 +164,7 @@ const styles = StyleSheet.create({
   username: {
     fontSize: 22,
     fontWeight: '600',
-    color: '#358177',
+    color: '#ffffff',
   },
   section: {
     marginBottom: 30,
