@@ -1,21 +1,20 @@
-
 import React, { useState, useEffect } from "react";
-
 import { View, Text, Image, StyleSheet, ScrollView, ActivityIndicator } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { FetchBook } from "../Model/FetchBook";
 
-
-// Si no los usás, mejor eliminar estos imports:
-import { Ionicons, AntDesign, MaterialCommunityIcons } from '@expo/vector-icons';
+// Components
+import { Ionicons } from '@expo/vector-icons';
 import Overlay from "../components/overlays&popups/Overlay";
 import Toggle from "../components/buttons/toggle";
 import ToggleReadState from "../components/buttons/toggleReadState";
 import Rates from "../components/detailScreenComp/rates";
-// Importem colors, tipografia i botons
+import BackButton from "../components/buttons/backbutton";
+import StarRating from "../components/detailScreenComp/StarRating";
+
+// Estils
 import colors from '../styles/colors';
 import typography from '../styles/typography';
-import BackButton from "../components/buttons/backbutton";
 
 const DetailScreen = ({ route }) => {
   const navigation = useNavigation();
@@ -24,8 +23,8 @@ const DetailScreen = ({ route }) => {
   const [book, setBook] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
   const [selectedOption, setSelectedOption] = useState("option1");
+
   useEffect(() => {
     async function loadBook() {
       try {
@@ -58,13 +57,12 @@ const DetailScreen = ({ route }) => {
   }
 
   return (
-
     <ScrollView style={styles.container}>
-
       <View style={styles.header}>
-        <BackButton ></BackButton>
-        <Text style={typography.subtitleLight} >{book.title} </Text>
-        <Overlay style={[styles.overlay, typography.subtitleRegular]}
+        <BackButton />
+        <Text style={typography.subtitleLight}>{book.title}</Text>
+        <Overlay
+          style={[styles.overlay, typography.subtitleRegular]}
           title="Opcions de Llibre"
           delateText="Afegeix a una llista de llibres"
           editText="Comparteix"
@@ -79,77 +77,77 @@ const DetailScreen = ({ route }) => {
           {Array.isArray(autors) ? autors.join(', ') : autors}
         </Text>
         <View style={styles.puntuacio}>
-          <Ionicons name="star" size={24} color={'#F8BD01'}></Ionicons>
-         <Text>{book.averageRating !== null ? book.averageRating : "Sense puntuació"}</Text>
-
+          <Ionicons name="star" size={24} color={'#F8BD01'} />
+          <Text>{book.averageRating !== null ? book.averageRating : "Sense puntuació"}</Text>
         </View>
       </View>
 
-
       <View style={styles.containerInfo}>
-        <ToggleReadState></ToggleReadState>
-        <Toggle text1={'Informació'} text2={'Ressenyes(143)'} selected={selectedOption} onChange={setSelectedOption}></Toggle>
+        <ToggleReadState />
+        <Toggle
+          text1={'Informació'}
+          text2={'Ressenyes(143)'}
+          selected={selectedOption}
+          onChange={setSelectedOption}
+        />
 
         <View style={styles.dynamicContainer}>
           {selectedOption === "option1" && (
             <View style={[styles.content1, { color: colors.DarkerTurquoise }]}>
               <Text style={typography.H3Bold}>Descripció</Text>
-             <Text>{book.description ? cleanHtmlToTextCompact(book.description) : "Sin descripción"}</Text>
-
-
-
+              <Text>{book.description ? cleanHtmlToTextCompact(book.description) : "Sin descripción"}</Text>
 
               <Text style={typography.H3Bold}>Gèneres</Text>
-         <Text>{book.categories.length > 0 ? book.categories.join(', ') : "Sense gèneres disponibles"}</Text>
+              <Text>{book.categories.length > 0 ? book.categories.join(', ') : "Sense gèneres disponibles"}</Text>
 
               <Text style={typography.H3Bold}>Número ISBN</Text>
               <Text>{book.isbn?.identifier || "Sense ISBN disponible"}</Text>
+
               <Text style={typography.H3Bold}>Similars</Text>
-
             </View>
           )}
+
           {selectedOption === "option2" && (
-            <View>
+            <View style={{ alignItems: 'center' }}>
               <Text>Puntuacions</Text>
-              <Rates rate={book.averageRating || 0} users={book.ratingCount || 0} distribution={[5, 20, 30, 40, 28]} />
-              <Text>Ressenyes d'altres usuaris</Text>
+              <Rates
+                rate={book.averageRating || 0}
+                users={book.ratingCount || 0}
+                distribution={[5, 20, 30, 40, 28]}
+              />
+
+              <StarRating
+                onSubmit={(rating) => {
+                  navigation.navigate('AddReview', {
+                    bookId: id,
+                    bookTitle: book.title,
+                    rating: rating,
+                  });
+                }}
+              />
+
+              <Text style={{ marginTop: 24 }}>Ressenyes d'altres usuaris</Text>
             </View>
           )}
-          {/* Si el boton 1 de presiona abrir contenido1
-  Si el boton 2 se presiona abrir contenido2*/}
-
-
-
         </View>
-
-
       </View>
-
-
-
     </ScrollView>
-
-
   );
 };
-
 
 function cleanHtmlToTextCompact(html) {
   return html
     .replace(/<br\s*\/?>/gi, '\n')
-    .replace(/<\/?p>/gi, '\n')   // solo 1 salto de línea aquí
-    .replace(/<[^>]+>/g, '')     // quitar etiquetas restantes
-    .replace(/\n\s*\n/g, '\n')   // elimina saltos dobles consecutivos sobrantes
-    .trim();                    // quita espacios al inicio y final
+    .replace(/<\/?p>/gi, '\n')
+    .replace(/<[^>]+>/g, '')
+    .replace(/\n\s*\n/g, '\n')
+    .trim();
 }
-
 
 const styles = StyleSheet.create({
   container: {
-
     backgroundColor: '#C6E5E1',
     flex: 1,
-
   },
   header: {
     flexDirection: 'row',
@@ -159,10 +157,7 @@ const styles = StyleSheet.create({
   },
   overlay: {
     position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
+    top: 0, left: 0, right: 0, bottom: 0,
   },
   mainInfo: {
     marginHorizontal: 20,
@@ -184,10 +179,13 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: '#626262',
     marginTop: 4,
-    fontFamily: 'Urbanist_400Regular'
+    fontFamily: 'Urbanist_400Regular',
   },
   puntuacio: {
     flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    marginTop: 8,
   },
   containerInfo: {
     flex: 1,
@@ -198,7 +196,19 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 20,
     alignItems: 'center',
   },
+  dynamicContainer: {
+    marginTop: 16,
+    paddingHorizontal: 16,
+    width: '100%',
+  },
+  content1: {
+    gap: 12,
+  },
+  center: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 });
 
 export default DetailScreen;
-
