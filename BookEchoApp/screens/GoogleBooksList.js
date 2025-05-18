@@ -38,12 +38,15 @@ const GoogleBooksList = ({ query }) => {
                     renderItem={({ item }) => {
                         const volume = item.volumeInfo;
                         return (
-                            <TouchableOpacity onPress={() => navigation.navigate('Details', {
+                            <TouchableOpacity onPress={() => navigation.navigate(
+                                'Details', {
                                 titol: volume.title,
                                 autors: volume.authors,
+                                id: item.id,
                              //   description: volume.description,  // Puedes agregar más parámetros si lo necesitas
                                 imatge: volume.imageLinks?.thumbnail,
-                            })}>
+                            }
+                            )}>
                                 <View style={styles.bookItem}>
                                     {volume.imageLinks?.thumbnail && (
                                         <Image

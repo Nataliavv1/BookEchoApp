@@ -1,44 +1,31 @@
-import React, { useEffect, useState } from "react";
-import { View, Text, ActivityIndicator } from "react-native";
 
 const API_KEY = "AIzaSyAdrMfk5xKeXebgngAXQjrKshHuhAAklyM";
-const BOOK_ID = "zyTCAlFPjgYC"; // Ejemplo de ID válido de Google Books
 
-export default function BookFetcher() {
-  const [book, setBook] = useState(null);
-  const [loading, setLoading] = useState(true);
+export async function FetchBook(BOOK_ID = "xYotngEACAAJ") {
+  try {
+    const response = await fetch(
+      `https://www.googleapis.com/books/v1/volumes/${BOOK_ID}?key=${API_KEY}`
+    );
+    const data = await response.json();
 
-  useEffect(() => {
-    const fetchBook = async () => {
-      try {
-        const response = await fetch(
-          `https://www.googleapis.com/books/v1/volumes/${BOOK_ID}?key=${API_KEY}`
-        );
-        const data = await response.json();
-        setBook(data);
-      } catch (error) {
-        console.error("Error fetching book:", error);
-      } finally {
-        setLoading(false);
-      }
+    const info = data.volumeInfo;
+
+    const isbn = info.industryIdentifiers?.find(
+      (id) => id.type === "ISBN_13"
+    );
+
+    return {
+      title: info.title,
+      description: info.description,
+      authors: info.authors ?? [],
+      categories: info.categories ?? [],
+      averageRating: info.averageRating ?? null,
+      ratingCount: info.ratingsCount ?? 0,
+      publisher: info.publisher ?? null,
+      isbn,
     };
-
-    fetchBook();
-  }, []);
-
-  if (loading) {
-    return <ActivityIndicator size="large" color="#0000ff" />;
+  } catch (error) {
+    console.error("Error fetching book:", error);
+    throw error;
   }
-
-  if (!book) {
-    return <Text>Error carregant el llibre.</Text>;
-  }
-
-  return (
-    <View>
-      <Text style={{ fontWeight: "bold", fontSize: 18 }}>{book.volumeInfo.title}</Text>
-      <Text>{book.volumeInfo.authors?.join(", ")}</Text>
-      <Text>{book.volumeInfo.description}</Text>
-    </View>
-  );
 }

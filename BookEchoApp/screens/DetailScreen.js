@@ -1,9 +1,9 @@
 
-import React, { useState, useLayoutEffect } from "react";
+import React, { useState, useEffect } from "react";
 
-import { View, Text, Image, StyleSheet } from "react-native";
+import { View, Text, Image, StyleSheet, ScrollView, ActivityIndicator } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-
+import { FetchBook } from "../Model/FetchBook";
 
 
 // Si no los usás, mejor eliminar estos imports:
@@ -12,7 +12,6 @@ import Overlay from "../components/overlays&popups/Overlay";
 import Toggle from "../components/buttons/toggle";
 import ToggleReadState from "../components/buttons/toggleReadState";
 import Rates from "../components/detailScreenComp/rates";
-import { ScrollView } from "react-native";
 // Importem colors, tipografia i botons
 import colors from '../styles/colors';
 import typography from '../styles/typography';
@@ -20,15 +19,51 @@ import BackButton from "../components/buttons/backbutton";
 
 const DetailScreen = ({ route }) => {
   const navigation = useNavigation();
-  const { titol, imatge, autors } = route.params;
+  const { titol, imatge, autors, id } = route.params;
+
+  const [book, setBook] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
   const [selectedOption, setSelectedOption] = useState("option1");
+  useEffect(() => {
+    async function loadBook() {
+      try {
+        const data = await FetchBook(id);
+        setBook(data);
+      } catch (err) {
+        setError("No se pudo cargar el libro.");
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    loadBook();
+  }, [id]);
+
+  if (loading) {
+    return (
+      <View style={styles.center}>
+        <ActivityIndicator size="large" />
+      </View>
+    );
+  }
+
+  if (error) {
+    return (
+      <View style={styles.center}>
+        <Text>{error}</Text>
+      </View>
+    );
+  }
 
   return (
+
     <ScrollView style={styles.container}>
 
       <View style={styles.header}>
         <BackButton ></BackButton>
-        <Text style={typography.subtitleLight} >{titol} </Text>
+        <Text style={typography.subtitleLight} >{book.title} </Text>
         <Overlay style={[styles.overlay, typography.subtitleRegular]}
           title="Opcions de Llibre"
           delateText="Afegeix a una llista de llibres"
@@ -39,13 +74,14 @@ const DetailScreen = ({ route }) => {
 
       <View style={styles.mainInfo}>
         <Image source={{ uri: imatge }} style={styles.thumbnail} />
-        <Text style={styles.title}>{titol}</Text>
+        <Text style={styles.title}>{book.title || "Sense ISBN disponible"}</Text>
         <Text style={styles.author}>
           {Array.isArray(autors) ? autors.join(', ') : autors}
         </Text>
         <View style={styles.puntuacio}>
           <Ionicons name="star" size={24} color={'#F8BD01'}></Ionicons>
-          <Text >Puntuacio</Text>
+         <Text>{book.averageRating !== null ? book.averageRating : "Sense puntuació"}</Text>
+
         </View>
       </View>
 
@@ -56,17 +92,26 @@ const DetailScreen = ({ route }) => {
 
         <View style={styles.dynamicContainer}>
           {selectedOption === "option1" && (
-            <View style={[styles.content1, { color: colors.DarkerTurquoise}]}>
+            <View style={[styles.content1, { color: colors.DarkerTurquoise }]}>
               <Text style={typography.H3Bold}>Descripció</Text>
+             <Text>{book.description ? cleanHtmlToTextCompact(book.description) : "Sin descripción"}</Text>
+
+
+
+
               <Text style={typography.H3Bold}>Gèneres</Text>
+         <Text>{book.categories.length > 0 ? book.categories.join(', ') : "Sense gèneres disponibles"}</Text>
+
               <Text style={typography.H3Bold}>Número ISBN</Text>
+              <Text>{book.isbn?.identifier || "Sense ISBN disponible"}</Text>
               <Text style={typography.H3Bold}>Similars</Text>
+
             </View>
           )}
           {selectedOption === "option2" && (
             <View>
               <Text>Puntuacions</Text>
-              <Rates rate={3.6} users={123} distribution={[5, 20, 30, 40, 28]} />
+              <Rates rate={book.averageRating || 0} users={book.ratingCount || 0} distribution={[5, 20, 30, 40, 28]} />
               <Text>Ressenyes d'altres usuaris</Text>
             </View>
           )}
@@ -87,6 +132,17 @@ const DetailScreen = ({ route }) => {
 
   );
 };
+
+
+function cleanHtmlToTextCompact(html) {
+  return html
+    .replace(/<br\s*\/?>/gi, '\n')
+    .replace(/<\/?p>/gi, '\n')   // solo 1 salto de línea aquí
+    .replace(/<[^>]+>/g, '')     // quitar etiquetas restantes
+    .replace(/\n\s*\n/g, '\n')   // elimina saltos dobles consecutivos sobrantes
+    .trim();                    // quita espacios al inicio y final
+}
+
 
 const styles = StyleSheet.create({
   container: {
