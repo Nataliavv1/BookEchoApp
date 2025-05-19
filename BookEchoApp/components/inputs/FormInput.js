@@ -15,6 +15,7 @@ export default function FormInput({
   icon = 'edit',
   secureTextEntry = false,
   keyboardType = 'default',
+  multiline = false,
 }) {
   const [isFocused, setIsFocused] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -30,7 +31,7 @@ export default function FormInput({
         </Text>
       ) : null}
 
-      <View style={[styles.container, isFocused && styles.focusedContainer]}>
+      <View style={[styles.container, isFocused && styles.focusedContainer, multiline && styles.multilineContainer]}>
         {/* Icono a l'esquerra (només si no és contrasenya) */}
         {!isPassword && (
           <AntDesign name={icon} size={18} color={colors.NormalGrey} style={styles.icon} />
@@ -40,7 +41,12 @@ export default function FormInput({
           style={[
             styles.input,
             typography.labelRegular,
-            { color: colors.NormalGrey, paddingRight: isPassword ? 35 : 0 },
+            {
+              color: colors.NormalGrey,
+              paddingRight: isPassword ? 35 : 0,
+              textAlignVertical: multiline ? 'top' : 'center',
+              height: multiline ? 120 : 'auto',
+            },
           ]}
           placeholder={placeholder}
           placeholderTextColor={colors.NormalGrey}
@@ -50,6 +56,8 @@ export default function FormInput({
           keyboardType={keyboardType}
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)}
+          multiline={multiline}
+          numberOfLines={multiline ? 6 : 1}
         />
 
         {/* Icono per mostrar/ocultar contrasenya */}
@@ -87,8 +95,12 @@ const styles = StyleSheet.create({
   focusedContainer: {
     borderColor: colors.NormalHoverOrange,
   },
+  multilineContainer: {
+    alignItems: 'flex-start',
+  },
   icon: {
     marginRight: 8,
+    marginTop: 4,
   },
   input: {
     flex: 1,
@@ -97,6 +109,5 @@ const styles = StyleSheet.create({
   eyeIcon: {
     position: 'absolute',
     right: 12,
-
   },
 });

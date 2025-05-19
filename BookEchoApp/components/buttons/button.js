@@ -28,6 +28,7 @@ const styles = StyleSheet.create({
         paddingVertical: 12,
         paddingHorizontal: 24,
         borderRadius: 5,
+        alignSelf: 'flex-start',
     },
     text: {
         fontSize: 16,

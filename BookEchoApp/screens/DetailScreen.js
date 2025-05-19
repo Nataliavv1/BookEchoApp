@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, Image, StyleSheet, ScrollView, ActivityIndicator } from "react-native";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import { FetchBook } from "../Model/FetchBook";
 
-// Components
 import { Ionicons } from '@expo/vector-icons';
 import Overlay from "../components/overlays&popups/Overlay";
 import Toggle from "../components/buttons/toggle";
@@ -12,18 +11,19 @@ import Rates from "../components/detailScreenComp/rates";
 import BackButton from "../components/buttons/backbutton";
 import StarRating from "../components/detailScreenComp/StarRating";
 
-// Estils
 import colors from '../styles/colors';
 import typography from '../styles/typography';
 
-const DetailScreen = ({ route }) => {
+const DetailScreen = () => {
   const navigation = useNavigation();
+  const route = useRoute();
   const { titol, imatge, autors, id } = route.params;
 
   const [book, setBook] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedOption, setSelectedOption] = useState("option1");
+  const [review, setReview] = useState(null);
 
   useEffect(() => {
     async function loadBook() {
@@ -116,15 +116,28 @@ const DetailScreen = ({ route }) => {
                 distribution={[5, 20, 30, 40, 28]}
               />
 
-              <StarRating
-                onSubmit={(rating) => {
-                  navigation.navigate('AddReview', {
-                    bookId: id,
-                    bookTitle: book.title,
-                    rating: rating,
-                  });
-                }}
-              />
+              {review ? (
+                <View style={{ marginTop: 16, alignItems: 'center' }}>
+                  <Text style={typography.H3Bold}>La teva ressenya</Text>
+                  <Text style={{ fontWeight: 'bold', fontSize: 16 }}>{review.title}</Text>
+                  <Text style={{ marginVertical: 8 }}>{review.rating} estrelles</Text>
+                  <Text style={{ fontStyle: 'italic' }}>{review.text}</Text>
+                </View>
+              ) : (
+                <StarRating
+                  onSubmit={(rating) => {
+                    navigation.navigate('AddReview', {
+                      bookId: id,
+                      bookTitle: book.title,
+                      rating: rating,
+                      onReviewSubmit: (newReview) => {
+                        setReview(newReview);
+                        setSelectedOption("option2");
+                      }
+                    });
+                  }}
+                />
+              )}
 
               <Text style={{ marginTop: 24 }}>Ressenyes d'altres usuaris</Text>
             </View>

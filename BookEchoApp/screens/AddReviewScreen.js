@@ -1,23 +1,34 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, StyleSheet, Alert } from 'react-native';
+import { View, Text, StyleSheet, Alert } from 'react-native';
 import BackButton from '../components/buttons/backbutton';
 import StarRating from '../components/detailScreenComp/StarRating';
 import Button from '../components/buttons/button';
+import FormInput from '../components/inputs/FormInput';
 
 const AddReviewScreen = ({ route, navigation }) => {
-  const { bookId, bookTitle, rating: initialRating } = route.params;
+  const { bookId, bookTitle, rating: initialRating, onReviewSubmit } = route.params;
+  const [title, setTitle] = useState('');
   const [reviewText, setReviewText] = useState('');
   const [rating, setRating] = useState(initialRating || 0);
 
   const handleSubmit = () => {
-    if (!reviewText.trim()) {
-      Alert.alert('Error', 'La ressenya no pot estar buida.');
+    if (!title.trim() || !reviewText.trim()) {
+      Alert.alert('Error', 'El títol i la ressenya no poden estar buits.');
       return;
     }
 
+    const newReview = {
+      title,
+      text: reviewText,
+      rating,
+    };
+
     console.log('Review enviada per al llibre:', bookTitle);
-    console.log('Rating:', rating);
-    console.log('Text:', reviewText);
+    console.log('Nova ressenya:', newReview);
+
+    if (onReviewSubmit) {
+      onReviewSubmit(newReview);
+    }
 
     navigation.goBack();
   };
@@ -38,13 +49,22 @@ const AddReviewScreen = ({ route, navigation }) => {
         showTitle={false}
       />
 
-      <TextInput
-        style={styles.input}
+      <FormInput
+        label="Títol"
+        placeholder="Introdueix el títol de la ressenya"
+        value={title}
+        onChangeText={setTitle}
+        icon={false}
+      />
+
+      <FormInput
+        label="Ressenya"
         placeholder="Escriu la teva ressenya aquí..."
-        multiline
-        numberOfLines={6}
         value={reviewText}
         onChangeText={setReviewText}
+        multiline
+        secureTextEntry={false}
+        icon={false}
       />
 
       <Button
@@ -73,16 +93,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#626262',
     marginBottom: 20,
-  },
-  input: {
-    borderWidth: 1,
-    borderColor: '#CCC',
-    padding: 12,
-    marginBottom: 24,
-    borderRadius: 6,
-    textAlignVertical: 'top',
-    fontSize: 16,
-    backgroundColor: '#F9F9F9',
   },
 });
 
