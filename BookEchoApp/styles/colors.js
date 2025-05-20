@@ -62,7 +62,7 @@ const colors = {
     DarkerWhite: '#565656',
   
     // Green
-    LightGreen: '#eff7ed',
+    LightGreen: '#edf7f5',
     LightHoverGreen: '#e7f3e3',
     LightActiveGreen: '#cde5c6',
     NormalGreen: '#5dac47',

@@ -4,6 +4,7 @@ import { Ionicons } from '@expo/vector-icons';
 import Button from '../buttons/button';
 import typography from '../../styles/typography';
 
+
 export default function StarRating({
   onSubmit,
   onRatingChange,
@@ -25,7 +26,7 @@ export default function StarRating({
   return (
     <View style={styles.container}>
       {showTitle && (
-        <Text style={[typography.H3Bold, styles.title]}>
+        <Text style={[typography.H3Medium, styles.title]}>
           Puntua
         </Text>
       )}
@@ -35,7 +36,7 @@ export default function StarRating({
           <TouchableOpacity key={star} onPress={() => handlePress(star)}>
             <Ionicons
               name={star <= selectedRating ? 'star' : 'star-outline'}
-              size={32}
+              size={24}
               color="#F8BD01"
             />
           </TouchableOpacity>

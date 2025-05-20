@@ -10,6 +10,7 @@ import ToggleReadState from "../components/buttons/toggleReadState";
 import Rates from "../components/detailScreenComp/rates";
 import BackButton from "../components/buttons/backbutton";
 import StarRating from "../components/detailScreenComp/StarRating";
+import UserReviewCard from "../components/detailScreenComp/UserReview";
 
 import colors from '../styles/colors';
 import typography from '../styles/typography';
@@ -117,12 +118,12 @@ const DetailScreen = () => {
               />
 
               {review ? (
-                <View style={{ marginTop: 16, alignItems: 'center' }}>
-                  <Text style={typography.H3Bold}>La teva ressenya</Text>
-                  <Text style={{ fontWeight: 'bold', fontSize: 16 }}>{review.title}</Text>
-                  <Text style={{ marginVertical: 8 }}>{review.rating} estrelles</Text>
-                  <Text style={{ fontStyle: 'italic' }}>{review.text}</Text>
-                </View>
+                <UserReviewCard
+                  rating={review.rating}
+                  title={review.title}
+                  content={review.text}
+                  date={review.date}
+                />
               ) : (
                 <StarRating
                   onSubmit={(rating) => {
@@ -138,6 +139,7 @@ const DetailScreen = () => {
                   }}
                 />
               )}
+
 
               <Text style={{ marginTop: 24 }}>Ressenyes d'altres usuaris</Text>
             </View>
@@ -170,7 +172,10 @@ const styles = StyleSheet.create({
   },
   overlay: {
     position: 'absolute',
-    top: 0, left: 0, right: 0, bottom: 0,
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
   },
   mainInfo: {
     marginHorizontal: 20,

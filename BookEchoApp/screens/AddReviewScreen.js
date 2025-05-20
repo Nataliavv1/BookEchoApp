@@ -4,6 +4,9 @@ import BackButton from '../components/buttons/backbutton';
 import StarRating from '../components/detailScreenComp/StarRating';
 import Button from '../components/buttons/button';
 import FormInput from '../components/inputs/FormInput';
+import typography from '../styles/typography';
+import { Ionicons } from '@expo/vector-icons';
+
 
 const AddReviewScreen = ({ route, navigation }) => {
   const { bookId, bookTitle, rating: initialRating, onReviewSubmit } = route.params;
@@ -17,10 +20,14 @@ const AddReviewScreen = ({ route, navigation }) => {
       return;
     }
 
+    const today = new Date();
+    const formattedDate = today.toLocaleDateString('ca-ES');
+
     const newReview = {
       title,
       text: reviewText,
       rating,
+      date: formattedDate,
     };
 
     console.log('Review enviada per al llibre:', bookTitle);
@@ -42,12 +49,21 @@ const AddReviewScreen = ({ route, navigation }) => {
         Per al llibre: <Text style={{ fontWeight: 'bold' }}>{bookTitle}</Text>
       </Text>
 
-      <StarRating
-        initialRating={rating}
-        onRatingChange={(newRating) => setRating(newRating)}
-        showButton={false}
-        showTitle={false}
-      />
+      <View style={styles.ratingDateRow}>
+        <StarRating
+          initialRating={rating}
+          onRatingChange={(newRating) => setRating(newRating)}
+          showButton={false}
+          showTitle={false}
+        />
+        <View style={styles.dateRow}>
+          <Ionicons name="time-outline" size={24} color="#626262" style={{ marginRight: 6 }} />
+          <Text style={[typography.H3Regular, { color: '#626262' }]}>
+            {new Date().toLocaleDateString('ca-ES')}
+          </Text>
+        </View>
+
+      </View>
 
       <FormInput
         label="Títol"
@@ -94,6 +110,17 @@ const styles = StyleSheet.create({
     color: '#626262',
     marginBottom: 20,
   },
+  ratingDateRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 12,
+  },
+  dateRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+
 });
 
 export default AddReviewScreen;
