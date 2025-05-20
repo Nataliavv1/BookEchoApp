@@ -1,5 +1,4 @@
-// ...imports
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -10,12 +9,10 @@ import {
   Image,
 } from 'react-native';
 
-import { supabase } from './lib/supabaseClient';
-import * as ImagePicker from 'expo-image-picker';
+import { supabase } from './lib/supabaseClient'; // Asegúrate que este archivo esté bien configurado
 import FormInput from '../../components/inputs/FormInput';
 import TextButton from '../../components/buttons/TextButton';
 
-// Importem colors, tipografia i botons
 import colors from '../../styles/colors';
 import typography from '../../styles/typography';
 
@@ -25,42 +22,38 @@ export default function RegisterScreen({ navigation }) {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [image, setImage] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  const pickImage = async () => {
-    const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: [ImagePicker.MediaTypeOptions.Images],
-      allowsEditing: true,
-      quality: 1,
-      aspect: [1, 1],
-    });
+  const [avatars, setAvatars] = useState([]);
+  const [selectedAvatar, setSelectedAvatar] = useState(null);
 
-    if (!result.canceled) {
-      setImage(result.assets[0].uri);
-    }
-  };
-
-  const uploadAvatar = async (userId, imageUri) => {
-    const response = await fetch(imageUri);
-    const blob = await response.blob();
-    const filePath = `avatars/${userId}_${Date.now()}.jpg`;
-
-    const { error: uploadError } = await supabase.storage
-      .from('avatars')
-      .upload(filePath, blob, {
-        contentType: 'image/jpeg',
-        upsert: true,
+  useEffect(() => {
+    const fetchAvatars = async () => {
+      const { data, error } = await supabase.storage.from('avatars').list('', {
+        limit: 100,
+        offset: 0,
       });
 
-    if (uploadError) throw uploadError;
+      if (error) {
+        console.error('Error al obtener imágenes:', error.message);
+      } else {
+        const urls = await Promise.all(
+          data.map(async (file) => {
+            const { data: publicUrl } = supabase.storage
+              .from('avatars')
+              .getPublicUrl(file.name);
+            return {
+              name: file.name,
+              url: publicUrl.publicUrl,
+            };
+          })
+        );
+        setAvatars(urls);
+      }
+    };
 
-    const { data: urlData } = supabase.storage
-      .from('avatars')
-      .getPublicUrl(filePath);
-
-    return urlData.publicUrl;
-  };
+    fetchAvatars();
+  }, []);
 
   const checkUniqueFields = async () => {
     const { data: usernameData } = await supabase
@@ -88,6 +81,11 @@ export default function RegisterScreen({ navigation }) {
       return;
     }
 
+    if (!selectedAvatar) {
+      Alert.alert('Error', 'Has de seleccionar un avatar');
+      return;
+    }
+
     const uniqueError = await checkUniqueFields();
     if (uniqueError) {
       Alert.alert('Error', uniqueError);
@@ -108,21 +106,18 @@ export default function RegisterScreen({ navigation }) {
         return;
       }
 
-      const userId = signUpData.user.id;
-      let avatarUrl = null;
+      const userId = signUpData.user?.id;
 
-      if (image) {
-        avatarUrl = await uploadAvatar(userId, image);
-      }
-
-      const { error: profileError } = await supabase.from('profiles').insert([{
-        id: userId,
-        name: name,
-        last_name: surname,
-        username: username,
-        email: email,
-        avatar_url: avatarUrl,
-      }]);
+      const { error: profileError } = await supabase.from('profiles').insert([
+        {
+          id: userId,
+          name: name,
+          last_name: surname,
+          username: username,
+          email: email,
+          avatar_url: selectedAvatar,
+        },
+      ]);
 
       if (profileError) {
         Alert.alert('Error al guardar el perfil', profileError.message);
@@ -130,7 +125,10 @@ export default function RegisterScreen({ navigation }) {
         return;
       }
 
-      Alert.alert('Compte creat', 'Comprova el teu correu electrònic per activar el compte.');
+      Alert.alert(
+        'Compte creat',
+        'Comprova el teu correu electrònic per activar el compte.'
+      );
       navigation.navigate('Login');
     } catch (err) {
       Alert.alert('Error inesperat', err.message);
@@ -141,7 +139,6 @@ export default function RegisterScreen({ navigation }) {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-
       <View style={styles.logoWrapper}>
         <Image source={require('../../assets/images/Logo.png')} style={styles.logo} />
       </View>
@@ -154,13 +151,25 @@ export default function RegisterScreen({ navigation }) {
       <View style={styles.RegisterBox}>
         <Text style={[styles.title, typography.H2SemiBold]}>Registre</Text>
 
-        <TouchableOpacity style={styles.imagePicker} onPress={pickImage}>
-          {image ? (
-            <Image source={{ uri: image }} style={styles.image} />
-          ) : (
-            <Text style={styles.imagePlaceholder}>Selecciona una imatge</Text>
-          )}
-        </TouchableOpacity>
+        <View style={{ marginBottom: 20 }}>
+          <Text style={[typography.labelRegular, { marginBottom: 10 }]}>
+            Selecciona un avatar:
+          </Text>
+          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+            {avatars.map((avatar) => (
+              <TouchableOpacity
+                key={avatar.name}
+                onPress={() => setSelectedAvatar(avatar.url)}
+                style={[
+                  styles.avatarImageWrapper,
+                  selectedAvatar === avatar.url && styles.avatarSelected,
+                ]}
+              >
+                <Image source={{ uri: avatar.url }} style={styles.avatarImage} />
+              </TouchableOpacity>
+            ))}
+          </ScrollView>
+        </View>
 
         <FormInput label="Nom:" placeholder="Nom" value={name} onChangeText={setName} icon="user" />
         <FormInput label="Cognoms:" placeholder="Cognoms" value={surname} onChangeText={setSurname} icon="user" />
@@ -179,8 +188,8 @@ export default function RegisterScreen({ navigation }) {
 
         <TouchableOpacity onPress={() => navigation.navigate('Login')}>
           <Text style={styles.link}>
-            <Text style={[typography.labelRegular,styles.link1]}>Ja tens compte? </Text>
-            <Text style={[typography.labelBold,styles.link2]}>Inicia sessió</Text>
+            <Text style={[typography.labelRegular, styles.link1]}>Ja tens compte? </Text>
+            <Text style={[typography.labelBold, styles.link2]}>Inicia sessió</Text>
           </Text>
         </TouchableOpacity>
       </View>
@@ -188,7 +197,6 @@ export default function RegisterScreen({ navigation }) {
   );
 }
 
-// Estilos
 const styles = StyleSheet.create({
   container: {
     backgroundColor: colors.NormalTurquoise,
@@ -217,8 +225,6 @@ const styles = StyleSheet.create({
     textAlign: 'left',
     marginBottom: 40,
   },
-
-  //Part Box
   RegisterBox: {
     backgroundColor: colors.NormalWhite,
     paddingHorizontal: 27,
@@ -231,26 +237,22 @@ const styles = StyleSheet.create({
     marginBottom: 25,
     textAlign: 'center',
   },
-  imagePicker: {
-    alignSelf: 'center',
-    marginBottom: 20,
-    width: 100,
-    height: 100,
+  avatarImageWrapper: {
+    marginRight: 10,
     borderRadius: 50,
-    borderWidth: 1,
-    borderColor: colors.NormalOrange,
-    justifyContent: 'center',
-    alignItems: 'center',
     overflow: 'hidden',
+    borderWidth: 2,
+    borderColor: 'transparent',
+    width: 60,
+    height: 60,
   },
-  image: {
+  avatarSelected: {
+    borderColor: colors.NormalOrange,
+  },
+  avatarImage: {
     width: '100%',
     height: '100%',
-  },
-  imagePlaceholder: {
-    color: colors.NormalOrange,
-    textAlign: 'center',
-    fontSize: 12,
+    resizeMode: 'cover',
   },
   button: {
     alignItems: 'center',
@@ -260,10 +262,10 @@ const styles = StyleSheet.create({
     marginTop: 20,
     textAlign: 'center',
   },
-  link1:{
+  link1: {
     color: colors.DarkerGrey,
   },
-  link2:{
+  link2: {
     color: colors.NormalTurquoise,
   },
 });
