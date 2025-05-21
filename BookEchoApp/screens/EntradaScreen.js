@@ -41,8 +41,8 @@ const EntradaScreen = () => {
 
                 </View>
                 <View style={styles.buttons}>
-                    <Button title={'Cancel·la'}></Button>
-                    <Button title={'Següent'}></Button>
+                    <Button title={'Cancel·la'} onPress={() => navigation.goBack()}></Button>
+                    <Button title={'Següent'} onPress={() => navigation.navigate('Entrada2')}></Button>
                 </View>
 
             </View>

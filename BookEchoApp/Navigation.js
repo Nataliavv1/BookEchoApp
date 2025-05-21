@@ -30,7 +30,9 @@ import DetailScreen from "./screens/DetailScreen";
 import AllChallengesScreen from "./screens/AllChallengesScreen";
 import ScanScreen from "./screens/ScanScreen";
 import EntradaScreen from "./screens/EntradaScreen";
+import EntradaScreen2 from "./screens/EntradaScreen2";
 import AddReviewScreen from "./screens/AddReviewScreen";
+
 
 // Pantallas nuevas para Topics y Books
 import TopicsBooks from './components/topics/TopicsBooks';  // Actualiza la ruta aquí
@@ -163,8 +165,12 @@ export default function Navigation() {
                     <Stack.Screen name="Details" component={DetailScreen} options={{ headerShown: false }} />
                     <Stack.Screen name="Scan" component={ScanScreen} options={{ headerShown: false }} />
                     <Stack.Screen name="Entrada" component={EntradaScreen} options={{ headerShown: false }} />
+                       <Stack.Screen name="Entrada2" component={EntradaScreen2} options={{ headerShown: false }} />
                     <Stack.Screen name="AllChallengesScreen" component={AllChallengesScreen} options={{ headerShown: false }} />
-                    <Stack.Screen name="AddReview" component={AddReviewScreen} options={{ headerShown: false }} />
+                    <Stack.Screen name="AddReview" component={AddReviewScreen}
+                     options={{ 
+                        headerShown: false 
+                        }} />
 
                     {/* Agregar las nuevas pantallas de Topics y Books */}
                     <Stack.Screen name="Topics" component={TopicsBooks} options={{ headerShown: false }} />
