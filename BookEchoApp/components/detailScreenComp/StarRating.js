@@ -31,17 +31,20 @@ export default function StarRating({
         </Text>
       )}
 
-      <View style={styles.starsContainer}>
-        {[1, 2, 3, 4, 5].map((star) => (
-          <TouchableOpacity key={star} onPress={() => handlePress(star)}>
-            <Ionicons
-              name={star <= selectedRating ? 'star' : 'star-outline'}
-              size={24}
-              color="#F8BD01"
-            />
-          </TouchableOpacity>
-        ))}
-      </View>
+     <View style={styles.starsContainer}>
+  {[1, 2, 3, 4, 5].map((star) => {
+    return (
+      <TouchableOpacity key={`star-${star}`} onPress={() => handlePress(star)}>
+        <Ionicons
+          name={star <= selectedRating ? 'star' : 'star-outline'}
+          size={24}
+          color="#F8BD01"
+        />
+      </TouchableOpacity>
+    );
+  })}
+</View>
+
 
       {showButton && (
         <Button

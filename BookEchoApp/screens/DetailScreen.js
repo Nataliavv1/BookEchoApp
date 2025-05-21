@@ -14,6 +14,7 @@ import UserReviewCard from "../components/detailScreenComp/UserReview";
 
 import colors from '../styles/colors';
 import typography from '../styles/typography';
+import IconButton from "../components/buttons/iconbutton";
 
 const DetailScreen = () => {
   const navigation = useNavigation();
@@ -61,14 +62,30 @@ const DetailScreen = () => {
     <ScrollView style={styles.container}>
       <View style={styles.header}>
         <BackButton />
-        <Text style={typography.subtitleLight}>{book.title}</Text>
-        <Overlay
+       
+        <Text
+          style={[styles.headertitle, typography.subtitleLight]}
+          numberOfLines={1}
+          ellipsizeMode="tail"
+        >
+          {book.title}
+        </Text>
+ <Overlay
           style={[styles.overlay, typography.subtitleRegular]}
-          title="Opcions de Llibre"
+       /*   title="Opcions de Llibre"
           delateText="Afegeix a una llista de llibres"
-          editText="Comparteix"
-          contentType="EditDelate"
+          editText="Comparteix"*/
+          contentType="BookOptions"
+          bookTitle={book.title}
         />
+        <IconButton
+          library="MaterialCommunityIcons"
+          icon="dots-vertical"
+          color="#000"
+          onPress={() => console.log('Icon pressed!')}
+        />
+
+
       </View>
 
       <View style={styles.mainInfo}>
@@ -166,10 +183,18 @@ const styles = StyleSheet.create({
   },
   header: {
     flexDirection: 'row',
-    marginTop: 40,
+    paddingTop: 40,
     marginBottom: 26,
     gap: 18,
+    alignItems: 'center',       // para centrar verticalmente
+    justifyContent: 'space-between',  // para separar el contenido si quieres
+    flex: 1,
+    paddingHorizontal: 27,
   },
+  headertitle: {
+    flex: 1,
+  },
+
   overlay: {
     position: 'absolute',
     top: 0,

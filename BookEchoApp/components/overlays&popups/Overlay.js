@@ -15,8 +15,9 @@ import IconButton from '../buttons/iconbutton';
 import DelatePopup from './contentForOverlay/DelatePopup';
 import EditDelateOptions from './contentForOverlay/edit&delate';
 import AddBook from './contentForOverlay/Addbook';
+import BookOptions from './contentForOverlay/BookOptions';
 
-export default function Overlay({ title, delateText, editText, contentType, color, icon }) {
+export default function Overlay({ title, delateText, editText, contentType, color, icon, bookTitle}) {
     const [visible, setVisible] = useState(false);
     const fadeAnim = useRef(new Animated.Value(0)).current;
     const slideAnim = useRef(new Animated.Value(0)).current;
@@ -71,7 +72,7 @@ export default function Overlay({ title, delateText, editText, contentType, colo
     ).current;
 
     return (
-        
+
         <SafeAreaView style={styles.fill}>
             <IconButton onPress={show} color={color} icon={icon} />
 
@@ -112,9 +113,12 @@ export default function Overlay({ title, delateText, editText, contentType, colo
                         />
                     ) : contentType === 'AddBook' ? (
                         <AddBook />
+                    ) : contentType === 'BookOptions' ? (
+                        <BookOptions bookTitle = {bookTitle}/>
                     ) : (
                         <Text>No selected type</Text>
                     )}
+
 
                 </Animated.View>
             </Modal>
@@ -123,9 +127,6 @@ export default function Overlay({ title, delateText, editText, contentType, colo
 }
 
 const styles = StyleSheet.create({
-    fill: {
-        flex: 1,
-    },
     overlay: {
         ...StyleSheet.absoluteFillObject,
         backgroundColor: 'rgba(0,0,0,0.3)',
