@@ -107,6 +107,7 @@ export default function RegisterScreen({ navigation }) {
       }
 
       const userId = signUpData.user?.id;
+      console.log("User ID:", userId);
 
       const { error: profileError } = await supabase.from('profiles').insert([
         {
@@ -120,10 +121,25 @@ export default function RegisterScreen({ navigation }) {
       ]);
 
       if (profileError) {
+        console.log('Profile insert error:', profileError);
         Alert.alert('Error al guardar el perfil', profileError.message);
         setLoading(false);
         return;
       }
+
+      /*CODI NURIA: Per afegir les llistes predeterminades al registrarse*/
+        const { error: llistesError } = await supabase.from('Llista').insert([
+      { NomLlista: 'Per llegir', idUsuari: userId },
+      { NomLlista: 'Llegint', idUsuari: userId },
+      { NomLlista: 'Llegit', idUsuari: userId },
+    ]);
+
+    if (llistesError) {
+      Alert.alert('Error al crear les llistes predeterminades', llistesError.message);
+      setLoading(false);
+      return;
+    }
+       /*CODI NURIA */
 
       Alert.alert(
         'Compte creat',
