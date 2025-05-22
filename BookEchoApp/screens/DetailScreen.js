@@ -62,7 +62,7 @@ const DetailScreen = () => {
     <ScrollView style={styles.container}>
       <View style={styles.header}>
         <BackButton />
-       
+
         <Text
           style={[styles.headertitle, typography.subtitleLight]}
           numberOfLines={1}
@@ -70,11 +70,11 @@ const DetailScreen = () => {
         >
           {book.title}
         </Text>
- <Overlay
+        <Overlay
           style={[styles.overlay, typography.subtitleRegular]}
-       /*   title="Opcions de Llibre"
-          delateText="Afegeix a una llista de llibres"
-          editText="Comparteix"*/
+          /*   title="Opcions de Llibre"
+             delateText="Afegeix a una llista de llibres"
+             editText="Comparteix"*/
           contentType="BookOptions"
           bookTitle={book.title}
         />
@@ -140,6 +140,8 @@ const DetailScreen = () => {
                   title={review.title}
                   content={review.text}
                   date={review.date}
+                  userName="Blanca V."
+                  userImageUri="https://i.pravatar.cc/300"
                 />
               ) : (
                 <StarRating
@@ -186,8 +188,8 @@ const styles = StyleSheet.create({
     paddingTop: 40,
     marginBottom: 26,
     gap: 18,
-    alignItems: 'center',       // para centrar verticalmente
-    justifyContent: 'space-between',  // para separar el contenido si quieres
+    alignItems: 'center',
+    justifyContent: 'space-between',
     flex: 1,
     paddingHorizontal: 27,
   },

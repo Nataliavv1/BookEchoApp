@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import colors from '../../styles/colors';
 import typography from '../../styles/typography';
+import IconButton from '../buttons/iconbutton';
 import { Ionicons } from '@expo/vector-icons';
 
-const UserReviewCard = ({ rating, title, content, date }) => {
+const UserReviewCard = ({ rating, title, content, date, userName, userImageUri }) => {
   const [expanded, setExpanded] = useState(false);
 
   const toggleExpanded = () => {
@@ -13,14 +14,35 @@ const UserReviewCard = ({ rating, title, content, date }) => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.ratingRow}>
-        <Ionicons name="star" size={20} color={colors.NormalYellow} />
-        <Text style={[typography.H3Regular, { color: colors.NormalGrey, marginLeft: 4 }]}>
-          {rating}
-        </Text>
+
+      <View style={styles.userRow}>
+        <View style={styles.userInfoLeft}>
+          {userImageUri ? (
+            <Image source={{ uri: userImageUri }} style={styles.avatar} />
+          ) : (
+            <Ionicons name="person-circle-outline" size={30} color={colors.NormalGrey} />
+          )}
+
+          <Text style={[typography.labelSemiBold, { marginLeft: 12, color: colors.NormalGrey }]}>
+            {userName || 'Usuari'}
+          </Text>
+
+          <Ionicons name="star" size={16} color={colors.NormalYellow} style={{ marginLeft: 12 }} />
+          <Text style={[typography.labelSemiBold, { color: colors.NormalGrey, marginLeft: 4 }]}>
+            {rating}
+          </Text>
+        </View>
+
+        <IconButton
+          icon="dots-vertical"
+          library="MaterialCommunityIcons"
+          color={colors.NormalGrey}
+          onPress={() => console.log("IconButton pressed")}
+        />
       </View>
 
-      <Text style={[typography.H3Bold, { color: colors.DarkerGrey, marginTop: 10 }]}>
+
+      <Text style={[typography.H3Bold, { color: colors.DarkGrey, marginTop: 10 }]}>
         {title}
       </Text>
 
@@ -31,7 +53,7 @@ const UserReviewCard = ({ rating, title, content, date }) => {
         {content}
       </Text>
 
-      {content.length > 15 && (
+      {content.length > 35 && (
         <TouchableOpacity onPress={toggleExpanded}>
           <Text style={[typography.labelRegular, styles.veureMes]}>
             {expanded ? 'Veure menys' : 'Veure més'}
@@ -48,6 +70,7 @@ const UserReviewCard = ({ rating, title, content, date }) => {
   );
 };
 
+
 const styles = StyleSheet.create({
   container: {
     marginTop: 27,
@@ -63,7 +86,22 @@ const styles = StyleSheet.create({
   },
   veureMes: {
     marginTop: 6,
-    color: colors.DarkerTurquoise,
+    color: colors.DarkTurquoise,
+  },
+  userRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: 12,
+  },
+  avatar: {
+    width: 30,
+    height: 30,
+    borderRadius: 20,
+  },
+  userInfoLeft: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
 });
 
