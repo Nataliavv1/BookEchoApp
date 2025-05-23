@@ -113,13 +113,13 @@ const DetailScreen = () => {
           {selectedOption === "option1" && (
             <View style={[styles.content1, { color: colors.DarkerTurquoise }]}>
               <Text style={typography.H3Bold}>Descripció</Text>
-              <Text>{book.description ? cleanHtmlToTextCompact(book.description) : "Sin descripción"}</Text>
+              <Text style={typography.bodyRegular}>{book.description ? cleanHtmlToTextCompact(book.description) : "Sin descripción"}</Text>
 
               <Text style={typography.H3Bold}>Gèneres</Text>
-              <Text>{book.categories.length > 0 ? book.categories.join(', ') : "Sense gèneres disponibles"}</Text>
+              <Text style={typography.bodyRegular}>{book.categories.length > 0 ? book.categories.join(', ') : "Sense gèneres disponibles"}</Text>
 
               <Text style={typography.H3Bold}>Número ISBN</Text>
-              <Text>{book.isbn?.identifier || "Sense ISBN disponible"}</Text>
+              <Text style={typography.bodyRegular}>{book.isbn?.identifier || "Sense ISBN disponible"}</Text>
 
               <Text style={typography.H3Bold}>Similars</Text>
             </View>

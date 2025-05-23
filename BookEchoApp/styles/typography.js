@@ -17,8 +17,8 @@ const typography = {
       fontSize: 24,
       lineHeight: 28,
       letterSpacing: 0,
-      fontFamily: 'Urbanist',
-      fontWeight: '400', // Regular
+      fontFamily: 'Urbanist_400Regular',
+     // fontWeight: '400', // Regular
     },
     H1Medium: {
       fontSize: 24,
@@ -38,8 +38,8 @@ const typography = {
       fontSize: 24,
       lineHeight: 28,
       letterSpacing: 0,
-      fontFamily: 'Urbanist',
-      fontWeight: '700', // Bold
+      fontFamily: 'Urbanist_700Bold',
+    //  fontWeight: '700', // Bold
     },
     H1ExtraBold: {
       fontSize: 24,
@@ -68,8 +68,8 @@ const typography = {
       fontSize: 20,
       lineHeight: 24,
       letterSpacing: 0,
-      fontFamily: 'Urbanist',
-      fontWeight: '400', // Regular
+      fontFamily: 'Urbanist_400Regular',
+    //  fontWeight: '400', // Regular
     },
     H2Medium: {
       fontSize: 20,
@@ -89,8 +89,8 @@ const typography = {
       fontSize: 20,
       lineHeight: 24,
       letterSpacing: 0,
-      fontFamily: 'Urbanist',
-      fontWeight: '700', // Bold
+      fontFamily: 'Urbanist_700Bold',
+    //  fontWeight: '700', // Bold
     },
     H2ExtraBold: {
       fontSize: 20,
@@ -119,8 +119,8 @@ const typography = {
       fontSize: 18,
       lineHeight: 22,
       letterSpacing: 0,
-      fontFamily: 'Urbanist',
-      fontWeight: '400', // Regular
+      fontFamily: 'Urbanist_400Regular',
+     // fontWeight: '400', // Regular
     },
     H3Medium: {
       fontSize: 18,
@@ -140,8 +140,8 @@ const typography = {
       fontSize: 18,
       lineHeight: 22,
       letterSpacing: 0,
-      fontFamily: 'Urbanist',
-      fontWeight: '700', // Bold
+      fontFamily: 'Urbanist_700Bold',
+     // fontWeight: '700', // Bold
     },
     H3ExtraBold: {
       fontSize: 18,
@@ -170,8 +170,8 @@ const typography = {
       fontSize: 16,
       lineHeight: 20,
       letterSpacing: 0,
-      fontFamily: 'Raleway',
-      fontWeight: '400', // Regular
+      fontFamily: 'Raleway_400Regular',
+     // fontWeight: '400', // Regular
     },
     subtitleMedium: {
       fontSize: 16,
@@ -191,8 +191,8 @@ const typography = {
       fontSize: 16,
       lineHeight: 20,
       letterSpacing: 0,
-      fontFamily: 'Raleway',
-      fontWeight: '700', // Bold
+      fontFamily: 'Raleway_700Bold',
+   //   fontWeight: '700', // Bold
     },
     subtitleExtraBold: {
       fontSize: 16,
@@ -221,8 +221,9 @@ const typography = {
       fontSize: 16,
       lineHeight: 20,
       letterSpacing: 0,
-      fontFamily: 'Raleway',
-      fontWeight: '400', // Regular
+       fontFamily: 'Raleway_400Regular',
+     // fontFamily: 'Raleway',
+    //  fontWeight: '400', // Regular
     },
     bodyMedium: {
       fontSize: 16,
@@ -242,8 +243,8 @@ const typography = {
       fontSize: 16,
       lineHeight: 20,
       letterSpacing: 0,
-      fontFamily: 'Raleway',
-      fontWeight: '700', // Bold
+      fontFamily: 'Raleway_700Bold',
+  //    fontWeight: '700', // Bold
     },
     bodyExtraBold: {
       fontSize: 16,
@@ -272,8 +273,8 @@ const typography = {
       fontSize: 16,
       lineHeight: 20,
       letterSpacing: 0,
-      fontFamily: 'Urbanist',
-      fontWeight: '400', // Regular
+      fontFamily: 'Urbanist_400Regular',
+    //  fontWeight: '400', // Regular
     },
     buttonMedium: {
       fontSize: 16,
@@ -293,8 +294,8 @@ const typography = {
       fontSize: 16,
       lineHeight: 20,
       letterSpacing: 0,
-      fontFamily: 'Urbanist',
-      fontWeight: '700', // Bold
+      fontFamily: 'Urbanist_700Bold',
+   //   fontWeight: '700', // Bold
     },
     buttonExtraBold: {
       fontSize: 16,
@@ -316,8 +317,8 @@ const typography = {
       fontSize: 14,
       lineHeight: 18,
       letterSpacing: 0,
-      fontFamily: 'Raleway',
-      fontWeight: '400', // Regular
+      fontFamily: 'Raleway_400Regular',
+     // fontWeight: '400', // Regular
     },
     labelMedium: {
       fontSize: 14,
@@ -337,8 +338,8 @@ const typography = {
       fontSize: 14,
       lineHeight: 18,
       letterSpacing: 0,
-      fontFamily: 'Raleway',
-      fontWeight: '700', // Bold
+      fontFamily: 'Raleway_700Bold',
+    //  fontWeight: '700', // Bold
     },
     labelExtraBold: {
       fontSize: 14,
@@ -367,8 +368,8 @@ const typography = {
       fontSize: 12,
       lineHeight: 16,
       letterSpacing: 0,
-      fontFamily: 'Raleway',
-      fontWeight: '400', // Regular
+      fontFamily: 'Raleway_400Regular',
+     // fontWeight: '400', // Regular
     },
     footerMedium: {
       fontSize: 12,
@@ -388,8 +389,8 @@ const typography = {
       fontSize: 12,
       lineHeight: 16,
       letterSpacing: 0,
-      fontFamily: 'Raleway',
-      fontWeight: '700', // Bold
+      fontFamily: 'Raleway_700Bold',
+   //   fontWeight: '700', // Bold
     },
     footerExtraBold: {
       fontSize: 12,
