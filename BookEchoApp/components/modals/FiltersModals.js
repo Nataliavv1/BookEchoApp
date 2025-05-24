@@ -48,6 +48,16 @@ export default function FiltersModal({ filters, setFilters, onClose }) {
     }));
   };
 
+  // Función para eliminar todos los filtros
+  const clearAllFilters = () => {
+    setFilters({
+      genre: '',
+      filter: '',
+      printType: '',
+      orderBy: '',
+    });
+  };
+
   return (
     <View style={styles.modalBackground}>
       <View style={styles.modalContainer}>
@@ -141,9 +151,14 @@ export default function FiltersModal({ filters, setFilters, onClose }) {
           })}
         </ScrollView>
 
+        {/* Botón para eliminar todos los filtros */}
+        <Pressable onPress={clearAllFilters} style={styles.clearButton}>
+          <Text style={[typography.buttonBold, { color: colors.NormalGrey }]}>Eliminar todos los filtros</Text>
+        </Pressable>
+
         {/* Botón para cerrar modal */}
         <Pressable onPress={onClose} style={styles.closeButton}>
-          <Text style={typography.buttonBold}>Cerrar</Text>
+          <Text style={[typography.buttonBold, { color: colors.NormalWhite }]}>Cerrar</Text>
         </Pressable>
       </View>
     </View>
@@ -180,6 +195,13 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     borderRadius: 20,
     marginRight: 10,
+  },
+  clearButton: {
+    backgroundColor: colors.LightGrey,
+    paddingVertical: 12,
+    borderRadius: 8,
+    alignItems: 'center',
+    marginBottom: 10,
   },
   closeButton: {
     backgroundColor: colors.NormalTurquoise,
