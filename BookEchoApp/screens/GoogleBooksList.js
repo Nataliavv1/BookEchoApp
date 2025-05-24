@@ -1,16 +1,15 @@
-// GoogleBooksList.js
 import React, { useEffect, useState } from "react";
 import { useNavigation } from '@react-navigation/native';
 import { View, Text, FlatList, Image, StyleSheet, TouchableOpacity } from "react-native";
 
 const API_KEY = "AIzaSyAdrMfk5xKeXebgngAXQjrKshHuhAAklyM";
 
-const GoogleBooksList = ({ query }) => {
+const GoogleBooksList = ({ query, style }) => {
     const [books, setBooks] = useState([]);
     const navigation = useNavigation();
 
     useEffect(() => {
-        if (query.length < 3) return; // no busques si la palabra es muy corta
+        if (query.length < 3) return;
 
         const fetchBooks = async () => {
             try {
@@ -28,7 +27,7 @@ const GoogleBooksList = ({ query }) => {
     }, [query]);
 
     return (
-        <View style={styles.container}>
+        <View style={[styles.container, style]}>
             {books.length === 0 ? (
                 <Text style={styles.noResults}>No hay resultados</Text>
             ) : (
@@ -43,7 +42,6 @@ const GoogleBooksList = ({ query }) => {
                                 titol: volume.title,
                                 autors: volume.authors,
                                 id: item.id,
-                             //   description: volume.description,  // Puedes agregar más parámetros si lo necesitas
                                 imatge: volume.imageLinks?.thumbnail,
                             }
                             )}>
@@ -62,7 +60,6 @@ const GoogleBooksList = ({ query }) => {
                                     </View>
                                 </View>
                             </TouchableOpacity>
-
                         );
                     }}
                 />
@@ -75,7 +72,6 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         width: "100%",
-        paddingHorizontal: 20,
         marginTop: 10,
     },
     bookItem: {
