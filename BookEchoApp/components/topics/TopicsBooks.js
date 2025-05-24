@@ -7,13 +7,10 @@ import {
     Pressable,
     Image,
 } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
 import colors from '../../styles/colors';
 import typography from '../../styles/typography';
 
-export default function TopicsBooks() {
-    const navigation = useNavigation();
-
+export default function TopicsBooks({ selectedTopic, setSelectedTopic }) {
     const topics = [
         {
             id: 1,
@@ -70,25 +67,41 @@ export default function TopicsBooks() {
             <Text style={[styles.title, typography.H2Bold]}>Topics</Text>
 
             <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                {topics.map((topic) => (
-                    <Pressable
-                        key={topic.id}
-                        onPress={() =>
-                            navigation.navigate('BooksByTopic', { topic: topic.name })
-                        }
-                        style={({ pressed }) => [
-                            styles.topicCard,
-                            {
-                                backgroundColor: pressed ? topic.activeColor : topic.color,
-                            },
-                        ]}
-                    >
-                        <Image source={topic.image} style={styles.image} resizeMode="contain" />
-                        <Text style={[typography.footerSemiBold, { color: colors.NormalWhite }]}>
-                            {topic.subtitle}
-                        </Text>
-                    </Pressable>
-                ))}
+                {topics.map((topic) => {
+                    const isActive = selectedTopic === topic.name;
+                    return (
+                        <Pressable
+                            key={topic.id}
+                            onPress={() =>
+                                setSelectedTopic(isActive ? '' : topic.name)
+                            }
+                            style={({ pressed }) => [
+                                styles.topicCard,
+                                {
+                                    backgroundColor: pressed
+                                        ? topic.activeColor
+                                        : isActive
+                                        ? topic.activeColor
+                                        : topic.color,
+                                },
+                            ]}
+                        >
+                            <Image
+                                source={topic.image}
+                                style={styles.image}
+                                resizeMode="contain"
+                            />
+                            <Text
+                                style={[
+                                    typography.footerSemiBold,
+                                    { color: colors.NormalWhite },
+                                ]}
+                            >
+                                {topic.subtitle}
+                            </Text>
+                        </Pressable>
+                    );
+                })}
             </ScrollView>
         </View>
     );
@@ -96,7 +109,6 @@ export default function TopicsBooks() {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
         paddingVertical: 20,
         paddingHorizontal: 20,
     },
