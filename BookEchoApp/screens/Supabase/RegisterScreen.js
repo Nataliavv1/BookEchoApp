@@ -128,10 +128,10 @@ export default function RegisterScreen({ navigation }) {
       }
 
       /*CODI NURIA: Per afegir les llistes predeterminades al registrarse*/
-        const { error: llistesError } = await supabase.from('Llista').insert([
-      { NomLlista: 'Per llegir', idUsuari: userId },
-      { NomLlista: 'Llegint', idUsuari: userId },
-      { NomLlista: 'Llegit', idUsuari: userId },
+        const { error: llistesError } = await supabase.from('llista').insert([
+      { nom: 'Per llegir', usuari_id: userId },
+      { nom: 'Llegint', usuari_id: userId },
+      { nom: 'Llegit', usuari_id: userId },
     ]);
 
     if (llistesError) {
