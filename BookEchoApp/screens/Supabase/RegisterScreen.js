@@ -129,9 +129,9 @@ export default function RegisterScreen({ navigation }) {
 
       /*CODI NURIA: Per afegir les llistes predeterminades al registrarse*/
         const { error: llistesError } = await supabase.from('llista').insert([
-      { nom: 'Per llegir', usuari_id: userId },
-      { nom: 'Llegint', usuari_id: userId },
-      { nom: 'Llegit', usuari_id: userId },
+      { nom: 'Per llegir', usuari_id: userId, es_predeterminada: true, tipus_predeterminat: 'Per llegir', image: 'https://bizqtmcljmduxrqwmdsh.supabase.co/storage/v1/object/public/llistes//perLlegir.png' },
+      { nom: 'Llegint', usuari_id: userId, es_predeterminada: true, tipus_predeterminat: 'Llegint', image: 'https://bizqtmcljmduxrqwmdsh.supabase.co/storage/v1/object/public/llistes//llegint.png' },
+      { nom: 'Llegit', usuari_id: userId, es_predeterminada: true, tipus_predeterminat: 'Llegit', image: 'https://bizqtmcljmduxrqwmdsh.supabase.co/storage/v1/object/public/llistes//llegit.png'},
     ]);
 
     if (llistesError) {
