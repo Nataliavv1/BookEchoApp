@@ -1,5 +1,5 @@
-import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import React, { useEffect, useState } from 'react';
+import { View, Text, StyleSheet, ActivityIndicator, ScrollView } from "react-native";
 import Button from "../components/buttons/button";
 import ButtonReadState from "../components/buttons/buttonReadState";
 import IconButton from "../components/buttons/iconbutton";
@@ -10,40 +10,95 @@ import colors from "../styles/colors";
 import typography from "../styles/typography";
 import Llista from "../components/libraryScreenComp/llista";
 import perLlegir from "../assets/images/perLlegir.png";
+import { fetchLlistes } from "../Model/FetchLlistes";
 
 const LibraryScreen = () => {
+    const [llistes, setLlistes] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [selectedOption, setSelectedOption] = useState("option1");
+    useEffect(() => {
+        async function carregarLlistes() {
+            const data = await fetchLlistes();
+            if (data) setLlistes(data);
+            setLoading(false);
+        }
+        carregarLlistes();
+    }, []);
+
+    if (loading) {
+        return <ActivityIndicator size="large" style={styles.loading} />;
+    }
+
     return (
-        <View style={styles.container}>
+        <ScrollView>
 
-            <Text style={[styles.title, typography.H1Bold]}>La Meva Biblioteca</Text>
-            <Toggle text1="Les meves llistes" text2="Tots els llibres"></Toggle>
-            <View>
+            <View style={styles.container}>
+                <Text style={[styles.title, typography.H1Bold]}>La Meva Biblioteca</Text>
+                <Toggle text1="Les meves llistes" text2="Tots els llibres" selected={selectedOption} onChange={setSelectedOption}></Toggle>
+                <View style={styles.modifyList}>
+                    <Dropdown></Dropdown>
+                    <IconButton icon={'plus'}></IconButton>
+                </View>
 
-                <IconButton icon={'view-list'}></IconButton>
-                <Text>Default</Text>
+                <View style={styles.dynamicContainer}>
+                    {selectedOption === "option1" && (
+                        <View style={styles.llistesContainer}>
+                            {llistes.map((llista, index) => (
+                                <Llista
+                                    key={index}
+                                    nomLlista={llista.nom}
+                                    imatge={perLlegir}
+                                    numllibres={0} />
+                            ))}
+                        </View>
+                    )}
 
-                <IconButton icon={'plus'}></IconButton>
+                    {selectedOption === "option2" && (
+                        <View></View>
+                    )}
 
-                <Dropdown></Dropdown>
+                </View>
+
+
+
+
 
             </View>
 
-<Llista nomLlista={"Per Llegir"} imatge={perLlegir} numllibres={0}></Llista>
-        </View>
+
+        </ScrollView>
     );
 };
 
 const styles = StyleSheet.create({
     container: {
+        marginTop: 100,
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
+    },
+    modifyList: {
+        width: '100%',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        paddingLeft: 14,
+        paddingRight: 14,
     },
     title: {
         fontSize: 30,
         textAlign: "center",
         color: colors.DarkTurquoise,
     },
+    llistesContainer: {
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        justifyContent: 'flex-start',
+        gap: 16,
+        maxWidth: 306,
+
+
+    }
 });
 
 export default LibraryScreen;
