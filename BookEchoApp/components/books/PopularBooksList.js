@@ -95,7 +95,7 @@ const PopularBooksList = () => {
                 )}
 
                 <View style={styles.ratingContainer}>
-                  <AntDesign name="star" size={24} color="#f1c40f" />
+                  <AntDesign name="star" size={18} color="#f1c40f" />
                   <Text style={styles.ratingText}>
                     {rating !== undefined ? rating.toFixed(1) : '-'}
                   </Text>

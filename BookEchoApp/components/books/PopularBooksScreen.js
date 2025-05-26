@@ -9,8 +9,12 @@ import {
   ActivityIndicator,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import BackButton from '../buttons/backbutton';
+import AntDesign from '@expo/vector-icons/AntDesign';
 
+import BackButton from '../buttons/backbutton';
+import ButtonReadState from '../buttons/buttonReadState';
+import colors from '../../styles/colors';
+import typography from '../../styles/typography';
 
 const API_KEY = "AIzaSyAdrMfk5xKeXebgngAXQjrKshHuhAAklyM";
 
@@ -57,6 +61,8 @@ const PopularBooksScreen = () => {
         contentContainerStyle={styles.listContent}
         renderItem={({ item }) => {
           const volume = item.volumeInfo;
+          const rating = volume.averageRating;
+
           return (
             <TouchableOpacity
               style={styles.bookItem}
@@ -69,17 +75,41 @@ const PopularBooksScreen = () => {
                 })
               }
             >
-              {volume.imageLinks?.thumbnail ? (
-                <Image
-                  source={{ uri: volume.imageLinks.thumbnail }}
-                  style={styles.thumbnail}
-                />
-              ) : (
-                <View style={[styles.thumbnail, styles.placeholder]} />
-              )}
-              <Text style={styles.bookTitle} numberOfLines={2}>
+              <View style={{ position: "relative" }}>
+                {volume.imageLinks?.thumbnail ? (
+                  <Image
+                    source={{ uri: volume.imageLinks.thumbnail }}
+                    style={styles.thumbnail}
+                  />
+                ) : (
+                  <View style={[styles.thumbnail, styles.placeholder]} />
+                )}
+
+                <ButtonReadState style={styles.buttonReadState} />
+
+                <View style={styles.ratingContainer}>
+                  <AntDesign name="star" size={16} color="#f1c40f" />
+                  <Text style={styles.ratingText}>
+                    {rating !== undefined ? rating.toFixed(1) : '-'}
+                  </Text>
+                </View>
+              </View>
+
+              <Text
+                style={[styles.bookTitle, typography.bodyBold, { color: colors.HoverDarkGrey }]}
+                numberOfLines={2}
+              >
                 {volume.title}
               </Text>
+
+              {volume.authors && (
+                <Text
+                  style={[styles.bookAuthor, typography.labelMedium, { color: colors.MediumGrey }]}
+                  numberOfLines={1}
+                >
+                  {volume.authors.join(", ")}
+                </Text>
+              )}
             </TouchableOpacity>
           );
         }}
@@ -103,8 +133,8 @@ const styles = StyleSheet.create({
     fontSize: 22,
     fontWeight: "bold",
     textAlign: "center",
-    flex: 1, // permite que el título se centre incluso con el botón a la izquierda
-    marginRight: 24, // espacio para equilibrar visualmente el botón
+    flex: 1,
+    marginRight: 24,
   },
   listContent: {
     paddingBottom: 20,
@@ -126,10 +156,35 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
+  buttonReadState: {
+    position: 'absolute',
+    top: 8,
+    right: 8,
+  },
+  ratingContainer: {
+    position: "absolute",
+    bottom: 8,
+    left: 8,
+    backgroundColor: "white",
+    borderRadius: 5,
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  ratingText: {
+    marginLeft: 4,
+    fontSize: 12,
+    fontWeight: "bold",
+    color: "#444",
+  },
   bookTitle: {
     marginTop: 6,
-    fontSize: 14,
-    textAlign: "center",
+    textAlign: "left",
+  },
+  bookAuthor: {
+    marginTop: 2,
+    textAlign: "left",
   },
 });
 

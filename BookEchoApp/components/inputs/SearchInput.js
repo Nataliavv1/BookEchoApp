@@ -1,25 +1,32 @@
 import React, { useState } from 'react';
-import { View, TextInput, StyleSheet } from 'react-native';
+import { View, TextInput, StyleSheet, TouchableOpacity, Platform } from 'react-native';
 import AntDesign from '@expo/vector-icons/AntDesign';
 
-// Importem els estils
 import colors from '../../styles/colors';
 import typography from '../../styles/typography';
 
-// Componente de input de búsqueda amb icona de lupa
 export default function SearchInput({ value, onChangeText }) {
-    const [isFocused, setIsFocused] = useState(false); 
+    const [isFocused, setIsFocused] = useState(false);
+
+    const handleClear = () => {
+        onChangeText('');
+    };
 
     return (
         <View style={[styles.container, isFocused && styles.containerFocused]}>
-            <AntDesign 
-                name="search1" 
-                size={15} 
-                color={isFocused ? colors.LightActiveGrey : '#E7E7E7'} 
-                style={styles.icon} 
+            <AntDesign
+                name="search1"
+                size={15}
+                color={isFocused ? colors.LightActiveGrey : '#E7E7E7'}
+                style={styles.icon}
             />
+
             <TextInput
-                style={[styles.input, typography.labelRegular]}
+                style={[
+                    styles.input,
+                    typography.labelRegular,
+                    Platform.OS === 'web' && styles.inputWeb, // ⬅️ estilo especial para web
+                ]}
                 placeholder="Buscar llibres..."
                 placeholderTextColor={isFocused ? colors.LightActiveGrey : '#E7E7E7'}
                 value={value}
@@ -27,6 +34,17 @@ export default function SearchInput({ value, onChangeText }) {
                 onFocus={() => setIsFocused(true)}
                 onBlur={() => setIsFocused(false)}
             />
+
+            {value.length > 0 && (
+                <TouchableOpacity onPress={handleClear}>
+                    <AntDesign
+                        name="close"
+                        size={16}
+                        color={colors.LightActiveGrey}
+                        style={styles.clearIcon}
+                    />
+                </TouchableOpacity>
+            )}
         </View>
     );
 }
@@ -55,5 +73,13 @@ const styles = StyleSheet.create({
         flex: 1,
         color: colors.NormalGrey,
         paddingVertical: 6,
+    },
+    inputWeb: {
+        outlineStyle: 'none',
+        boxShadow: 'none',
+        borderWidth: 0,
+    },
+    clearIcon: {
+        marginLeft: 5,
     },
 });
