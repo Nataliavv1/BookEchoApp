@@ -1,7 +1,7 @@
-// App.js
 import React from 'react';
 import Navigation from './Navigation';
-import { UserProvider } from './context/UserContext'; // importa el contexto
+import { UserProvider } from './context/UserContext';
+import { ChallengeProvider } from './context/ChallengeContext';  // IMPORTA ChallengeProvider
 
 import { useFonts } from 'expo-font';
 import {
@@ -27,7 +27,9 @@ export default function App() {
 
   return (
     <UserProvider>
-      <Navigation />
+      <ChallengeProvider>
+        <Navigation />
+      </ChallengeProvider>
     </UserProvider>
   );
 }

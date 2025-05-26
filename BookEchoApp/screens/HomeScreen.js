@@ -8,6 +8,10 @@ import TopicsBooks from "../components/topics/TopicsBooks";
 import FiltersModal from "../components/modals/FiltersModals";
 import PopularBooksList from "../components/books/PopularBooksList";
 
+// Importamos el componente ActiveChallengesSection
+import ActiveChallengesSection from "../components/challenges/ActiveChallengesSection";
+
+
 const HomeScreen = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [showFilters, setShowFilters] = useState(false);
@@ -62,6 +66,8 @@ const HomeScreen = () => {
         selectedTopic={filters.genre}
         setSelectedTopic={(genre) => setFilters({ ...filters, genre })}
       />
+      {/* Sección de retos activos */}
+      <ActiveChallengesSection />
 
       {/* Mostrar resultados si hay búsqueda o filtro por género */}
       {(searchQuery.length >= 3 || filters.genre) && (

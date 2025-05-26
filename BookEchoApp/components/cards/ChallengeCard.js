@@ -29,7 +29,13 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     borderRadius: 12,
     marginVertical: 10,
-    elevation: 3,
+     shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    
+    // Elevation para Android
+    elevation: 5,
   },
   image: {
     width: 60,
