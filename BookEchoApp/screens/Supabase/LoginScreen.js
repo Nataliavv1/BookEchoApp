@@ -20,10 +20,14 @@ import TextButton from '../../components/buttons/TextButton';
 import colors from '../../styles/colors';
 import typography from '../../styles/typography';
 
+import { useUser } from '../../context/UserContext'; // ✅ Importem el context
+
 export default function LoginScreen({ navigation }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
+
+  const { setUserProfile } = useUser(); // ✅ Accés al context
 
   const handleLogin = async () => {
     if (!email || !password) {
@@ -39,22 +43,43 @@ export default function LoginScreen({ navigation }) {
         password,
       });
 
-      setLoading(false);
-
       if (error) {
         Alert.alert('Error', error.message);
+        setLoading(false);
         return;
       }
 
+      // Verifiquem si el correu està confirmat
       if (!data.user.email_confirmed_at) {
-        Alert.alert('Error', 'Per poder iniciar sessió, has de confirmar el teu correu electrònic.');
+        Alert.alert(
+          'Error',
+          'Per poder iniciar sessió, has de confirmar el teu correu electrònic.'
+        );
+        setLoading(false);
         return;
       }
+
+      // Obtenim el perfil de l'usuari
+      const { data: profileData, error: profileError } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('id', data.user.id)
+        .single();
+
+      if (profileError || !profileData) {
+        Alert.alert('Error', 'No s\'han pogut carregar les dades del perfil.');
+        setLoading(false);
+        return;
+      }
+
+      // ✅ Guardem el perfil al context
+      setUserProfile(profileData);
 
       navigation.replace('Tabs');
     } catch (error) {
-      setLoading(false);
       Alert.alert('Error', 'Ha ocorregut un error inesperat');
+    } finally {
+      setLoading(false);
     }
   };
 

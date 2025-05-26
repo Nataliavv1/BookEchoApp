@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {supabase} from './Supabase/lib/supabaseClient';
 import {
   View,
@@ -14,8 +14,12 @@ import IconButton from '../components/buttons/iconbutton';
 import Button from '../components/buttons/button';
 import { useNavigation } from '@react-navigation/native';
 
+// Importamos el contexto de usuario para acceder al perfil
+import { useUser } from '../context/UserContext';
+
 export default function ProfileScreen() {
   const navigation = useNavigation();
+  const { userProfile } = useUser(); // Obtenim les dades del perfil des del context
 
   const handleEditPhoto = () => {
     navigation.navigate('EditPhotoScreen');
@@ -29,33 +33,35 @@ export default function ProfileScreen() {
     navigation.navigate('SharePopup');
   };
 
-  //const [userName, setUserName] = useState('');
+  // Aquest codi s'ha substituït per l'ús del context useUser
+  /*
+  const [userName, setUserName] = useState('');
 
-    /*useEffect(() => {
-        const fetchUserName = async () => {
-            const { data: { user }, error: userError } = await supabase.auth.getUser();
-            if (userError || !user) {
-            console.log('Error obtenint usuari:', userError);
-            return;
-            }
+  useEffect(() => {
+      const fetchUserName = async () => {
+          const { data: { user }, error: userError } = await supabase.auth.getUser();
+          if (userError || !user) {
+          console.log('Error obtenint usuari:', userError);
+          return;
+          }
 
-            const { data, error } = await supabase
-            .from('profiles')
-            .select('name')
-            .eq('id', user.id)
-            .single();
+          const { data, error } = await supabase
+          .from('profiles')
+          .select('name')
+          .eq('id', user.id)
+          .single();
 
-            if (error) {
-            console.log('Error obtenint perfil:', error.message);
-            } else {
-            setUserName(data.name);
-            }
-        };
+          if (error) {
+          console.log('Error obtenint perfil:', error.message);
+          } else {
+          setUserName(data.name);
+          }
+      };
 
-        fetchUserName();
-    }, []);*/
+      fetchUserName();
+  }, []);
+  */
 
-  
   return (
     <View style={styles.container}>
       <BackButton />
@@ -64,15 +70,24 @@ export default function ProfileScreen() {
 
         <View style={styles.profileHeader}>
           <View style={styles.profileHeaderSettings}>
-           <Text>settings button</Text> 
+            <Text>settings button</Text>
           </View>
-          <Image
-            //source={require('../assets/images/adaptive-icon.png')} més abaix:<Text style={styles.username}>{userName}</Text>
-            source={{uri:'https://i.pravatar.cc/300'}}
-            style={styles.avatar}
-          />
-          
-          <Text style={styles.username}>Nom Usuari</Text>
+
+          {/* Mostrem l'avatar de l'usuari si existeix, sinó un per defecte */}
+          {userProfile?.avatar_url ? (
+            <Image source={{ uri: userProfile.avatar_url }} style={styles.avatar} />
+          ) : (
+            <Image
+              source={{ uri: 'https://i.pravatar.cc/300' }}
+              style={styles.avatar}
+            />
+          )}
+
+          {/* Mostrem el nom d'usuari si està disponible */}
+          <Text style={styles.username}>
+            {userProfile?.username || 'Nom Usuari'}
+          </Text>
+
           <IconButton onPress={() => console.log('Open settings')} />
         </View>
 
@@ -206,5 +221,3 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
 });
-
-//export default ProfileScreen;

@@ -1,5 +1,7 @@
+// App.js
 import React from 'react';
-import Navigation from './Navigation'; // Importamos la navegación completa
+import Navigation from './Navigation';
+import { UserProvider } from './context/UserContext'; // importa el contexto
 
 import { useFonts } from 'expo-font';
 import {
@@ -24,7 +26,8 @@ export default function App() {
   }
 
   return (
-    // Renderizamos el sistema de navegación que gestiona Onboarding + resto de pantallas
-    <Navigation />
+    <UserProvider>
+      <Navigation />
+    </UserProvider>
   );
 }

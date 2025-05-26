@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Image } from 'react-native';
 import SearchInput from '../components/inputs/SearchInput';
 import IconButton from '../components/buttons/iconbutton2';
 import AntDesign from '@expo/vector-icons/AntDesign';
@@ -8,12 +8,22 @@ import FontAwesome from '@expo/vector-icons/FontAwesome';
 import colors from '../styles/colors';
 import typography from '../styles/typography';
 
+import { useUser } from '../context/UserContext';
+
 export default function Header({ searchQuery, setSearchQuery, onPressFilter, activeFiltersCount }) {
+  const { userProfile } = useUser();
+
   return (
     <View style={styles.container}>
       <View style={styles.userInfo}>
-        <FontAwesome name="user-circle-o" size={42} color="gray" />
-        <Text style={styles.userText}>User</Text>
+        {userProfile?.avatar_url ? (
+          <Image source={{ uri: userProfile.avatar_url }} style={styles.avatar} />
+        ) : (
+          <FontAwesome name="user-circle-o" size={42} color="gray" />
+        )}
+        <Text style={[styles.userText, typography.H2Bold]}>
+          {userProfile?.username || 'Usuari'}
+        </Text>
       </View>
 
       <View style={styles.searchRow}>
@@ -51,9 +61,13 @@ const styles = StyleSheet.create({
     paddingLeft: 15,
   },
   userText: {
-    fontSize: 20,
-    color: '#3B3B3B3B',
     marginLeft: 15,
+    color: colors.DarkHoverGrey,  // Aquí el color actualizado
+  },
+  avatar: {
+    width: 48,
+    height: 48,
+    borderRadius: 21,
   },
   searchRow: {
     flexDirection: 'row',
