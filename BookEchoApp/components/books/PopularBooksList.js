@@ -11,7 +11,7 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import AntDesign from '@expo/vector-icons/AntDesign';
 
-import ButtonReadState from '../buttons/buttonReadState'; // Importa tu botón con estado
+import ButtonReadState from '../buttons/buttonReadState';
 
 import colors from '../../styles/colors';
 import typography from '../../styles/typography';
@@ -95,21 +95,20 @@ const PopularBooksList = () => {
                 )}
 
                 <View style={styles.ratingContainer}>
-                  <AntDesign name="star" size={18} color="#f1c40f" />
-                  <Text style={styles.ratingText}>
+                  <AntDesign name="star" size={18} color={colors.NormalYellow} />
+                  <Text style={[styles.ratingText, typography.H3Regular]}>
                     {rating !== undefined ? rating.toFixed(1) : '-'}
                   </Text>
                 </View>
 
-                {/* Botón importado con estado, posicionado arriba a la derecha */}
                 <ButtonReadState style={styles.buttonReadState} />
               </View>
 
-              <Text style={styles.bookTitle} numberOfLines={2}>
+              <Text style={[styles.bookTitle, typography.subtitleBold]} numberOfLines={2}>
                 {volume.title}
               </Text>
               {volume.authors && (
-                <Text style={styles.bookAuthor} numberOfLines={1}>
+                <Text style={[styles.bookAuthor, typography.labelMedium]} numberOfLines={1}>
                   {volume.authors.join(", ")}
                 </Text>
               )}
@@ -152,7 +151,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     bottom: 8,
     left: 8,
-    backgroundColor: "white",
+    backgroundColor: colors.NormalWhite,
     borderRadius: 5,
     width: 52,
     height: 28,
@@ -164,8 +163,7 @@ const styles = StyleSheet.create({
   ratingText: {
     marginLeft: 6,
     fontSize: 14,
-    fontWeight: "bold",
-    color: "#444",
+    color: colors.NormalGrey,
   },
   thumbnail: {
     width: 120,
@@ -185,7 +183,7 @@ const styles = StyleSheet.create({
   },
   bookAuthor: {
     fontSize: 12,
-    color: "#666",
+    color: colors.NormalGrey,
     marginTop: 2,
     textAlign: "left",
   },
