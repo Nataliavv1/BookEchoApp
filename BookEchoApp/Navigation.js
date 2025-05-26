@@ -35,8 +35,9 @@ import AddReviewScreen from "./screens/AddReviewScreen";
 
 
 // Pantallas nuevas para Topics y Books
-import TopicsBooks from './components/topics/TopicsBooks';  // Actualiza la ruta aquí
-import BooksByTopicScreen from './components/topics/BooksByTopicsScreen';  // Actualiza la ruta aquí
+import TopicsBooks from './components/topics/TopicsBooks';
+import BooksByTopicScreen from './components/topics/BooksByTopicsScreen';
+import PopularBooksScreen from './components/books/PopularBooksScreen';
 
 // Importamos los íconos de Expo
 import AntDesign from '@expo/vector-icons/AntDesign';
@@ -92,7 +93,7 @@ function MyTabs() {
                 options={{
                     tabBarLabel: 'Afegeix',
                     tabBarIcon: ({ color }) => (
-                        <Overlay color={color} icon={'plus'} contentType={'AddBook'}/>  // Usa tu componente Overlay aquí 
+                        <Overlay color={color} icon={'plus'} contentType={'AddBook'} />  // Usa tu componente Overlay aquí 
                     ),
                     headerShown: false,
                 }} />
@@ -165,14 +166,20 @@ export default function Navigation() {
                     <Stack.Screen name="Details" component={DetailScreen} options={{ headerShown: false }} />
                     <Stack.Screen name="Scan" component={ScanScreen} options={{ headerShown: false }} />
                     <Stack.Screen name="Entrada" component={EntradaScreen} options={{ headerShown: false }} />
-                       <Stack.Screen name="Entrada2" component={EntradaScreen2} options={{ headerShown: false }} />
+                    <Stack.Screen name="Entrada2" component={EntradaScreen2} options={{ headerShown: false }} />
                     <Stack.Screen name="AllChallengesScreen" component={AllChallengesScreen} options={{ headerShown: false }} />
                     <Stack.Screen name="AddReview" component={AddReviewScreen}
-                     options={{ 
-                        headerShown: false 
+                        options={{
+                            headerShown: false
                         }} />
 
-                    {/* Agregar las nuevas pantallas de Topics y Books */}
+                    <Stack.Screen
+                        name="PopularBooksScreen"
+                        component={PopularBooksScreen}
+                        options={{ headerShown: false, title: "Llibres més populars" }}
+                    />
+
+                    {/* Pantallas Topics y Books */}
                     <Stack.Screen name="Topics" component={TopicsBooks} options={{ headerShown: false }} />
                     <Stack.Screen name="BooksByTopic" component={BooksByTopicScreen} options={{ headerShown: false }} />
                 </Stack.Navigator>
