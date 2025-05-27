@@ -4,7 +4,12 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import {useToggleReadState} from '../../Model/useToggleReadState';
 
 
-export default function ToggleReadState({ book, listIds }) {
+export default function ToggleReadState({ book}) {
+  const listIds = {
+            perLlegir: 31,
+            llegint: 32,
+            llegit: 33,
+          }
   const { selected, toggle } = useToggleReadState(book, listIds);
 
   const options = [

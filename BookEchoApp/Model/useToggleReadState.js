@@ -1,49 +1,57 @@
 import { useState, useEffect, useCallback } from 'react';
 import { checkBookExists, SaveBook, BookToList, RemoveBookFromList } from './BookTableModel';
 
+// hook  useToggleReadState.js
 export function useToggleReadState(book, listIds) {
-  const [selected, setSelected] = useState('none');   // estado UI
-  const [bookSaved, setBookSaved] = useState(false);  // ya en `llibre`
+  const [selected, setSelected] = useState('none');
+  const [bookSaved, setBookSaved] = useState(false);
 
-  // al montar: ¿existe el libro?
+  // ↪ traducir clave UI → clave del objeto listIds
+  const key2ctx = { toRead: 'perLlegir', reading: 'llegint', read: 'llegit' };
+
   useEffect(() => {
     (async () => {
-      const exists = await checkBookExists(book.id);
+      const exists = await checkBookExists(book.id);   // usa book.id (o isbn)
       setBookSaved(exists);
-      // (opcional) aquí podrías consultar en qué lista está para fijar `selected`
     })();
   }, [book.id]);
 
-  /** Cambia estado y sincroniza con Supabase */
-const toggle = useCallback(
-  async (newKey, prevKey) => {
-    // Actualizar UI rápido
-    const nextSelected = (newKey === prevKey) ? 'none' : newKey;
-    setSelected(nextSelected);
+  const toggle = useCallback(
+    async (newKey, prevKey) => {
+      const next = newKey === prevKey ? 'none' : newKey;
+      setSelected(next);
 
-    if (!bookSaved) {
-      await SaveBook(book);
-      setBookSaved(true);
-    }
-
-    if (prevKey !== 'none' && prevKey !== nextSelected) {
-      const prevListId = listIds[prevKey];
-      await RemoveBookFromList(prevListId, book.id);
-    }
-
-    if (nextSelected === 'none') {
-      if (prevKey !== 'none') {
-        const prevListId = listIds[prevKey];
-        await RemoveBookFromList(prevListId, book.id);
+      // 1· guarda el libro si aún no está
+      if (!bookSaved) {
+        await SaveBook(book);
+        setBookSaved(true);
       }
-    } else {
-      const newListId = listIds[nextSelected];
-      await BookToList(newListId, book.id);
-    }
-  },
-  [book, bookSaved, listIds]
-);
 
+      // 2· quita de la lista anterior (si cambia)
+      if (prevKey !== 'none' && prevKey !== next) {
+        await RemoveBookFromList(
+          listIds[key2ctx[prevKey]],
+          book.id
+        );
+      }
+
+      // 3· añade o quita según next
+      if (next === 'none') {
+        if (prevKey !== 'none') {
+          await RemoveBookFromList(
+            listIds[key2ctx[prevKey]],
+            book.id
+          );
+        }
+      } else {
+        await BookToList(
+          listIds[key2ctx[next]],
+          book.id
+        );
+      }
+    },
+    [book, bookSaved, listIds]
+  );
 
   return { selected, toggle };
 }
