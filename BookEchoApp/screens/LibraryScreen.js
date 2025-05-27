@@ -11,19 +11,22 @@ import typography from "../styles/typography";
 import Llista from "../components/libraryScreenComp/llista";
 import perLlegir from "../assets/images/perLlegir.png";
 import { fetchLlistes } from "../Model/FetchLlistes";
+import { useUser } from '../context/UserContext';
 
 const LibraryScreen = () => {
     const [llistes, setLlistes] = useState([]);
     const [loading, setLoading] = useState(true);
     const [selectedOption, setSelectedOption] = useState("option1");
+    const { userProfile } = useUser();
     useEffect(() => {
         async function carregarLlistes() {
-            const data = await fetchLlistes();
+            if (!userProfile) return;
+            const data = await fetchLlistes(userProfile);
             if (data) setLlistes(data);
             setLoading(false);
         }
         carregarLlistes();
-    }, []);
+    }, [userProfile]);
 
     if (loading) {
         return <ActivityIndicator size="large" style={styles.loading} />;
@@ -43,13 +46,17 @@ const LibraryScreen = () => {
                 <View style={styles.dynamicContainer}>
                     {selectedOption === "option1" && (
                         <View style={styles.llistesContainer}>
-                            {llistes.map((llista, index) => (
-                                <Llista
-                                    key={index}
-                                    nomLlista={llista.nom}
-                                    imatge={perLlegir}
-                                    numllibres={0} />
-                            ))}
+                            {llistes.map((llista, index) => {
+                             console.log("Llista completa:", llista);
+                                return (
+                                    <Llista
+                                        key={index}
+                                        nomLlista={llista.nom}
+                                        imatge={llista.image}
+                                        numllibres={0}
+                                    />
+                                );
+                            })}
                         </View>
                     )}
 
