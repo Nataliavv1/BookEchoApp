@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {supabase} from './Supabase/lib/supabaseClient';
 import {
   View,
@@ -13,6 +13,7 @@ import BackButton from '../components/buttons/backbutton';
 import IconButton from '../components/buttons/iconbutton';
 import Button from '../components/buttons/button';
 import { useNavigation } from '@react-navigation/native';
+import { AntDesign } from '@expo/vector-icons';
 
 // Importamos el contexto de usuario para acceder al perfil
 import { useUser } from '../context/UserContext';
@@ -32,6 +33,8 @@ export default function ProfileScreen() {
   const handleShare = () => {
     navigation.navigate('SharePopup');
   };
+
+  const [showSettings, setShowSettings] = useState(false);
 
   // Aquest codi s'ha substituït per l'ús del context useUser
   /*
@@ -69,9 +72,9 @@ export default function ProfileScreen() {
       <ScrollView contentContainerStyle={styles.scrollContent}>
 
         <View style={styles.profileHeader}>
-          <View style={styles.profileHeaderSettings}>
-            <Text>settings button</Text>
-          </View>
+          <TouchableOpacity style={styles.profileHeaderSettings} onPress={() => setShowSettings(true)}>
+            <AntDesign name="setting" size={24} color="#fff" />
+          </TouchableOpacity>
 
           {/* Mostrem l'avatar de l'usuari si existeix, sinó un per defecte */}
           {userProfile?.avatar_url ? (
@@ -119,23 +122,33 @@ export default function ProfileScreen() {
           </TouchableOpacity>
         </View>
 
-        <View style={styles.settingsCard}>
-          <TouchableOpacity onPress={handleEditPhoto}>
-            <Text style={styles.option}>📷 Edita la foto de perfil</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={handleEditProfile}>
-            <Text style={styles.option}>✏️ Edita el meu perfil</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={handleShare}>
-            <Text style={styles.option}>🔗 Comparteix el meu perfil</Text>
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <Text style={styles.option}>🚪 Tanca la sessió</Text>
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <Text style={[styles.option, styles.danger]}>🗑️ Elimina totes les dades</Text>
-          </TouchableOpacity>
-        </View>
+        {showSettings && (
+          <View style={styles.modalOverlay}>
+            <TouchableOpacity
+              style={styles.backdrop}
+              onPress={() => setShowSettings(false)}
+            />
+            <View style={styles.settingsCard}>
+              <TouchableOpacity onPress={handleEditPhoto}>
+                <Text style={styles.option}>📷 Edita la foto de perfil</Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={handleEditProfile}>
+                <Text style={styles.option}>✏️ Edita el meu perfil</Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={handleShare}>
+                <Text style={styles.option}>🔗 Comparteix el meu perfil</Text>
+              </TouchableOpacity>
+              <TouchableOpacity>
+                <Text style={styles.option}>🚪 Tanca la sessió</Text>
+              </TouchableOpacity>
+              <TouchableOpacity>
+                <Text style={[styles.option, styles.danger]}>
+                  🗑️ Elimina totes les dades
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        )}
 
       </ScrollView>
     </View>
@@ -175,6 +188,7 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: '#47AC9E',
     marginBottom: 10,
+    marginTop:10,
   },
   username: {
     fontSize: 22,
@@ -220,4 +234,26 @@ const styles = StyleSheet.create({
     color: '#D64545',
     fontWeight: 'bold',
   },
+  modalOverlay: {
+  position: 'absolute',
+  top: 0,
+  left: 0,
+  right: 0,
+  bottom: 0,
+  backgroundColor: 'rgba(0,0,0,0.4)',
+  justifyContent: 'center',
+  alignItems: 'center',
+  zIndex: 100,
+  },
+  backdrop: {
+    ...StyleSheet.absoluteFillObject,
+  },
+  settingsCard: {
+    backgroundColor: '#F9F9F9',
+    padding: 20,
+    borderRadius: 10,
+    zIndex: 101,
+    width: '85%',
+  },
+
 });
