@@ -113,7 +113,7 @@ console.log({
 
       <View style={styles.containerInfo}>
         <ToggleReadState book={{
-    id:                  book.id,
+    id:                  book.isbn?.identifier,
     isbn:                book.isbn?.identifier,
     descripcio:          book.description,
     autors:              book.autors,

@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { checkBookExists, saveBook, bookToList, removeBookFromList } from './BookTableModel';
+import { checkBookExists, SaveBook, BookToList, RemoveBookFromList } from './BookTableModel';
 
 export function useToggleReadState(book, listIds) {
   const [selected, setSelected] = useState('none');   // estado UI
@@ -22,23 +22,23 @@ const toggle = useCallback(
     setSelected(nextSelected);
 
     if (!bookSaved) {
-      await saveBook(book);
+      await SaveBook(book);
       setBookSaved(true);
     }
 
     if (prevKey !== 'none' && prevKey !== nextSelected) {
       const prevListId = listIds[prevKey];
-      await removeBookFromList(prevListId, book.id);
+      await RemoveBookFromList(prevListId, book.id);
     }
 
     if (nextSelected === 'none') {
       if (prevKey !== 'none') {
         const prevListId = listIds[prevKey];
-        await removeBookFromList(prevListId, book.id);
+        await RemoveBookFromList(prevListId, book.id);
       }
     } else {
       const newListId = listIds[nextSelected];
-      await bookToList(newListId, book.id);
+      await BookToList(newListId, book.id);
     }
   },
   [book, bookSaved, listIds]
