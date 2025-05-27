@@ -7,6 +7,7 @@ import { Ionicons } from '@expo/vector-icons';
 import Overlay from "../components/overlays&popups/Overlay";
 import Toggle from "../components/buttons/toggle";
 import ToggleReadState from "../components/buttons/toggleReadState";
+
 import Rates from "../components/detailScreenComp/rates";
 import BackButton from "../components/buttons/backbutton";
 import StarRating from "../components/detailScreenComp/StarRating";
@@ -57,6 +58,16 @@ const DetailScreen = () => {
       </View>
     );
   }
+console.log({
+  ToggleReadState,
+  Toggle,
+  Rates,
+  BackButton,
+  StarRating,
+  UserReviewCard,
+  Overlay,
+  IconButton,
+});
 
   return (
     <ScrollView style={styles.container}>
@@ -101,7 +112,26 @@ const DetailScreen = () => {
       </View>
 
       <View style={styles.containerInfo}>
-        <ToggleReadState />
+        <ToggleReadState book={{
+    id:                  book.id,
+    isbn:                book.isbn?.identifier,
+    descripcio:          book.description,
+    autors:              book.autors,
+    categories:          book.categories,
+    imatge:              book.imatge,
+    titol:               book.title,
+    puntuaciogoogle:     book.averageRating,
+    npuntuaciogoogle:    book.ratingCount,
+    puntuaciomitjana:    0,
+    npuntuaciomitjana:   0,
+        }}
+        //Obtenir del context
+          listIds={{
+            perLlegir: 31,
+            llegint: 32,
+            llegit: 33,
+          }}
+        />
         <Toggle
           text1={'Informació'}
           text2={'Ressenyes(143)'}
