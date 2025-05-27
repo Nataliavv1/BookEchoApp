@@ -58,16 +58,16 @@ const DetailScreen = () => {
       </View>
     );
   }
-console.log({
-  ToggleReadState,
-  Toggle,
-  Rates,
-  BackButton,
-  StarRating,
-  UserReviewCard,
-  Overlay,
-  IconButton,
-});
+  console.log({
+    ToggleReadState,
+    Toggle,
+    Rates,
+    BackButton,
+    StarRating,
+    UserReviewCard,
+    Overlay,
+    IconButton,
+  });
 
   return (
     <ScrollView style={styles.container}>
@@ -113,19 +113,19 @@ console.log({
 
       <View style={styles.containerInfo}>
         <ToggleReadState book={{
-    id:                  book.isbn?.identifier,
-    isbn:                book.isbn?.identifier,
-    descripcio:          book.description,
-    autors:              book.autors,
-    categories:          book.categories,
-    imatge:              book.imatge,
-    titol:               book.title,
-    puntuaciogoogle:     book.averageRating,
-    npuntuaciogoogle:    book.ratingCount,
-    puntuaciomitjana:    0,
-    npuntuaciomitjana:   0,
+          id: book.isbn?.identifier,
+          isbn: book.isbn?.identifier,
+          descripcio: book.description,
+          autors: book.autors,
+          categories: book.categories,
+          imatge: book.imatge,
+          titol: book.title,
+          puntuaciogoogle: book.averageRating,
+          npuntuaciogoogle: book.ratingCount,
+          puntuaciomitjana: 0,
+          npuntuaciomitjana: 0,
         }}
-        //Obtenir del context
+          //Obtenir del context
           listIds={{
             perLlegir: 31,
             llegint: 32,
@@ -170,8 +170,8 @@ console.log({
                   title={review.title}
                   content={review.text}
                   date={review.date}
-                  userName="Blanca V."
-                  userImageUri="https://i.pravatar.cc/300"
+                  userName={review.userName}
+                  userImageUri={review.userImageUri}
                 />
               ) : (
                 <StarRating
