@@ -2,14 +2,16 @@ import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import {useToggleReadState} from '../../Model/useToggleReadState';
-
+import { useLlistes } from '../../context/LlistesContext';
 
 export default function ToggleReadState({ book}) {
-  const listIds = {
-            perLlegir: 31,
-            llegint: 32,
-            llegit: 33,
-          }
+  const { llistesPredet } = useLlistes();
+const listIds = {
+  perLlegir: llistesPredet.perLlegir,
+  llegint: llistesPredet.llegint,
+  llegit: llistesPredet.llegit,
+};
+
   const { selected, toggle } = useToggleReadState(book, listIds);
 
   const options = [

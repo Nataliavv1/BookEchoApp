@@ -1,6 +1,7 @@
 import React from 'react';
 import Navigation from './Navigation';
 import { UserProvider } from './context/UserContext';
+import { LlistesProvider } from './context/LlistesContext';
 import { ChallengeProvider } from './context/ChallengeContext';  // IMPORTA ChallengeProvider
 
 import { useFonts } from 'expo-font';
@@ -27,9 +28,11 @@ export default function App() {
 
   return (
     <UserProvider>
-      <ChallengeProvider>
-        <Navigation />
-      </ChallengeProvider>
+      <LlistesProvider>
+        <ChallengeProvider>
+          <Navigation />
+        </ChallengeProvider>
+      </LlistesProvider>
     </UserProvider>
   );
 }

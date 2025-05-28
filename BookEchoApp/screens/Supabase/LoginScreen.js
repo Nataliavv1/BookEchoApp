@@ -21,6 +21,9 @@ import colors from '../../styles/colors';
 import typography from '../../styles/typography';
 
 import { useUser } from '../../context/UserContext'; // ✅ Importem el context
+import { useLlistes } from '../../context/LlistesContext'; // ✅ Importem el context de llistes
+import { fetchLlistesPredet } from '../../Model/FetchLlistes';
+// Importem la funcio per agafar les llistes predeterminades que volem guardar al context.
 
 export default function LoginScreen({ navigation }) {
   const [email, setEmail] = useState('');
@@ -28,6 +31,7 @@ export default function LoginScreen({ navigation }) {
   const [loading, setLoading] = useState(false);
 
   const { setUserProfile } = useUser(); // ✅ Accés al context
+  const { setLlistesPredet } = useLlistes(); // ✅ Accés al context de llistes
 
   const handleLogin = async () => {
     if (!email || !password) {
@@ -74,6 +78,14 @@ export default function LoginScreen({ navigation }) {
 
       // ✅ Guardem el perfil al context
       setUserProfile(profileData);
+
+      //Fem la funció de fetch llistes per obtenir les llistes predeterminades
+      const llistes = await fetchLlistesPredet(profileData);
+      //Guardem les llistes al context
+      if (llistes) {
+        setLlistesPredet(llistes);
+         console.log('Contexto actualizado con llistes:', llistes);
+      }
 
       navigation.replace('Tabs');
     } catch (error) {

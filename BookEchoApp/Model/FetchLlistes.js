@@ -25,3 +25,61 @@ export async function fetchLlistes(userProfile) {
     }));
 }
 
+/*
+export async function fetchLlistesPredet(userProfile) {
+  const { data, error } = await supabase
+    .from('llista')
+    .select('id, tipus_predeterminat')
+    .eq('usuari_id', userProfile.id)
+    .eq('es_predeterminada', true);
+
+  if (error) {
+    console.error('Error al obtenir les dades:', error.message);
+    return [];
+  }
+
+  console.log('Llistes:', data);
+
+  return data.map(llista => ({
+    id: llista.id,
+    tipus_predeterminat: llista.tipus_predeterminat,
+  }));
+}*/
+
+export async function fetchLlistesPredet(userProfile) {
+  const { data, error } = await supabase
+    .from('llista')
+    .select('id, tipus_predeterminat')
+    .eq('usuari_id', userProfile.id)
+    .eq('es_predeterminada', true);
+
+  if (error) {
+    console.error('Error al obtenir les dades:', error.message);
+    return null;
+  }
+
+  const result = {
+    llegint: null,
+    llegit: null,
+    perLlegir: null,
+  };
+
+  data.forEach(llista => {
+    switch (llista.tipus_predeterminat) {
+      case 'Llegint':
+        result.llegint = llista.id;
+        break;
+      case 'Llegit':
+        result.llegit = llista.id;
+        break;
+      case 'Per llegir':
+        result.perLlegir = llista.id;
+        break;
+    }
+  });
+console.log('fetchLlistesPredet result:', result);
+  return result;
+}
+
+
+

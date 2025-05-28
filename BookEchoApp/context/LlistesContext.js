@@ -16,4 +16,9 @@ export const LlistesProvider = ({ children }) => {
   );
 };
 
-export const useLlistes = () => useContext(LlistesContext);
+export const useLlistes = () => {
+  const ctx = useContext(LlistesContext);
+  if (!ctx)
+    throw new Error('useLlistes must be used within a LlistesProvider');
+  return ctx;
+};
