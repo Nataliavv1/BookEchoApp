@@ -124,7 +124,7 @@ const styles = StyleSheet.create({
     },
     title: {
         fontSize: 30,
-        textAlign: "center",
+        textAlign: "left",
         color: colors.DarkTurquoise,
     },
     llistesContainer: {
