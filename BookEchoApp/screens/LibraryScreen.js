@@ -62,7 +62,7 @@ const LibraryScreen = () => {
                 <Toggle text1="Les meves llistes" text2="Tots els llibres" selected={selectedOption} onChange={setSelectedOption}></Toggle>
                 <View style={styles.modifyList}>
                     <Dropdown></Dropdown>
-                    <IconButton icon={'plus'}></IconButton>
+                    <Overlay icon={'plus'}></Overlay>
                 </View>
 
                 <View style={styles.dynamicContainer}>
@@ -95,14 +95,7 @@ const LibraryScreen = () => {
                     )}
 
                 </View>
-
-
-
-
-
             </View>
-
-
         </ScrollView>
     );
 };

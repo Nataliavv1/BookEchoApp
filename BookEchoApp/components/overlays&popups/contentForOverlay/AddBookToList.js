@@ -12,7 +12,7 @@ import perLlegir from "../../../assets/images/perLlegir.png";
 export default function AddBookToList({ visible, onCancel, bookTitle }) {
 
     return (
-        <Modal visible={visible}>
+        <Modal visible={visible}  statusBarTranslucent>
             <View style={styles.Modal}>
                 <IconButton icon={"close"} onPress={onCancel} ></IconButton>
                 <Text style={[styles.Title, typography.H2Bold]}> Guardar "{bookTitle}" a</Text>

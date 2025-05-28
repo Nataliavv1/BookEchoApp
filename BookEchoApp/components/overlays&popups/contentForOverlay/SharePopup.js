@@ -58,7 +58,7 @@ export default function SharePopup({ visible, onCancel }) {
     };
   
     return (
-      <Modal visible={visible} transparent animationType="fade" onRequestClose={onCancel}>
+      <Modal visible={visible} transparent animationType="fade" onRequestClose={onCancel}  statusBarTranslucent>
         <View style={styles.modalContainer}>
           <BlurView style={styles.blurBackground} intensity={100} tint="dark" />
   

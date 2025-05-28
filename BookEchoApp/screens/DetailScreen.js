@@ -88,15 +88,9 @@ const DetailScreen = () => {
              editText="Comparteix"*/
           contentType="BookOptions"
           bookTitle={book.title}
+          library={'MaterialCommunityIcons'}
+          icon={"dots-vertical"}
         />
-        <IconButton
-          library="MaterialCommunityIcons"
-          icon="dots-vertical"
-          color="#000"
-          onPress={() => console.log('Icon pressed!')}
-        />
-
-
       </View>
 
       <View style={styles.mainInfo}>

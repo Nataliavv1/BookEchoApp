@@ -17,7 +17,7 @@ import EditDelateOptions from './contentForOverlay/edit&delate';
 import AddBook from './contentForOverlay/Addbook';
 import BookOptions from './contentForOverlay/BookOptions';
 
-export default function Overlay({ title, delateText, editText, contentType, color, icon, bookTitle}) {
+export default function Overlay({ title, delateText, editText, contentType, color, icon, bookTitle,  library = 'AntDesign',}) {
     const [visible, setVisible] = useState(false);
     const fadeAnim = useRef(new Animated.Value(0)).current;
     const slideAnim = useRef(new Animated.Value(0)).current;
@@ -74,9 +74,9 @@ export default function Overlay({ title, delateText, editText, contentType, colo
     return (
 
         <SafeAreaView style={styles.fill}>
-            <IconButton onPress={show} color={color} icon={icon} />
+            <IconButton onPress={show} color={color} icon={icon} library={library}/>
 
-            <Modal visible={visible} transparent animationType="none">
+            <Modal visible={visible} transparent animationType="none"  statusBarTranslucent>
                 {/* Fondo con fade */}
                 <Animated.View
                     style={[styles.overlay, { opacity: fadeAnim }]}
