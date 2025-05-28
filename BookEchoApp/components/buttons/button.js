@@ -15,7 +15,7 @@ export default function Button({ title, onPress, icon, color, fontcolor }) {
             {icon && (
                 <MaterialCommunityIcons name={icon} size={24} color={textColor} />
             )}
-            <Text style={[styles.text, { color: textColor }, typography.buttonMedium]}>{title}</Text>
+            <Text style={[styles.text, { color: textColor }, typography.buttonRegular]}>{title}</Text>
         </TouchableOpacity>
     );
 }

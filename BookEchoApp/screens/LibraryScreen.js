@@ -62,7 +62,7 @@ const LibraryScreen = () => {
                 <Toggle text1="Les meves llistes" text2="Tots els llibres" selected={selectedOption} onChange={setSelectedOption}></Toggle>
                 <View style={styles.modifyList}>
                     <Dropdown></Dropdown>
-                    <Overlay icon={'plus'}></Overlay>
+                    <Overlay icon={'plus'} contentType={'CreateList'}></Overlay>
                 </View>
 
                 <View style={styles.dynamicContainer}>

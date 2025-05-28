@@ -15,6 +15,7 @@ import IconButton from '../buttons/iconbutton';
 import DelatePopup from './contentForOverlay/DelatePopup';
 import EditDelateOptions from './contentForOverlay/edit&delate';
 import AddBook from './contentForOverlay/Addbook';
+import CreateList from './contentForOverlay/CreateList';
 import BookOptions from './contentForOverlay/BookOptions';
 
 export default function Overlay({ title, delateText, editText, contentType, color, icon, bookTitle,  library = 'AntDesign',}) {
@@ -115,6 +116,8 @@ export default function Overlay({ title, delateText, editText, contentType, colo
                         <AddBook />
                     ) : contentType === 'BookOptions' ? (
                         <BookOptions bookTitle = {bookTitle}/>
+                    ) : contentType === 'CreateList' ? (
+                        <CreateList />
                     ) : (
                         <Text>No selected type</Text>
                     )}
