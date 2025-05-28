@@ -10,15 +10,17 @@ import colors from "../styles/colors";
 import typography from "../styles/typography";
 import Llista from "../components/libraryScreenComp/llista";
 import perLlegir from "../assets/images/perLlegir.png";
-import { fetchLlistes } from "../Model/FetchLlistes";
+import { fetchLlistes, selectCount } from "../Model/FetchLlistes";
 import { useUser } from '../context/UserContext';
+import { useNavigation } from '@react-navigation/native';
 
 const LibraryScreen = () => {
     const [llistes, setLlistes] = useState([]);
     const [loading, setLoading] = useState(true);
     const [selectedOption, setSelectedOption] = useState("option1");
     const { userProfile } = useUser();
-    useEffect(() => {
+     const navigation = useNavigation(); 
+    /*useEffect(() => {
         async function carregarLlistes() {
             if (!userProfile) return;
             const data = await fetchLlistes(userProfile);
@@ -26,7 +28,27 @@ const LibraryScreen = () => {
             setLoading(false);
         }
         carregarLlistes();
+    }, [userProfile]);*/
+
+    useEffect(() => {
+        async function carregarLlistes() {
+            if (!userProfile) return;
+            const data = await fetchLlistes(userProfile);
+            if (data) {
+                // Para cada llista, obtener su count
+                const llistesAmbCount = await Promise.all(
+                    data.map(async (llista) => {
+                        const count = await selectCount(llista.id);
+                        return { ...llista, numllibres: count || 0 };
+                    })
+                );
+                setLlistes(llistesAmbCount);
+            }
+            setLoading(false);
+        }
+        carregarLlistes();
     }, [userProfile]);
+
 
     if (loading) {
         return <ActivityIndicator size="large" style={styles.loading} />;
@@ -47,13 +69,21 @@ const LibraryScreen = () => {
                     {selectedOption === "option1" && (
                         <View style={styles.llistesContainer}>
                             {llistes.map((llista, index) => {
-                             console.log("Llista completa:", llista);
+
+                                console.log("Llista completa:", llista);
                                 return (
                                     <Llista
                                         key={index}
                                         nomLlista={llista.nom}
                                         imatge={llista.image}
-                                        numllibres={0}
+                                        numllibres={llista.numllibres}
+                                        onPress={() =>
+                                            navigation.navigate('LlistaDetall', {
+                                                llistaId: llista.id,
+                                                nom: llista.nom,
+                                                numllibres: llista.numllibres,
+                                            })
+                                        }
                                     />
                                 );
                             })}

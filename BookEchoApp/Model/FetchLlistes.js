@@ -22,29 +22,9 @@ export async function fetchLlistes(userProfile) {
         nom: llista.nom,
         data_creacio: llista.data_creacio,
         image: llista.image,
+        id: llista.id,
     }));
 }
-
-/*
-export async function fetchLlistesPredet(userProfile) {
-  const { data, error } = await supabase
-    .from('llista')
-    .select('id, tipus_predeterminat')
-    .eq('usuari_id', userProfile.id)
-    .eq('es_predeterminada', true);
-
-  if (error) {
-    console.error('Error al obtenir les dades:', error.message);
-    return [];
-  }
-
-  console.log('Llistes:', data);
-
-  return data.map(llista => ({
-    id: llista.id,
-    tipus_predeterminat: llista.tipus_predeterminat,
-  }));
-}*/
 
 export async function fetchLlistesPredet(userProfile) {
   const { data, error } = await supabase
@@ -79,6 +59,21 @@ export async function fetchLlistesPredet(userProfile) {
   });
 console.log('fetchLlistesPredet result:', result);
   return result;
+}
+
+export async function selectCount(llista_id) {
+    console.log("ID de la llista rebut:", llista_id); 
+  const { count, error } = await supabase
+    .from('llibrellista')
+    .select('*', { count: 'exact', head: true }) // <--- Asegúrate de esto
+    .eq('llista_id', llista_id);
+
+  if (error) {
+    console.error("Error al contar libros:", error);
+    return 0;
+  }
+
+  return count;
 }
 
 

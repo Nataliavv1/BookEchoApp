@@ -126,11 +126,11 @@ const DetailScreen = () => {
           npuntuaciomitjana: 0,
         }}
           //Obtenir del context
-          listIds={{
+       /*   listIds={{
             perLlegir: 31,
             llegint: 32,
             llegit: 33,
-          }}
+          }}*/
         />
         <Toggle
           text1={'Informació'}

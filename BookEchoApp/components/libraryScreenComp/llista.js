@@ -1,13 +1,11 @@
 import * as React from 'react';
-import { Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
-import { View } from 'react-native';
+import { Text, TouchableOpacity, StyleSheet, Image, View } from 'react-native';
 import colors from "../../styles/colors";
 import typography from "../../styles/typography";
 
-
-export default function Llista({ imatge, nomLlista, numllibres }) {
+export default function Llista({ imatge, nomLlista, numllibres, onPress }) {
     return (
-        <View style={{ gap: 5 }}>
+        <TouchableOpacity onPress={onPress} style={{ gap: 5 }}>
             <Image
                 source={typeof imatge === 'string' ? { uri: imatge } : imatge}
                 style={{ width: 145, height: 162, borderRadius: 9 }}
@@ -16,8 +14,7 @@ export default function Llista({ imatge, nomLlista, numllibres }) {
                 <Text style={[styles.nom, typography.subtitleBold]}>{nomLlista}</Text>
                 <Text style={[styles.num, typography.labelMedium]}>{numllibres} llibres</Text>
             </View>
-
-        </View>
+        </TouchableOpacity>
     );
 }
 

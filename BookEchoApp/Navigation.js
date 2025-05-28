@@ -32,7 +32,7 @@ import ScanScreen from "./screens/ScanScreen";
 import EntradaScreen from "./screens/EntradaScreen";
 import EntradaScreen2 from "./screens/EntradaScreen2";
 import AddReviewScreen from "./screens/AddReviewScreen";
-
+import LlistaDetall from "./screens/LlistaDetall";
 
 // Pantallas nuevas para Topics y Books
 import TopicsBooks from './components/topics/TopicsBooks';
@@ -182,6 +182,7 @@ export default function Navigation() {
                     {/* Pantallas Topics y Books */}
                     <Stack.Screen name="Topics" component={TopicsBooks} options={{ headerShown: false }} />
                     <Stack.Screen name="BooksByTopic" component={BooksByTopicScreen} options={{ headerShown: false }} />
+                    <Stack.Screen name="LlistaDetall" component={LlistaDetall} options={{ headerShown: false }} />
                 </Stack.Navigator>
             </NavigationContainer>
         </ChallengeProvider>
