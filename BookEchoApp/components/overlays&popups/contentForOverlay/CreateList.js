@@ -9,6 +9,7 @@ import TextButton from "../../buttons/TextButton";
 import FormInput from "../../inputs/FormInput";
 import typography from "../../../styles/typography";
 import colors from "../../../styles/colors";
+import { createLlista } from "../../../Model/FetchLlistes";
 
 
 
@@ -33,7 +34,27 @@ const [nomllista, setNomllista] = useState("");
 
             <View style={styles.buttons}>
                 <Button title={"Cancel·la"}></Button>
-                <Button title={"Crear"}></Button>
+
+                <Button 
+    title="Crear"
+    onPress={async () => {
+        if (!nomllista.trim()) {
+            alert("El nom de la llista no pot estar buit.");
+            return;
+        }
+
+        await createLlista(
+            nomllista,
+            user.id,           // ID del usuario (asegúrate de tener acceso)
+            false,             // es_predeterminada
+            null,              // tipus_predeterminat (si no aplica)
+            'https://bizqtmcljmduxrqwmdsh.supabase.co/storage/v1/object/public/llistes//defaultImage.png',             // image (si no hay imagen aún)
+        );
+
+        navigation.goBack(); // O redirige a otra pantalla si lo prefieres
+    }}
+/>
+
                 
             </View>
 

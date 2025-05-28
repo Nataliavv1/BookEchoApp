@@ -76,5 +76,16 @@ export async function selectCount(llista_id) {
   return count;
 }
 
+export async function createLlista(nom, userId, es_predeterminada, tipus_predeterminat, image){
+   await supabase.from('llista').insert([
+          { 
+            nom: nom, 
+            usuari_id: userId, 
+            es_predeterminada: es_predeterminada, 
+            tipus_predeterminat: tipus_predeterminat, 
+            image: image },
+        ]);
+}
+
 
 
