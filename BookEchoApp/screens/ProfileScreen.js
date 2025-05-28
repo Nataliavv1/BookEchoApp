@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {supabase} from './Supabase/lib/supabaseClient';
 import {
   View,
@@ -20,7 +20,7 @@ import { useUser } from '../context/UserContext';
 
 export default function ProfileScreen() {
   const navigation = useNavigation();
-  const { userProfile } = useUser(); // Obtenim les dades del perfil des del context
+  const { userProfile, setUserProfile } = useUser(); // Obtenim les dades del perfil des del context
 
   const handleEditPhoto = () => {
     navigation.navigate('EditPhotoScreen');
@@ -35,6 +35,82 @@ export default function ProfileScreen() {
   };
 
   const [showSettings, setShowSettings] = useState(false);
+
+  const [avatars, setAvatars] = useState([]);
+  const [selectedAvatar, setSelectedAvatar] = useState(null);
+  
+
+  useEffect(() => {
+    const fetchAvatars = async () => {
+      const { data, error } = await supabase.storage.from('avatars').list('', {
+        limit: 100,
+        offset: 0,
+      });
+
+      if (error) {
+        console.error('Error al obtenir imatges:', error.message);
+      } else {
+        const urls = await Promise.all(
+          data.map(async (file) => {
+            const { data: publicUrl } = supabase.storage
+              .from('avatars')
+              .getPublicUrl(file.name);
+            return {
+              name: file.name,
+              url: publicUrl.publicUrl,
+            };
+          })
+        );
+        setAvatars(urls);
+      }
+    };
+
+    fetchAvatars();
+  }, []);
+
+  const handleUpdateAvatar = async (url) => {
+    const { data: { user }, error: userError } = await supabase.auth.getUser();
+
+    if (userError || !user) {
+      console.error('No s\'ha pogut obtenir l\'usuari:', userError?.message);
+      console.log('no es pot accedir a l\'usuari');
+      return;
+    }
+
+    // 🔄 Actualitza l'avatar a la base de dades
+    const { error: updateError } = await supabase
+      .from('profiles')
+      .update({ avatar_url: selectedAvatar, })
+      .eq('id', user.id);
+      console.log(selectedAvatar);
+
+    if (updateError) {
+      console.error('Error actualitzant avatar:', updateError.message);
+      console.log('error al canviar avatar');
+      return;
+    }
+
+    // ✅ Torna a obtenir el perfil actualitzat
+    const { data: updatedProfile, error: fetchError } = await supabase
+      .from('profiles')
+      .select('*')
+      .eq('id', user.id)
+      .single();
+      console.log('avatar canviat!');
+
+    if (fetchError) {
+      console.error('Error refrescant perfil:', fetchError.message);
+      return;
+    }
+
+    // 🧠 Actualitza el context amb el nou perfil
+    setUserProfile(updatedProfile);
+
+    // ✅ Opcional: tancar el popup
+    setSelectedAvatar(url);
+    setShowSettings(false);
+  };
+
 
   // Aquest codi s'ha substituït per l'ús del context useUser
   /*
@@ -129,7 +205,31 @@ export default function ProfileScreen() {
               onPress={() => setShowSettings(false)}
             />
             <View style={styles.settingsCard}>
-              <TouchableOpacity onPress={handleEditPhoto}>
+
+              <View style={styles.avatarSelection}>
+                <Text style={styles.sectionTitle}>Tria un nou avatar</Text>
+                <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                  {avatars.map((avatar) => (
+                    <TouchableOpacity
+                      key={avatar.name}
+                      onPress={() => handleUpdateAvatar(avatar.url)}
+                    >
+                      <Image
+                        source={{ uri: avatar.url }}
+                        style={[
+                          styles.avatarOption,
+                          selectedAvatar === avatar.url && styles.selectedAvatar,
+                        ]}
+                      />
+                    </TouchableOpacity>
+                  ))}
+                </ScrollView>
+              </View>
+
+
+
+
+              <TouchableOpacity >
                 <Text style={styles.option}>📷 Edita la foto de perfil</Text>
               </TouchableOpacity>
               <TouchableOpacity onPress={handleEditProfile}>
@@ -142,9 +242,7 @@ export default function ProfileScreen() {
                 <Text style={styles.option}>🚪 Tanca la sessió</Text>
               </TouchableOpacity>
               <TouchableOpacity>
-                <Text style={[styles.option, styles.danger]}>
-                  🗑️ Elimina totes les dades
-                </Text>
+                <Text style={[styles.option, styles.danger]}>🗑️ Elimina totes les dades</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -254,6 +352,21 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     zIndex: 101,
     width: '85%',
+  },
+  avatarSelection: {
+  marginVertical: 10,
+  },
+  avatarOption: {
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    marginRight: 10,
+    borderWidth: 2,
+    borderColor: '#ccc',
+  },
+  selectedAvatar: {
+    borderColor: '#47AC9E',
+    borderWidth: 3,
   },
 
 });
