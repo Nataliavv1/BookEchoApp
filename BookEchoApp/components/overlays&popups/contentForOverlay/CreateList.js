@@ -10,11 +10,13 @@ import FormInput from "../../inputs/FormInput";
 import typography from "../../../styles/typography";
 import colors from "../../../styles/colors";
 import { createLlista } from "../../../Model/FetchLlistes";
+import { useUser } from "../../../context/UserContext";
 
 
 
 
 export default function CreateList() {
+     const { userProfile } = useUser();
     const navigation = useNavigation();
 const [nomllista, setNomllista] = useState("");
     return (
@@ -45,7 +47,7 @@ const [nomllista, setNomllista] = useState("");
 
         await createLlista(
             nomllista,
-            user.id,           // ID del usuario (asegúrate de tener acceso)
+            userProfile.id,           // ID del usuario (asegúrate de tener acceso)
             false,             // es_predeterminada
             null,              // tipus_predeterminat (si no aplica)
             'https://bizqtmcljmduxrqwmdsh.supabase.co/storage/v1/object/public/llistes//defaultImage.png',             // image (si no hay imagen aún)
