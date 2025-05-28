@@ -7,41 +7,39 @@ import FormInput from '../components/inputs/FormInput';
 import { useUser } from '../context/UserContext';
 import typography from '../styles/typography';
 import { Ionicons } from '@expo/vector-icons';
-
+import { saveReview } from '../Model/ReviewModel';
 
 const AddReviewScreen = ({ route, navigation }) => {
   const { userProfile } = useUser();
-  const { bookId, bookTitle, rating: initialRating, onReviewSubmit } = route.params;
+  const { bookId, bookTitle, rating: initialRating } = route.params;  // Trec onReviewSubmit
   const [title, setTitle] = useState('');
   const [reviewText, setReviewText] = useState('');
   const [rating, setRating] = useState(initialRating || 0);
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!title.trim() || !reviewText.trim()) {
       Alert.alert('Error', 'El títol i la ressenya no poden estar buits.');
       return;
     }
 
-    const today = new Date();
-    const formattedDate = today.toLocaleDateString('ca-ES');
+    try {
+      // Desa la ressenya a Supabase
+      await saveReview({
+        userId: userProfile.id,
+        bookId,
+        title,
+        review: reviewText,
+        rating,
+      });
 
-    const newReview = {
-      title,
-      text: reviewText,
-      rating,
-      date: formattedDate,
-      userName: userProfile?.username || 'Usuari',
-      userImageUri: userProfile?.avatar_url || null,
-    };
+      console.log('Ressenya desada correctament a Supabase.');
 
-    console.log('Review enviada per al llibre:', bookTitle);
-    console.log('Nova ressenya:', newReview);
-
-    if (onReviewSubmit) {
-      onReviewSubmit(newReview);
+      // Torna enrere a la pantalla anterior (DetailScreen)
+      navigation.goBack();
+    } catch (error) {
+      console.error('Error en desar la ressenya:', error.message);
+      Alert.alert('Error', 'No s\'ha pogut desar la ressenya. Torna-ho a intentar.');
     }
-
-    navigation.goBack();
   };
 
   return (
@@ -66,7 +64,6 @@ const AddReviewScreen = ({ route, navigation }) => {
             {new Date().toLocaleDateString('ca-ES')}
           </Text>
         </View>
-
       </View>
 
       <FormInput
@@ -124,8 +121,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
-
 });
 
 export default AddReviewScreen;
-

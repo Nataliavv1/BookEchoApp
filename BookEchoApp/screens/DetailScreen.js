@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { View, Text, Image, StyleSheet, ScrollView, ActivityIndicator } from "react-native";
-import { useNavigation, useRoute } from "@react-navigation/native";
+import { useNavigation, useRoute, useFocusEffect } from "@react-navigation/native"; // afegeixo useFocusEffect
 import { FetchBook } from "../Model/FetchBook";
 
 import { Ionicons } from '@expo/vector-icons';
@@ -17,6 +17,9 @@ import colors from '../styles/colors';
 import typography from '../styles/typography';
 import IconButton from "../components/buttons/iconbutton";
 
+import { fetchReviewsByBook } from "../Model/ReviewModel";
+import { useUser } from "../context/UserContext";
+
 const DetailScreen = () => {
   const navigation = useNavigation();
   const route = useRoute();
@@ -26,7 +29,8 @@ const DetailScreen = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedOption, setSelectedOption] = useState("option1");
-  const [review, setReview] = useState(null);
+  const { userProfile } = useUser();
+  const [userReview, setUserReview] = useState(null);
 
   useEffect(() => {
     async function loadBook() {
@@ -43,6 +47,23 @@ const DetailScreen = () => {
     loadBook();
   }, [id]);
 
+  // Recarregar la ressenya de l'usuari també al tornar a la pantalla (focus)
+  useFocusEffect(
+    useCallback(() => {
+      async function loadReviews() {
+        try {
+          const reviews = await fetchReviewsByBook(id);
+          const myReview = reviews.find(r => r.user_id === userProfile?.id);
+          setUserReview(myReview || null);
+        } catch (error) {
+          console.error('Error carregant ressenyes:', error.message);
+        }
+      }
+
+      loadReviews();
+    }, [id, userProfile?.id])
+  );
+
   if (loading) {
     return (
       <View style={styles.center}>
@@ -58,16 +79,6 @@ const DetailScreen = () => {
       </View>
     );
   }
-  console.log({
-    ToggleReadState,
-    Toggle,
-    Rates,
-    BackButton,
-    StarRating,
-    UserReviewCard,
-    Overlay,
-    IconButton,
-  });
 
   return (
     <ScrollView style={styles.container}>
@@ -83,9 +94,6 @@ const DetailScreen = () => {
         </Text>
         <Overlay
           style={[styles.overlay, typography.subtitleRegular]}
-          /*   title="Opcions de Llibre"
-             delateText="Afegeix a una llista de llibres"
-             editText="Comparteix"*/
           contentType="BookOptions"
           bookTitle={book.title}
           bookId={book.id}
@@ -119,14 +127,8 @@ const DetailScreen = () => {
           npuntuaciogoogle: book.ratingCount,
           puntuaciomitjana: 0,
           npuntuaciomitjana: 0,
-        }}
-          //Obtenir del context
-       /*   listIds={{
-            perLlegir: 31,
-            llegint: 32,
-            llegit: 33,
-          }}*/
-        />
+        }} />
+
         <Toggle
           text1={'Informació'}
           text2={'Ressenyes(143)'}
@@ -158,15 +160,14 @@ const DetailScreen = () => {
                 users={book.ratingCount || 0}
                 distribution={[5, 20, 30, 40, 28]}
               />
-
-              {review ? (
+              {userReview ? (
                 <UserReviewCard
-                  rating={review.rating}
-                  title={review.title}
-                  content={review.text}
-                  date={review.date}
-                  userName={review.userName}
-                  userImageUri={review.userImageUri}
+                  rating={userReview.rating}
+                  title={userReview.title}
+                  content={userReview.review}
+                  date={new Date(userReview.created_at).toLocaleDateString('ca-ES')}
+                  userName={userReview.user?.username || 'Usuari'}
+                  userImageUri={userReview.user?.avatar_url || null}
                 />
               ) : (
                 <StarRating
@@ -175,17 +176,10 @@ const DetailScreen = () => {
                       bookId: id,
                       bookTitle: book.title,
                       rating: rating,
-                      onReviewSubmit: (newReview) => {
-                        setReview(newReview);
-                        setSelectedOption("option2");
-                      }
                     });
                   }}
                 />
               )}
-
-
-              <Text style={{ marginTop: 24 }}>Ressenyes d'altres usuaris</Text>
             </View>
           )}
         </View>
@@ -221,7 +215,6 @@ const styles = StyleSheet.create({
   headertitle: {
     flex: 1,
   },
-
   overlay: {
     position: 'absolute',
     top: 0,
