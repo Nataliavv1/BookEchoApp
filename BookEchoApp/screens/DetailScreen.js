@@ -88,6 +88,7 @@ const DetailScreen = () => {
              editText="Comparteix"*/
           contentType="BookOptions"
           bookTitle={book.title}
+          bookId={book.id}
           library={'MaterialCommunityIcons'}
           icon={"dots-vertical"}
         />

@@ -1,21 +1,23 @@
 import React from 'react';
-import { View, Text, StyleSheet, Image } from 'react-native';
+import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import colors from '../../styles/colors';
 import typography from '../../styles/typography';
 
-export default function SaveToListCard({ image, title }) {
+export default function SaveToListCard({ image, title, onPress }) {
     return (
-        <View style={styles.card}>
-            <Image style={styles.image} resizeMode="cover"  source={typeof imatge === 'string' ? { uri: image } : image}/>
+        <TouchableOpacity style={styles.card} onPress={onPress}>
+            <Image
+                style={styles.image}
+                resizeMode="cover"
+                source={typeof image === 'string' ? { uri: image } : image}
+            />
             <Text style={[typography.labelBold, styles.title]}>{title}</Text>
-
-        </View>
+        </TouchableOpacity>
     );
 }
 
 const styles = StyleSheet.create({
     card: {
-        
         width: '100%',
         flexDirection: "row",
         alignItems: "center",
