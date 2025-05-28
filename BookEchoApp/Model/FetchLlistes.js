@@ -85,6 +85,7 @@ export async function createLlista(nom, userId, es_predeterminada, tipus_predete
             tipus_predeterminat: tipus_predeterminat, 
             image: image },
         ]);
+
 }
 
 
