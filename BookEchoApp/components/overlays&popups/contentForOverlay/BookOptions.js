@@ -4,7 +4,7 @@ import { AntDesign } from '@expo/vector-icons';
 import SharePopup from './SharePopup'; // Ajusta ruta si hace falta
 import AddBookToList from './AddBookToList';
 
-export default function BookOptions({bookTitle}) {
+export default function BookOptions({bookTitle, bookId}) {
   const [shareVisible, setShareVisible] = useState(false);
   const [saveVisible, setSaveVisible] = useState(false);
 
@@ -33,7 +33,7 @@ export default function BookOptions({bookTitle}) {
           <Text style={styles.buttonText}>Afegeix a una llista de llibres</Text>
         </View>
       </TouchableOpacity>
-      <AddBookToList visible={saveVisible} onCancel={handleSaveClose} bookTitle={bookTitle}></AddBookToList>
+      <AddBookToList visible={saveVisible} onCancel={handleSaveClose} bookTitle={bookTitle} bookId={bookId}></AddBookToList>
 
       <TouchableOpacity style={styles.option} onPress={handleShareOpen}>
         <View style={styles.row}>
