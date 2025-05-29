@@ -11,7 +11,7 @@ import { saveReview } from '../Model/ReviewModel';
 
 const AddReviewScreen = ({ route, navigation }) => {
   const { userProfile } = useUser();
-  const { bookId, bookTitle, rating: initialRating } = route.params;  // Trec onReviewSubmit
+  const { bookId, bookTitle, rating: initialRating } = route.params;
   const [title, setTitle] = useState('');
   const [reviewText, setReviewText] = useState('');
   const [rating, setRating] = useState(initialRating || 0);

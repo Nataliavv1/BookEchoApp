@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { View, Text, Image, StyleSheet, ScrollView, ActivityIndicator } from "react-native";
-import { useNavigation, useRoute, useFocusEffect } from "@react-navigation/native"; // afegeixo useFocusEffect
+import { useNavigation, useRoute, useFocusEffect } from "@react-navigation/native";
 import { FetchBook } from "../Model/FetchBook";
 
 import { Ionicons } from '@expo/vector-icons';
