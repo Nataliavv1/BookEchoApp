@@ -3,16 +3,15 @@ import {
   View,
   Text,
   FlatList,
-  Image,
   StyleSheet,
-  TouchableOpacity,
   ActivityIndicator,
+  TouchableOpacity,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import AntDesign from '@expo/vector-icons/AntDesign';
 
 import BackButton from '../buttons/backbutton';
 import ButtonReadState from '../buttons/buttonReadState';
+import BookCard from './BookCard'; // <<--- Importamos el componente
 import colors from '../../styles/colors';
 import typography from '../../styles/typography';
 
@@ -67,7 +66,6 @@ const PopularBooksScreen = () => {
         const page = index + 1;
         const isActive = page === currentPage;
 
-        // Mostrar solo primeras 5 páginas o la actual, y elipsis si es necesario
         if (page <= 5 || isActive) {
           return (
             <TouchableOpacity
@@ -126,64 +124,24 @@ const PopularBooksScreen = () => {
           columnWrapperStyle={styles.row}
           showsVerticalScrollIndicator={false}
           contentContainerStyle={styles.listContent}
-          renderItem={({ item }) => {
-            const volume = item.volumeInfo;
-            const rating = volume.averageRating;
-
-            return (
-              <TouchableOpacity
-                style={styles.bookItem}
+          renderItem={({ item }) => (
+            <View style={styles.bookItem}>
+              <BookCard
+                book={item}
                 onPress={() =>
                   navigation.navigate("Details", {
-                    titol: volume.title,
-                    autors: volume.authors,
-                    imatge: volume.imageLinks?.thumbnail,
+                    titol: item.volumeInfo.title,
+                    autors: item.volumeInfo.authors,
+                    imatge: item.volumeInfo.imageLinks?.thumbnail,
                     id: item.id,
                   })
                 }
-              >
-                <View style={{ position: "relative" }}>
-                  {volume.imageLinks?.thumbnail ? (
-                    <Image
-                      source={{ uri: volume.imageLinks.thumbnail }}
-                      style={styles.thumbnail}
-                    />
-                  ) : (
-                    <View style={[styles.thumbnail, styles.placeholder]} />
-                  )}
-
-                  <ButtonReadState style={styles.buttonReadState} />
-
-                  <View style={styles.ratingContainer}>
-                    <AntDesign name="star" size={18} color={colors.NormalYellow} />
-                    <Text style={[styles.ratingText, typography.H3Regular, { color: colors.NormalGrey, }]}>
-                      {rating !== undefined ? rating.toFixed(1) : '-'}
-                    </Text>
-                  </View>
-                </View>
-
-                <Text
-                  style={[styles.bookTitle, typography.subtitleBold, { color: colors.HoverDarkGrey }]}
-                  numberOfLines={2}
-                >
-                  {volume.title}
-                </Text>
-
-                {volume.authors && (
-                  <Text
-                    style={[styles.bookAuthor, typography.labelMedium, { color: colors.MediumGrey }]}
-                    numberOfLines={1}
-                  >
-                    {volume.authors.join(", ")}
-                  </Text>
-                )}
-              </TouchableOpacity>
-            );
-          }}
+              />
+            </View>
+          )}
         />
       </View>
 
-      {/* Paginación fija abajo */}
       {renderPagination()}
     </View>
   );
@@ -220,45 +178,6 @@ const styles = StyleSheet.create({
   bookItem: {
     width: "30%",
   },
-  thumbnail: {
-    width: "100%",
-    aspectRatio: 2 / 3,
-    borderRadius: 8,
-    backgroundColor: colors.NormalGrey,
-  },
-  placeholder: {
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  buttonReadState: {
-    position: 'absolute',
-    top: 8,
-    right: 8,
-  },
-  ratingContainer: {
-    position: "absolute",
-    bottom: 8,
-    left: 8,
-    backgroundColor: colors.NormalWhite,
-    borderRadius: 5,
-    paddingHorizontal: 6,
-    paddingVertical: 2,
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  ratingText: {
-    marginLeft: 4,
-    fontSize: 12,
-  },
-  bookTitle: {
-    marginTop: 6,
-    textAlign: "left",
-  },
-  bookAuthor: {
-    marginTop: 2,
-    textAlign: "left",
-  },
-
   pagination: {
     flexDirection: "row",
     justifyContent: "center",
@@ -266,7 +185,6 @@ const styles = StyleSheet.create({
     paddingVertical: 15,
     backgroundColor: colors.NormalWhite,
   },
-
   pageButton: {
     paddingHorizontal: 15,
     paddingVertical: 8,
@@ -282,7 +200,6 @@ const styles = StyleSheet.create({
     opacity: 0.4,
     backgroundColor: colors.NormalGrey,
   },
-
   pageSquare: {
     marginHorizontal: 5,
     paddingHorizontal: 12,
