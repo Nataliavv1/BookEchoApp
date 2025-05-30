@@ -6,25 +6,23 @@ import BookCard from './BookCard';
 const SimilarBookCard = ({ book }) => {
   const navigation = useNavigation();
 
-  // Formateamos el objeto para que BookCard entienda la estructura que espera
-  const formattedBook = {
-    volumeInfo: {
-      title: book.title,
-      authors: book.authors,
-      imageLinks: {
-        thumbnail: book.image,
-      },
-      averageRating: book.averageRating,
-    },
-  };
-
   const handlePress = () => {
-    navigation.push('DetailScreen', {
+    navigation.push('Details', {
       id: book.id,
       titol: book.title,
       autors: book.authors,
       imatge: book.image,
     });
+  };
+
+  // Adaptamos el formato para que lo entienda BookCard
+  const formattedBook = {
+    volumeInfo: {
+      title: book.title,
+      authors: book.authors,
+      imageLinks: book.image ? { thumbnail: book.image } : undefined,
+      averageRating: book.averageRating || 0,
+    },
   };
 
   return <BookCard book={formattedBook} onPress={handlePress} />;
