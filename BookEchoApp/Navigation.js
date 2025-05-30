@@ -34,6 +34,7 @@ import EntradaScreen2 from "./screens/EntradaScreen2";
 import AddReviewScreen from "./screens/AddReviewScreen";
 import LlistaDetall from "./screens/LlistaDetall";
 import EditProfileScreen from './screens/EditProfileScreen';
+import EditReviewScreen from "./screens/EditReviewScreen";
 
 // Pantallas nuevas para Topics y Books
 import TopicsBooks from './components/topics/TopicsBooks';
@@ -169,6 +170,7 @@ export default function Navigation() {
                     <Stack.Screen name="Entrada" component={EntradaScreen} options={{ headerShown: false }} />
                     <Stack.Screen name="Entrada2" component={EntradaScreen2} options={{ headerShown: false }} />
                     <Stack.Screen name="AllChallengesScreen" component={AllChallengesScreen} options={{ headerShown: false }} />
+                    <Stack.Screen name="EditReviewScreen" component={EditReviewScreen} options={{ headerShown: false }} />
                     <Stack.Screen name="AddReview" component={AddReviewScreen}
                         options={{
                             headerShown: false

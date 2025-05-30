@@ -17,8 +17,9 @@ import EditDelateOptions from './contentForOverlay/edit&delate';
 import AddBook from './contentForOverlay/Addbook';
 import CreateList from './contentForOverlay/CreateList';
 import BookOptions from './contentForOverlay/BookOptions';
+import ReviewOptions from './contentForOverlay/ReviewOptions';
 
-export default function Overlay({ title, delateText, editText, contentType, color, icon, bookTitle,  library = 'AntDesign',}) {
+export default function Overlay({ title, delateText, editText, contentType, color, icon, bookTitle, library = 'AntDesign', reviewId, onDelete, }) {
     const [visible, setVisible] = useState(false);
     const fadeAnim = useRef(new Animated.Value(0)).current;
     const slideAnim = useRef(new Animated.Value(0)).current;
@@ -75,9 +76,9 @@ export default function Overlay({ title, delateText, editText, contentType, colo
     return (
 
         <SafeAreaView style={styles.fill}>
-            <IconButton onPress={show} color={color} icon={icon} library={library}/>
+            <IconButton onPress={show} color={color} icon={icon} library={library} />
 
-            <Modal visible={visible} transparent animationType="none"  statusBarTranslucent>
+            <Modal visible={visible} transparent animationType="none" statusBarTranslucent>
                 {/* Fondo con fade */}
                 <Animated.View
                     style={[styles.overlay, { opacity: fadeAnim }]}
@@ -115,9 +116,11 @@ export default function Overlay({ title, delateText, editText, contentType, colo
                     ) : contentType === 'AddBook' ? (
                         <AddBook />
                     ) : contentType === 'BookOptions' ? (
-                        <BookOptions bookTitle = {bookTitle}/>
+                        <BookOptions bookTitle={bookTitle} />
                     ) : contentType === 'CreateList' ? (
                         <CreateList />
+                    ) : contentType === 'ReviewOptions' ? (
+                        <ReviewOptions reviewId={reviewId} onClose={hide} onDelete={onDelete} />
                     ) : (
                         <Text>No selected type</Text>
                     )}

@@ -44,6 +44,22 @@ const DetailScreen = () => {
   const [userReview, setUserReview] = useState(null);
   const [similarBooks, setSimilarBooks] = useState([]);
 
+  const loadReviews = useCallback(async () => {
+    try {
+      const reviews = await fetchReviewsByBook(id);
+      const myReview = reviews.find((r) => r.user_id === userProfile?.id);
+      setUserReview(myReview || null);
+    } catch (error) {
+      console.error("Error carregant ressenyes:", error.message);
+    }
+  }, [id, userProfile?.id]);
+
+  useFocusEffect(
+    useCallback(() => {
+      loadReviews();
+    }, [loadReviews])
+  );
+
   useEffect(() => {
     async function loadBook() {
       try {
@@ -223,6 +239,8 @@ const DetailScreen = () => {
                   ).toLocaleDateString("ca-ES")}
                   userName={userReview.user?.username || "Usuari"}
                   userImageUri={userReview.user?.avatar_url || null}
+                  reviewId={userReview.id}
+                  onDelete={() => setUserReview(null)}
                 />
               ) : (
                 <StarRating
