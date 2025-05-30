@@ -1,6 +1,5 @@
-// screens/HomeScreen.js
 import React, { useState } from "react";
-import { View, StyleSheet, Modal } from "react-native";
+import { View, StyleSheet, Modal, ScrollView } from "react-native";
 
 import Header from "./Header";
 import GoogleBooksList from "./GoogleBooksList";
@@ -8,9 +7,7 @@ import TopicsBooks from "../components/topics/TopicsBooks";
 import FiltersModal from "../components/modals/FiltersModals";
 import PopularBooksList from "../components/books/PopularBooksList";
 
-// Importamos el componente ActiveChallengesSection
 import ActiveChallengesSection from "../components/challenges/ActiveChallengesSection";
-
 
 const HomeScreen = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -59,22 +56,24 @@ const HomeScreen = () => {
         activeFiltersCount={activeFiltersCount}
       />
 
-      {/* Mostrar lista de libros más populares solo si no hay búsqueda ni género */}
-      {searchQuery.length < 3 && !filters.genre && <PopularBooksList />}
+      <ScrollView
+        keyboardShouldPersistTaps="handled"
+        contentContainerStyle={{ paddingBottom: 100 }}
+      >
+        {searchQuery.length < 3 && !filters.genre && <PopularBooksList />}
 
-      <TopicsBooks
-        selectedTopic={filters.genre}
-        setSelectedTopic={(genre) => setFilters({ ...filters, genre })}
-      />
-      {/* Sección de retos activos */}
-      <ActiveChallengesSection />
+        <TopicsBooks
+          selectedTopic={filters.genre}
+          setSelectedTopic={(genre) => setFilters({ ...filters, genre })}
+        />
 
-      {/* Mostrar resultados si hay búsqueda o filtro por género */}
+        <ActiveChallengesSection />
+      </ScrollView>
+
       {(searchQuery.length >= 3 || filters.genre) && (
         <GoogleBooksList query={buildQuery()} style={styles.listOverlay} />
       )}
 
-      {/* Modal de filtros */}
       <Modal
         visible={showFilters}
         animationType="slide"

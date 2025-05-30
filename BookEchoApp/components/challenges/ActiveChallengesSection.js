@@ -5,6 +5,7 @@ import { useChallenges } from '../../context/ChallengeContext';
 import ChallengeCard from '../cards/ChallengeCard';
 import colors from '../../styles/colors';
 import typography from '../../styles/typography';
+import { AntDesign } from '@expo/vector-icons'; // <-- IMPORTAR ICONO
 
 const screenWidth = Dimensions.get('window').width;
 const horizontalPadding = 20;
@@ -38,9 +39,26 @@ export default function ActiveChallengesSection() {
 
   return (
     <View style={styles.container}>
-      <Text style={[typography.H2Bold, { color: colors.HoverDarkGrey, marginBottom: 15 }]}>
-        Reptes Actius
-      </Text>
+      {/* Contenedor fila título + botón */}
+      <View style={styles.headerRow}>
+        <Text style={[typography.H2Bold, { color: colors.HoverDarkGrey }]}>Reptes Actius</Text>
+
+        <TouchableOpacity
+          onPress={() => navigation.navigate('AllChallengesScreen')}
+          style={styles.seeMoreBtn}
+          activeOpacity={0.7}
+        >
+          <Text style={[typography.labelExtraBold, { color: colors.NormalTurquoise }]}>
+            Veure més
+          </Text>
+          <AntDesign
+            name="right"
+            size={15}
+            color={colors.NormalTurquoise}
+            style={{ marginLeft: 4, marginTop: 2 }}
+          />
+        </TouchableOpacity>
+      </View>
 
       <FlatList
         data={myChallenges.slice(0, 10)}
@@ -75,12 +93,7 @@ export default function ActiveChallengesSection() {
         )}
       />
 
-      <TouchableOpacity
-        onPress={() => navigation.navigate('AllChallengesScreen')}
-        style={styles.seeAllBtn}
-      >
-        <Text style={styles.seeAllText}>Veure tots els reptes</Text>
-      </TouchableOpacity>
+      {/* Eliminamos botón "Veure tots els reptes" porque ahora está al lado del título */}
     </View>
   );
 }
@@ -90,6 +103,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingTop: 10,
     paddingBottom: 5,
+  },
+  headerRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 15,
   },
   message: {
     fontSize: 16,
@@ -105,13 +124,8 @@ const styles = StyleSheet.create({
   cardWrapper: {
     marginBottom: 15,
   },
-  seeAllBtn: {
-    marginTop: 10,
+  seeMoreBtn: {
+    flexDirection: 'row',
     alignItems: 'center',
-  },
-  seeAllText: {
-    color: '#47AC9E',
-    fontWeight: 'bold',
-    fontSize: 16,
   },
 });
