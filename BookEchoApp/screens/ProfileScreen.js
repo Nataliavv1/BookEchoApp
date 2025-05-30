@@ -27,7 +27,7 @@ export default function ProfileScreen() {
   };
 
   const handleEditProfile = () => {
-    navigation.navigate('EditProfileScreen');
+    navigation.navigate('EditProfile');
   };
 
   const handleShare = () => {
@@ -205,7 +205,7 @@ export default function ProfileScreen() {
               onPress={() => setShowSettings(false)}
             />
             <View style={styles.settingsCard}>
-
+              {/*}
               <View style={styles.avatarSelection}>
                 <Text style={styles.sectionTitle}>Tria un nou avatar</Text>
                 <ScrollView horizontal showsHorizontalScrollIndicator={false}>
@@ -225,13 +225,13 @@ export default function ProfileScreen() {
                   ))}
                 </ScrollView>
               </View>
+              */}
 
-
-
-
+              {/*  
               <TouchableOpacity >
                 <Text style={styles.option}>📷 Edita la foto de perfil</Text>
               </TouchableOpacity>
+              */}
               <TouchableOpacity onPress={handleEditProfile}>
                 <Text style={styles.option}>✏️ Edita el meu perfil</Text>
               </TouchableOpacity>
