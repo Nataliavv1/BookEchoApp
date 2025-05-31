@@ -3,6 +3,7 @@ import { ScrollView, View, StyleSheet, Text } from 'react-native';
 import BackButton from '../components/buttons/backbutton';
 import colors from '../styles/colors';
 import typography from '../styles/typography';
+import BookCard from '../components/books/BookCard';
 
 const LlistaDetall = ({ route, navigation }) => {
     const { llistaId, nom, numllibres } = route.params;
@@ -16,6 +17,8 @@ const LlistaDetall = ({ route, navigation }) => {
                     <Text style={[styles.title, typography.H1Bold]}>{nom}</Text>
                     <Text style={[styles.subtitle, typography.subtitleMedium]}>{numllibres} llibres</Text>
                 </View>
+{/*Aqui en teoria q retorni la llista de llibres*/}
+                <View></View>
             </View>
 
         </ScrollView>
