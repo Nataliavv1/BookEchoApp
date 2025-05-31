@@ -6,7 +6,7 @@ import IconButton from '../buttons/iconbutton';
 import { Ionicons } from '@expo/vector-icons';
 import Overlay from '../overlays&popups/Overlay';
 
-const UserReviewCard = ({ rating, title, content, date, userName, userImageUri, reviewId, onDelete, }) => {
+const UserReviewCard = ({ rating, title, content, date, userName, userImageUri, reviewId, onDelete, canEdit = false, }) => {
   const [expanded, setExpanded] = useState(false);
   const toggleExpanded = () => {
     setExpanded(!expanded);
@@ -33,14 +33,18 @@ const UserReviewCard = ({ rating, title, content, date, userName, userImageUri, 
           </Text>
         </View>
 
-        <Overlay
-          style={[styles.overlay, typography.subtitleRegular]}
-          contentType="ReviewOptions"
-          reviewId={reviewId}
-          library={"MaterialCommunityIcons"}
-          icon={"dots-vertical"}
-          onDelete={onDelete}
-        />
+        {canEdit && (
+          <Overlay
+            style={[styles.overlay, typography.subtitleRegular]}
+            contentType="ReviewOptions"
+            reviewId={reviewId}
+            library={"MaterialCommunityIcons"}
+            icon={"dots-vertical"}
+            onDelete={onDelete}
+          />
+        )}
+
+
       </View>
 
 

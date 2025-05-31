@@ -229,6 +229,7 @@ const DetailScreen = () => {
                   userImageUri={userReview.user?.avatar_url || null}
                   reviewId={userReview.id}
                   onDelete={() => setUserReview(null)}
+                  canEdit={true}
                 />
               ) : (
                 <StarRating
@@ -258,6 +259,7 @@ const DetailScreen = () => {
                       userName={review.user?.username || "Usuari"}
                       userImageUri={review.user?.avatar_url || null}
                       reviewId={review.id}
+                      canEdit={false}
                     />
                   ))}
                 </View>
