@@ -39,7 +39,7 @@ const AutoComplete = () => {
   };
 
   return (
-    <View   >
+    <View>
       <TextInput
         placeholder="Comença escrivint per afegir un autor"
         value={query}
@@ -47,12 +47,11 @@ const AutoComplete = () => {
         style={styles.container}
       />
 
-      {/* Solo muestra el primer autor sugerido */}
+      {/* Muestra solo el primer autor sugerido */}
       {authors.length > 0 && (
         <TouchableOpacity
           onPress={() => addAuthor(authors[0])}
-         style={[{ maxHeight: 50, marginTop: 5, padding: 10, backgroundColor: colors.LightActiveOrange }, typography.labelRegular]}
-
+          style={[{ maxHeight: 50, marginTop: 5, padding: 10, backgroundColor: colors.LightActiveOrange }, typography.labelRegular]}
         >
           <Text>{authors[0]}</Text>
         </TouchableOpacity>
@@ -74,7 +73,6 @@ const AutoComplete = () => {
 };
 
 const styles = StyleSheet.create({
-
   container: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -85,7 +83,7 @@ const styles = StyleSheet.create({
     paddingLeft: 28,
     paddingRight: 12,
     paddingTop: 20,
-paddingBottom: 20,
+    paddingBottom: 20,
   },
 });
 

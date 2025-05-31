@@ -8,6 +8,7 @@ import {
   Animated,
   ActivityIndicator,
   SafeAreaView,
+  Image,
 } from 'react-native';
 import colors from '../../styles/colors';
 
@@ -61,6 +62,8 @@ const OverlayISBNCheck = forwardRef(({ isbn, onConfirm, onCancel }, ref) => {
           title: volume.title,
           authors: volume.authors ? volume.authors.join(', ') : 'Desconegut',
           publishedDate: volume.publishedDate || '',
+          description: volume.description || '',
+          image: volume.imageLinks?.thumbnail || null,  // Aquí agafem la imatge si hi és
         });
       } else {
         setError('No s\'ha trobat cap llibre amb aquest ISBN.');
@@ -101,7 +104,7 @@ const OverlayISBNCheck = forwardRef(({ isbn, onConfirm, onCancel }, ref) => {
                 {
                   translateY: slideAnim.interpolate({
                     inputRange: [0, 1],
-                    outputRange: [300, 0], // 300 px desde abajo al principio, luego 0
+                    outputRange: [300, 0],
                   }),
                 },
               ],
@@ -115,9 +118,20 @@ const OverlayISBNCheck = forwardRef(({ isbn, onConfirm, onCancel }, ref) => {
 
           {!loading && book && (
             <>
+              {book.image && (
+                <Image
+                  source={{ uri: book.image }}
+                  style={styles.bookImage}
+                  resizeMode="contain"
+                />
+              )}
               <Text style={styles.bookTitle}>{book.title}</Text>
               <Text style={styles.bookAuthor}>Autor(s): {book.authors}</Text>
               {book.publishedDate ? <Text>Publicat: {book.publishedDate}</Text> : null}
+
+              {book.description ? (
+                <Text style={styles.description}>{book.description}</Text>
+              ) : null}
 
               <View style={styles.buttons}>
                 <TouchableOpacity
@@ -163,12 +177,12 @@ const OverlayISBNCheck = forwardRef(({ isbn, onConfirm, onCancel }, ref) => {
 const styles = StyleSheet.create({
   fill: {
     flex: 1,
-    justifyContent: 'flex-end', // ¡Muy importante! Para que SafeAreaView empuje el modal abajo
+    justifyContent: 'flex-end',
   },
   overlay: {
     ...StyleSheet.absoluteFillObject,
     backgroundColor: 'rgba(0,0,0,0.4)',
-    justifyContent: 'flex-end', // Fondo oscuro cubre todo pero el modal está abajo
+    justifyContent: 'flex-end',
   },
   background: {
     flex: 1,
@@ -180,7 +194,6 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 15,
     borderTopRightRadius: 15,
     alignItems: 'center',
-    // Para que quede pegado abajo:
     position: 'absolute',
     left: 0,
     right: 0,
@@ -198,6 +211,11 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     marginBottom: 20,
   },
+  bookImage: {
+    width: 120,
+    height: 180,
+    marginBottom: 15,
+  },
   bookTitle: {
     fontSize: 18,
     fontWeight: '600',
@@ -206,6 +224,11 @@ const styles = StyleSheet.create({
   bookAuthor: {
     fontSize: 16,
     marginVertical: 8,
+  },
+  description: {
+    marginTop: 10,
+    fontStyle: 'italic',
+    textAlign: 'center',
   },
   errorText: {
     fontSize: 16,
