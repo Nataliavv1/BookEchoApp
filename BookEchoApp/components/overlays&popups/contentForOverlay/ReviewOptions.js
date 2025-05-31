@@ -9,8 +9,8 @@ export default function ReviewOptions({ reviewId, onClose, onDelete, bookId, boo
     const handleEdit = () => {
         navigation.navigate('EditReviewScreen', {
             reviewId,
-            bookId,       // assegura’t de tenir-lo disponible
-            bookTitle,    // passa el títol si el tens
+            bookId, 
+            bookTitle, 
         });
     };
 

@@ -42,14 +42,17 @@ const DetailScreen = () => {
   const [selectedOption, setSelectedOption] = useState("option1");
   const { userProfile } = useUser();
   const [userReview, setUserReview] = useState(null);
+  const [altresRessenyes, setAltresRessenyes] = useState([]);
   const [similarBooks, setSimilarBooks] = useState([]);
-
 
   const loadReviews = useCallback(async () => {
     try {
       const reviews = await fetchReviewsByBook(id);
       const myReview = reviews.find((r) => r.user_id === userProfile?.id);
       setUserReview(myReview || null);
+
+      const altres = reviews.filter((r) => r.user_id !== userProfile?.id);
+      setAltresRessenyes(altres);
     } catch (error) {
       console.error("Error carregant ressenyes:", error.message);
     }
@@ -80,22 +83,6 @@ const DetailScreen = () => {
 
     loadBook();
   }, [id]);
-
-  useFocusEffect(
-    useCallback(() => {
-      async function loadReviews() {
-        try {
-          const reviews = await fetchReviewsByBook(id);
-          const myReview = reviews.find((r) => r.user_id === userProfile?.id);
-          setUserReview(myReview || null);
-        } catch (error) {
-          console.error("Error carregant ressenyes:", error.message);
-        }
-      }
-
-      loadReviews();
-    }, [id, userProfile?.id])
-  );
 
   if (loading) {
     return (
@@ -169,7 +156,7 @@ const DetailScreen = () => {
 
         <Toggle
           text1={"Informació"}
-          text2={"Ressenyes(143)"}
+          text2={"Ressenyes"}
           selected={selectedOption}
           onChange={setSelectedOption}
         />
@@ -201,16 +188,16 @@ const DetailScreen = () => {
                 {similarBooks.length > 0 ? (
                   similarBooks.map((similar) => (
                     <SimilarBookCard
-                         key={similar.id}
-                         book={similar}
-                         onPress={() =>
-                           navigation.push("DetailScreen", {
-                             id: similar.id,
-                             titol: similar.title,
-                             autors: similar.authors,
-                             imatge: similar.image,
-                           })
-                         }
+                      key={similar.id}
+                      book={similar}
+                      onPress={() =>
+                        navigation.push("DetailScreen", {
+                          id: similar.id,
+                          titol: similar.title,
+                          autors: similar.authors,
+                          imatge: similar.image,
+                        })
+                      }
                     />
                   ))
                 ) : (
@@ -253,6 +240,27 @@ const DetailScreen = () => {
                     });
                   }}
                 />
+              )}
+
+              {/* 👇 Altres ressenyes d'usuaris */}
+              {altresRessenyes.length > 0 && (
+                <View style={{ marginTop: 24, width: "100%" }}>
+                  <Text style={[typography.H3Bold, { marginBottom: 8, color: colors.DarkerGreen }]}>
+                    Ressenyes d’altres usuaris
+                  </Text>
+                  {altresRessenyes.map((review) => (
+                    <UserReviewCard
+                      key={review.id}
+                      rating={review.rating}
+                      title={review.title}
+                      content={review.review}
+                      date={new Date(review.created_at).toLocaleDateString("ca-ES")}
+                      userName={review.user?.username || "Usuari"}
+                      userImageUri={review.user?.avatar_url || null}
+                      reviewId={review.id}
+                    />
+                  ))}
+                </View>
               )}
             </View>
           )}
