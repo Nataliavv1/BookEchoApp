@@ -19,34 +19,35 @@ const HomeScreen = () => {
     genre: "",
   });
 
-  const buildQuery = () => {
-    if (searchQuery.length < 3 && !filters.genre) return "";
+const buildQuery = () => {
+  if (searchQuery.length < 3 && !filters.genre) return null;
 
-    let q = "";
+  let q = "";
 
-    if (searchQuery.length >= 3) {
-      q += searchQuery;
-    }
+  if (searchQuery.length >= 3) {
+    q += searchQuery;
+  }
 
-    if (filters.genre) {
-      q += (q ? "+" : "") + filters.genre;
-    }
+  if (filters.genre) {
+    q += (q ? "+" : "") + filters.genre;
+  }
 
-    const params = [];
+  const params = [];
 
-    if (filters.filter) params.push(`filter=${filters.filter}`);
-    if (filters.printType) params.push(`printType=${filters.printType}`);
-    if (filters.orderBy) params.push(`orderBy=${filters.orderBy}`);
+  if (filters.filter) params.push(`filter=${filters.filter}`);
+  if (filters.printType) params.push(`printType=${filters.printType}`);
+  if (filters.orderBy) params.push(`orderBy=${filters.orderBy}`);
 
-    if (params.length) {
-      q += "&" + params.join("&");
-    }
+  if (params.length) {
+    q += "&" + params.join("&");
+  }
 
-    return q;
-  };
+  return q;
+};
+
 
   const activeFiltersCount = Object.values(filters).filter((val) => val).length;
-
+const query = buildQuery();
   return (
     <View style={styles.container}>
       <Header
@@ -70,9 +71,9 @@ const HomeScreen = () => {
         <ActiveChallengesSection />
       </ScrollView>
 
-      {(searchQuery.length >= 3 || filters.genre) && (
-        <GoogleBooksList query={buildQuery()} style={styles.listOverlay} />
-      )}
+        {query && (
+      <GoogleBooksList query={query} style={styles.listOverlay} />
+    )}
 
       <Modal
         visible={showFilters}
