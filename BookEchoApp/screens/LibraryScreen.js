@@ -19,7 +19,7 @@ const LibraryScreen = () => {
     const [loading, setLoading] = useState(true);
     const [selectedOption, setSelectedOption] = useState("option1");
     const { userProfile } = useUser();
-     const navigation = useNavigation(); 
+    const navigation = useNavigation();
     /*useEffect(() => {
         async function carregarLlistes() {
             if (!userProfile) return;
@@ -59,12 +59,12 @@ const LibraryScreen = () => {
 
             <View style={styles.container}>
                 <Text style={[styles.title, typography.H1Bold]}>La Meva Biblioteca</Text>
-                <Toggle 
-                text1="Les meves llistes" 
-                text2="Tots els llibres" 
-                color="#F8794A"
-                selected={selectedOption} 
-                onChange={setSelectedOption}/>
+                <Toggle
+                    text1="Les meves llistes"
+                    text2="Tots els llibres"
+                    color="#F8794A"
+                    selected={selectedOption}
+                    onChange={setSelectedOption} />
                 <View style={styles.modifyList}>
                     <Dropdown></Dropdown>
                     <Overlay icon={'plus'} contentType={'CreateList'}></Overlay>
@@ -96,7 +96,8 @@ const LibraryScreen = () => {
                     )}
 
                     {selectedOption === "option2" && (
-                        <View></View>
+                        <View>
+                        </View>
                     )}
 
                 </View>
