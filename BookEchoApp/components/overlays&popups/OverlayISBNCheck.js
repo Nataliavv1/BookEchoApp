@@ -76,11 +76,23 @@ const OverlayISBNCheck = forwardRef(({ isbn, onConfirm, onCancel }, ref) => {
 
   return (
     <SafeAreaView style={styles.fill}>
-      <Modal transparent visible={visible} animationType="none" statusBarTranslucent>
+      <Modal
+        transparent
+        visible={visible}
+        animationType="none"
+        statusBarTranslucent
+        onRequestClose={() => ref.current.hide()}
+      >
+        {/* Fondo oscuro semitransparente */}
         <Animated.View style={[styles.overlay, { opacity: fadeAnim }]}>
-          <TouchableOpacity style={styles.background} onPress={() => ref.current.hide()} />
+          <TouchableOpacity
+            style={styles.background}
+            activeOpacity={1}
+            onPress={() => ref.current.hide()}
+          />
         </Animated.View>
 
+        {/* Contenedor del modal deslizable */}
         <Animated.View
           style={[
             styles.modal,
@@ -89,7 +101,7 @@ const OverlayISBNCheck = forwardRef(({ isbn, onConfirm, onCancel }, ref) => {
                 {
                   translateY: slideAnim.interpolate({
                     inputRange: [0, 1],
-                    outputRange: [300, 0],
+                    outputRange: [300, 0], // 300 px desde abajo al principio, luego 0
                   }),
                 },
               ],
@@ -97,7 +109,7 @@ const OverlayISBNCheck = forwardRef(({ isbn, onConfirm, onCancel }, ref) => {
           ]}
         >
           <View style={styles.handle} />
-          <Text style={styles.title}>Consulta ISBN</Text>
+          <Text style={styles.title}>És aquest el llibre?</Text>
 
           {loading && <ActivityIndicator size="large" color={colors.NormalTurquoise} />}
 
@@ -151,12 +163,12 @@ const OverlayISBNCheck = forwardRef(({ isbn, onConfirm, onCancel }, ref) => {
 const styles = StyleSheet.create({
   fill: {
     flex: 1,
-    justifyContent: 'flex-end',
+    justifyContent: 'flex-end', // ¡Muy importante! Para que SafeAreaView empuje el modal abajo
   },
   overlay: {
     ...StyleSheet.absoluteFillObject,
     backgroundColor: 'rgba(0,0,0,0.4)',
-    justifyContent: 'flex-end',
+    justifyContent: 'flex-end', // Fondo oscuro cubre todo pero el modal está abajo
   },
   background: {
     flex: 1,
@@ -168,6 +180,11 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 15,
     borderTopRightRadius: 15,
     alignItems: 'center',
+    // Para que quede pegado abajo:
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    bottom: 0,
   },
   handle: {
     width: 40,
