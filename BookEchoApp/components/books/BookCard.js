@@ -7,7 +7,7 @@ import typography from '../../styles/typography';
 
 const BookCard = ({ book, onPress }) => {
   const { title, authors, imageLinks, averageRating } = book.volumeInfo;
-
+const volumeInfo = book.volumeInfo;
   return (
     <TouchableOpacity style={styles.card} onPress={onPress}>
       <View style={{ position: 'relative' }}>
@@ -23,8 +23,24 @@ const BookCard = ({ book, onPress }) => {
             {averageRating !== undefined ? averageRating.toFixed(1) : '-'}
           </Text>
         </View>
-
-        <ButtonReadState style={styles.buttonReadState} />
+        
+{console.log('[BookCard] book →', book)}
+        <ButtonReadState 
+        style={styles.buttonReadState} 
+book={{
+    id: volumeInfo.industryIdentifiers?.[0]?.identifier,
+    isbn: volumeInfo.industryIdentifiers?.[0]?.identifier,
+    descripcio: volumeInfo.description,
+    autors: volumeInfo.authors,
+    categories: volumeInfo.categories,
+    imatge: volumeInfo.imageLinks?.thumbnail,
+    titol: volumeInfo.title,
+    puntuaciogoogle: volumeInfo.averageRating,
+    npuntuaciogoogle: volumeInfo.ratingsCount,
+    puntuaciomitjana: 0,
+    npuntuaciomitjana: 0,
+  }}
+        />
       </View>
 
       <Text style={[styles.bookTitle, typography.subtitleBold]} numberOfLines={2}>

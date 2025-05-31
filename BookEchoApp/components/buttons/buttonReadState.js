@@ -12,14 +12,36 @@ import {
 import Feather from '@expo/vector-icons/Feather';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import colors from '../../styles/colors';
+import { useToggleReadState } from '../../Model/useToggleReadState';
+import { useLlistes } from '../../context/LlistesContext';
 
-export default function ButtonReadState({ style }) {
+export default function ButtonReadState({ style, book }) {
+  //El modal si es vivible o no
   const [modalVisible, setModalVisible] = useState(false);
-  const [selected, setSelected] = useState(null);
-  const [position, setPosition] = useState({ x: 0, y: 0 });
+  //Si la opcio esta seleccionada o no
+  //const [selected, setSelected] = useState(null);
 
+  //La posicio
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+  //Referencia del boto
   const buttonRef = useRef();
 
+
+  // Obtener listas predeterminadas desde contexto
+  const { llistesPredet } = useLlistes();
+  const listIds = {
+    perLlegir: llistesPredet.perLlegir,
+    llegint: llistesPredet.llegint,
+    llegit: llistesPredet.llegit,
+  };
+  console.log('[ButtonReadState] book prop →', book);
+
+      const { selected, toggle } = useToggleReadState(book, listIds);
+
+
+  //Funcio per obrir i tancar el modal
+  //Al obrir, medeix la posició i el tamany del botó per mostrar el modal just sota amb un petit marge.
+  //Si el modal esta obert el tanca.
   const toggleModal = () => {
     if (!modalVisible) {
       UIManager.measure(findNodeHandle(buttonRef.current), (x, y, width, height, pageX, pageY) => {
@@ -31,12 +53,14 @@ export default function ButtonReadState({ style }) {
     }
   };
 
-  const handleSelect = (option) => {
-    setSelected(option);
+  //Si la opcio és sel·leccionada llavors defineix com sel·leccionat i tanca el modal
+  const handleSelect = (optionKey) => {
+     toggle(optionKey, selected);
     setModalVisible(false);
   };
 
-  const getMainIcon = () => {
+  //aixó és per obtenir la icona segons el que sigui seleccionat.
+  /*const getMainIcon = () => {
     switch (selected) {
       case 'eye':
         return <AntDesign name="eyeo" size={20} color={colors.NormalWhite} />;
@@ -47,21 +71,43 @@ export default function ButtonReadState({ style }) {
       default:
         return <Feather name="bookmark" size={20} color="black" />;
     }
+  };*/
+  const getMainIcon = () => {
+    switch (selected) {
+      case 'eye':
+      case 'reading': // adaptamos claves para que coincidan con las opciones
+        return <AntDesign name="eyeo" size={20} color={colors.NormalWhite} />;
+      case 'check':
+      case 'read':
+        return <AntDesign name="check" size={20} color={colors.NormalWhite} />;
+      case 'bookmark':
+      case 'toRead':
+        return <Feather name="bookmark" size={20} color={colors.NormalWhite} />;
+      default:
+        return <Feather name="bookmark" size={20} color="black" />;
+    }
   };
 
-  const options = [
+  //Les opcions que hi ha (per llegir, llegint i llegit)
+ /* const options = [
     { key: 'bookmark', label: 'Per llegir', IconComponent: Feather, iconName: 'bookmark' },
     { key: 'eye', label: 'Llegint', IconComponent: AntDesign, iconName: 'eyeo' },
     { key: 'check', label: 'Llegit', IconComponent: AntDesign, iconName: 'check' },
+  ];*/
+    const options = [
+    { key: 'toRead', label: 'Per llegir', IconComponent: Feather, iconName: 'bookmark' },
+    { key: 'reading', label: 'Llegint', IconComponent: AntDesign, iconName: 'eyeo' },
+    { key: 'read', label: 'Llegit', IconComponent: AntDesign, iconName: 'check' },
   ];
 
-  const mainButtonColor = selected ? colors.NormalOrange : colors.NormalWhite;
-
+  //El estil segons si està sel·leccionat o no
+  const mainButtonColor = selected ? colors.NormalWhite : colors.NormalOrange;
   const popupWidth = 120;
   const buttonWidth = 32;
 
   return (
     <>
+      {/*AL clicar el botó, cambia l'estil del botó i tanca activa el modal. Tambe defineix quin es la icona*/}
       <TouchableOpacity
         ref={buttonRef}
         style={[styles.button, { backgroundColor: mainButtonColor }, style]}
@@ -69,16 +115,18 @@ export default function ButtonReadState({ style }) {
       >
         {getMainIcon()}
       </TouchableOpacity>
-
+      {/*El modal es fa visible */}
       <Modal transparent visible={modalVisible} animationType="fade">
         <Pressable style={styles.overlay} onPress={toggleModal} />
 
+        {/*El contenidor que conté el popup*/}
         <View
           style={[
             styles.popupContainer,
             { top: position.y, left: position.x - (popupWidth - buttonWidth) },
           ]}
         >
+
           {options.map(({ key, label, IconComponent, iconName }) => {
             const isSelected = selected === key;
             return (

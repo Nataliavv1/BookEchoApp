@@ -25,7 +25,7 @@ import BackButton from "../components/buttons/backbutton";
 import StarRating from "../components/detailScreenComp/StarRating";
 import UserReviewCard from "../components/detailScreenComp/UserReview";
 import SimilarBookCard from "../components/books/SimilarBookCard";
-
+import BookCard from "../components/books/BookCard";
 import colors from "../styles/colors";
 import typography from "../styles/typography";
 import { fetchReviewsByBook } from "../Model/ReviewModel";
@@ -43,6 +43,7 @@ const DetailScreen = () => {
   const { userProfile } = useUser();
   const [userReview, setUserReview] = useState(null);
   const [similarBooks, setSimilarBooks] = useState([]);
+
 
   const loadReviews = useCallback(async () => {
     try {
@@ -155,7 +156,7 @@ const DetailScreen = () => {
             id: book.isbn?.identifier,
             isbn: book.isbn?.identifier,
             descripcio: book.description,
-            autors: book.autors,
+            autors: book.authors,
             categories: book.categories,
             imatge: book.imatge,
             titol: book.title,
@@ -200,16 +201,16 @@ const DetailScreen = () => {
                 {similarBooks.length > 0 ? (
                   similarBooks.map((similar) => (
                     <SimilarBookCard
-                      key={similar.id}
-                      book={similar}
-                      onPress={() =>
-                        navigation.push("DetailScreen", {
-                          id: similar.id,
-                          titol: similar.title,
-                          autors: similar.authors,
-                          imatge: similar.image,
-                        })
-                      }
+                         key={similar.id}
+                         book={similar}
+                         onPress={() =>
+                           navigation.push("DetailScreen", {
+                             id: similar.id,
+                             titol: similar.title,
+                             autors: similar.authors,
+                             imatge: similar.image,
+                           })
+                         }
                     />
                   ))
                 ) : (
