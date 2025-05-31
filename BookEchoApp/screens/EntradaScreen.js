@@ -34,7 +34,7 @@ const EntradaScreen = () => {
   };
 
   const handleNext = () => {
-    if (isbn.trim() === '') {
+   /* if (isbn.trim() === '') {
       alert('Introdueix un ISBN vàlid');
       return;
     }
@@ -45,7 +45,8 @@ const EntradaScreen = () => {
     } else {
       // Si es válido, ya se mostró el overlay automáticamente, aquí no hacemos nada o puedes forzar que muestre (opcional)
       overlayRef.current?.show();
-    }
+    }*/
+  navigation.navigate('Entrada2', { isbn, book: null });
   };
 
   return (
