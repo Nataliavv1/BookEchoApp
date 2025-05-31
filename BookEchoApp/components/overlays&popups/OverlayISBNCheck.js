@@ -1,4 +1,4 @@
-import React, { useState, useEffect, forwardRef, useImperativeHandle, useRef } from 'react';
+import React, { useState, forwardRef, useImperativeHandle, useRef } from 'react';
 import {
   Modal,
   StyleSheet,
@@ -63,7 +63,7 @@ const OverlayISBNCheck = forwardRef(({ isbn, onConfirm, onCancel }, ref) => {
           authors: volume.authors ? volume.authors.join(', ') : 'Desconegut',
           publishedDate: volume.publishedDate || '',
           description: volume.description || '',
-          image: volume.imageLinks?.thumbnail || null,  // Aquí agafem la imatge si hi és
+          image: volume.imageLinks?.thumbnail || null,
         });
       } else {
         setError('No s\'ha trobat cap llibre amb aquest ISBN.');
@@ -86,7 +86,6 @@ const OverlayISBNCheck = forwardRef(({ isbn, onConfirm, onCancel }, ref) => {
         statusBarTranslucent
         onRequestClose={() => ref.current.hide()}
       >
-        {/* Fondo oscuro semitransparente */}
         <Animated.View style={[styles.overlay, { opacity: fadeAnim }]}>
           <TouchableOpacity
             style={styles.background}
@@ -95,7 +94,6 @@ const OverlayISBNCheck = forwardRef(({ isbn, onConfirm, onCancel }, ref) => {
           />
         </Animated.View>
 
-        {/* Contenedor del modal deslizable */}
         <Animated.View
           style={[
             styles.modal,
@@ -204,61 +202,60 @@ const styles = StyleSheet.create({
     height: 5,
     backgroundColor: '#ccc',
     borderRadius: 3,
-    marginBottom: 15,
+    marginBottom: 10,
   },
   title: {
+    fontWeight: 'bold',
     fontSize: 20,
-    fontWeight: '700',
-    marginBottom: 20,
+    marginBottom: 15,
   },
   bookImage: {
-    width: 120,
-    height: 180,
+    width: 100,
+    height: 140,
     marginBottom: 15,
   },
   bookTitle: {
-    fontSize: 18,
-    fontWeight: '600',
-    textAlign: 'center',
+    fontWeight: 'bold',
+    fontSize: 16,
+    marginBottom: 3,
   },
   bookAuthor: {
-    fontSize: 16,
-    marginVertical: 8,
+    fontStyle: 'italic',
+    marginBottom: 10,
   },
   description: {
-    marginTop: 10,
-    fontStyle: 'italic',
-    textAlign: 'center',
-  },
-  errorText: {
-    fontSize: 16,
-    color: 'red',
-    textAlign: 'center',
-    marginBottom: 20,
+    fontSize: 14,
+    marginBottom: 15,
   },
   buttons: {
     flexDirection: 'row',
-    marginTop: 24,
-    gap: 16,
+    marginTop: 10,
   },
   button: {
-    paddingVertical: 10,
-    paddingHorizontal: 24,
-    borderRadius: 8,
+    flex: 1,
+    paddingVertical: 12,
+    marginHorizontal: 5,
+    borderRadius: 6,
   },
   cancelButton: {
-    backgroundColor: '#ccc',
+    backgroundColor: colors.LightGrey,
   },
   confirmButton: {
     backgroundColor: colors.NormalTurquoise,
   },
   cancelText: {
-    color: '#333',
-    fontWeight: '600',
+    textAlign: 'center',
+    color: 'black',
   },
   confirmText: {
+    textAlign: 'center',
     color: 'white',
-    fontWeight: '600',
+    fontWeight: 'bold',
+  },
+  errorText: {
+    color: 'red',
+    fontWeight: 'bold',
+    marginBottom: 15,
   },
 });
 

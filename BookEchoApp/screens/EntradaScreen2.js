@@ -17,6 +17,7 @@ import typography from "../styles/typography";
 import AutoComplete from "../components/inputs/AutoComplete";
 import uploadCover from "../assets/images/uploadCover.png";
 import CategoryInput from "../components/inputs/CategoryInput";
+import {SaveBook, BookToList} from "../Model/BookTableModel";
 
 const HEADER_HEIGHT = 112;
 
@@ -35,19 +36,55 @@ const EntradaScreen2 = () => {
     const [descripcio, setDescripcio] = useState(book?.description || "");
     const [isbnData, setIsbn] = useState(isbn || "");
 
-    const handleNext = () => {
-        if (titol.trim() === "" || autors.length === 0) {
-            Alert.alert("Atenció", "Omple com a mínim el títol i l'autor");
-            return;
-        }
+const handleNext = async () => {
+  if (titol.trim() === "" || autors.length === 0) {
+    Alert.alert("Atenció", "Omple com a mínim el títol i l'autor");
+    return;
+  }
 
-        navigation.navigate("EntradaScreen3", {
-            titol,
-            autors,
-            descripcio,
-            isbn: isbnData,
-        });
-    };
+  // Construir l'objecte llibre a guardar
+  const bookToSave = {
+    id: isbnData, // o un altre id que vulguis utilitzar, aquí poso ISBN
+    isbn: isbnData,
+    titol,
+    autors,
+    descripcio,
+    imatge: book?.image || null,
+    categories: [], // Si tens categories des de CategoryInput, agafa-les aquí (has d'afegir un estat)
+    puntuaciogoogle: null,
+    npuntuaciogoogle: null,
+    puntuaciomitjana: null,
+    npuntuaciomitjana: null,
+  };
+
+  try {
+    // Guardar llibre
+    const savedBook = await SaveBook(bookToSave);
+    if (!savedBook) {
+      Alert.alert("Error", "No s'ha pogut guardar el llibre.");
+      return;
+    }
+
+    // Afegir a la llista id=31
+    const addedToList = await BookToList(31, isbnData);
+    if (!addedToList) {
+      Alert.alert("Error", "No s'ha pogut afegir el llibre a la llista.");
+      return;
+    }
+
+    // Navegar a la següent pantalla
+    navigation.navigate("EntradaScreen3", {
+      titol,
+      autors,
+      descripcio,
+      isbn: isbnData,
+    });
+  } catch (error) {
+    console.error("Error en guardar o afegir llibre:", error);
+    Alert.alert("Error", "S'ha produït un error inesperat.");
+  }
+};
+
 
     return (
         <View style={{ flex: 1 }}>

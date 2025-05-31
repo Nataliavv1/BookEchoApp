@@ -4,10 +4,19 @@ import { View, TextInput, Text, TouchableOpacity, StyleSheet } from 'react-nativ
 import colors from '../../styles/colors';
 import typography from '../../styles/typography';
 
-const AutoComplete = () => {
+const AutoComplete = ({ initialAuthors = [] }) => {
   const [query, setQuery] = useState('');
   const [authors, setAuthors] = useState([]);
   const [selectedAuthors, setSelectedAuthors] = useState([]);
+
+  // Quan canvia initialAuthors, afegim els autors si no estan ja seleccionats
+  useEffect(() => {
+    if (initialAuthors.length > 0) {
+      setSelectedAuthors(prev =>
+        [...prev, ...initialAuthors.filter(a => !prev.includes(a))]
+      );
+    }
+  }, [initialAuthors]);
 
   useEffect(() => {
     if (query.length < 3) {
@@ -47,7 +56,7 @@ const AutoComplete = () => {
         style={styles.container}
       />
 
-      {/* Muestra solo el primer autor sugerido */}
+      {/* Mostrem només el primer autor suggerit */}
       {authors.length > 0 && (
         <TouchableOpacity
           onPress={() => addAuthor(authors[0])}
