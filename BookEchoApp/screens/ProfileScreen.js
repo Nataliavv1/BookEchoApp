@@ -12,33 +12,42 @@ import {
 import BackButton from '../components/buttons/backbutton';
 import IconButton from '../components/buttons/iconbutton';
 import Button from '../components/buttons/button';
+import colors from '../styles/colors';
+import typography from '../styles/typography';
+
 import { useNavigation } from '@react-navigation/native';
 import { AntDesign } from '@expo/vector-icons';
 
 // Importamos el contexto de usuario para acceder al perfil
 import { useUser } from '../context/UserContext';
 
+import { Modal } from 'react-native-web';
+
+import SharePopup from '../components/overlays&popups/contentForOverlay/SharePopup';
+import ActiveChallengesSection from '../components/challenges/ActiveChallengesSection';
+import { fetchReviewsByUser } from '../Model/ReviewModel';
+import GoogleBooksList from './GoogleBooksList';
+
+
 export default function ProfileScreen() {
   const navigation = useNavigation();
   const { userProfile, setUserProfile } = useUser(); // Obtenim les dades del perfil des del context
+  const [shareVisible, setShareVisible] = useState(false);
+  const [bookIds, setBookIds] = useState();
 
-  const handleEditPhoto = () => {
+  const handleEditPhoto = () => { // TODO mirar si això ja no fa res
     navigation.navigate('EditPhotoScreen');
   };
 
   const handleEditProfile = () => {
     navigation.navigate('EditProfile');
-  };
-
-  const handleShare = () => {
-    navigation.navigate('SharePopup');
+    
   };
 
   const [showSettings, setShowSettings] = useState(false);
 
   const [avatars, setAvatars] = useState([]);
-  const [selectedAvatar, setSelectedAvatar] = useState(null);
-  
+  const [selectedAvatar, setSelectedAvatar] = useState(null);  
 
   useEffect(() => {
     const fetchAvatars = async () => {
@@ -65,10 +74,63 @@ export default function ProfileScreen() {
       }
     };
 
+    const fetchReviews = async () => {
+      const reviews = await fetchReviewsByUser(userProfile.id);
+      setBookIds(reviews.map(r => r.book_id));
+    }
+
     fetchAvatars();
+    fetchReviews();
   }, []);
 
-  const handleUpdateAvatar = async (url) => {
+
+  const handleLogoutModalViewState = () => { 
+    setShowSettings(false);
+    setShowLogoutModal(true);
+    console.log('logout clicked');
+  }
+  const handleDeleteModalViewState = () => { 
+    setShowSettings(false);
+    setShowDeleteModal(true);
+    console.log('delete clicked');
+  }
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+
+  // Funció per tancar sessió:
+  const handleLogout = async () => {
+  await supabase.auth.signOut();
+  setUserProfile(null);
+  navigation.reset({ index: 0, routes: [{ name: 'Login' }] });
+  console.log ('has clickat logout');
+  };
+
+  // Funció per eliminar la info de la base de dades:
+  const handleDeleteAccount = async () => {
+    const { data: { user }, error } = await supabase.auth.getUser();
+    if (error || !user) {
+      console.error('Error obtenint usuari:', error?.message);
+      return;
+    }
+
+    // Eliminar perfil de la base de dades
+    const { error: deleteError } = await supabase
+      .from('profiles')
+      .delete()
+      .eq('id', user.id);
+
+    if (deleteError) {
+      console.error('Error eliminant perfil:', deleteError.message);
+      return;
+    }
+
+    // Tancar sessió després d'eliminar
+    await supabase.auth.signOut();
+    setUserProfile(null);
+    navigation.reset({ index: 0, routes: [{ name: 'Login' }] });
+  };
+
+  const handleUpdateAvatar = async (url) => { // TODO mirar si això ja no fa res
     const { data: { user }, error: userError } = await supabase.auth.getUser();
 
     if (userError || !user) {
@@ -111,7 +173,7 @@ export default function ProfileScreen() {
     setShowSettings(false);
   };
 
-
+ 
   // Aquest codi s'ha substituït per l'ús del context useUser
   /*
   const [userName, setUserName] = useState('');
@@ -172,25 +234,14 @@ export default function ProfileScreen() {
 
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Les meves ressenyes</Text>
-          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-            <Image
-              //source={require('../assets/lectorSocial.png')}
-              style={styles.bookThumbnail}
-            />
-            {/* Afegeix més imatges si cal */}
-          </ScrollView>
-          <TouchableOpacity>
-            <Text style={styles.seeMoreText}>Veure més</Text>
-          </TouchableOpacity>
+          {bookIds && <GoogleBooksList bookIds={bookIds} style={styles.listOverlay} detailsPreselectedOption='option2' query='fakeQuery'/>}
         </View>
 
         <View style={styles.section}>
+          <ActiveChallengesSection />{/* TODO no funciona? */}
           <Text style={styles.sectionTitle}>Els meus reptes</Text>
           <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-            <Image
-              //source={require('../assets/lectorSocial.png')}
-              style={styles.trophyIcon}
-            />
+            
             {/* Afegeix més trofeus si cal */}
           </ScrollView>
           <TouchableOpacity>
@@ -233,22 +284,73 @@ export default function ProfileScreen() {
               </TouchableOpacity>
               */}
               <TouchableOpacity onPress={handleEditProfile}>
+                {/*<AntDesign type="share-alt" />
+                <AntDesign name="share-alt" size={24} color="#000" />*/}
                 <Text style={styles.option}>✏️ Edita el meu perfil</Text>
               </TouchableOpacity>
-              <TouchableOpacity onPress={handleShare}>
+              <TouchableOpacity onPress={() => setShareVisible(true)}>
                 <Text style={styles.option}>🔗 Comparteix el meu perfil</Text>
               </TouchableOpacity>
-              <TouchableOpacity>
-                <Text style={styles.option}>🚪 Tanca la sessió</Text>
+              <TouchableOpacity onPress={() => handleLogoutModalViewState()}>
+                <Text style={styles.option}>🔒 Tanca la sessió</Text>
               </TouchableOpacity>
-              <TouchableOpacity>
+              <TouchableOpacity onPress={() => handleDeleteModalViewState()}>
                 <Text style={[styles.option, styles.danger]}>🗑️ Elimina totes les dades</Text>
               </TouchableOpacity>
             </View>
           </View>
         )}
 
+        {/* 🔒 Modal de confirmació de logout */}
+        {/*<Modal visible={showLogoutModal} transparent animationType="fade">*/}
+          {showLogoutModal && (
+            <View style={styles.modalContainer}>
+            <TouchableOpacity
+              style={styles.backdrop}
+              onPress={() => setShowLogoutModal(false)}
+            />
+            <View style={styles.modalBox}>
+              <Text style={[styles.modalTitle, typography.H2SemiBold]}>Tancar sessió</Text>
+              <Text style={styles.modalText}>Segur que vols tancar la sessió?</Text>
+              <View style={styles.modalButtons}>
+                <TouchableOpacity onPress={() => setShowLogoutModal(false)}>
+                  <Text style={styles.cancelButton}>Cancel·lar</Text>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => handleLogout()}>
+                  <Text style={styles.confirmButton}>Tancar sessió</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </View>)}
+        {/*</Modal>*/}
+
+        {/* 🗑️ Modal de confirmació d’eliminació */}
+        {/*<Modal visible={showDeleteModal} transparent animationType="fade">*/}
+        {showDeleteModal && (
+          <View style={styles.modalContainer}>
+            <TouchableOpacity
+              style={styles.backdrop}
+              onPress={() => setShowDeleteModal(false)}
+            />
+            <View style={styles.modalBox}>
+              <Text style={[styles.modalTitle, typography.H2SemiBold]}>Eliminar compte</Text>
+              <Text style={styles.modalText}>Aquesta acció és permanent. Segur que vols eliminar totes les teves dades?</Text>
+              <View style={styles.modalButtons}>
+                <TouchableOpacity onPress={() => setShowDeleteModal(false)}>
+                  <Text style={styles.cancelButton}>Cancel·lar</Text>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => handleDeleteAccount()}>
+                  <Text style={styles.confirmButton}>Si, eliminar</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </View>)}
+        {/*</Modal>*/}
+
+        <SharePopup visible={shareVisible} onCancel={() => setShareVisible(false)} />
+
       </ScrollView>
+
     </View>
   );
 }
@@ -368,5 +470,61 @@ const styles = StyleSheet.create({
     borderColor: '#47AC9E',
     borderWidth: 3,
   },
+
+  //estils dels modals
+  modalContainer: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: colors.NormalTurquoise,
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 100,
+  },
+  modalBox: {
+    backgroundColor: '#fff',
+    padding: 25,
+    borderRadius: 10,
+    width: '80%',
+    alignItems: 'center',
+  },
+  modalTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 10,
+    color: '#193C37',
+  },
+  modalText: {
+    fontSize: 14,
+    color: '#626262',
+    marginBottom: 20,
+    textAlign: 'center',
+  },
+  modalButtons: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    width: '100%',
+  },
+  cancelButton: {
+    color:'#ffffff',
+    backgroundColor: '#f8794a',
+    borderWidth: 1,
+    borderColor: '#f8794a',
+    borderRadius: 5, 
+    paddingVertical: 12,
+    paddingHorizontal: 30,
+  },
+  confirmButton: {
+    color:'#3B3B3B',
+    backgroundColor: '#ffffff',
+    borderWidth: 1,
+    borderColor: '#3B3B3B',
+    borderRadius: 5, 
+    paddingVertical: 12,
+    paddingHorizontal: 24,
+  },
+
 
 });

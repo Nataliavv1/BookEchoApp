@@ -18,3 +18,12 @@ export async function fetchReviewsByBook(bookId) {
   if (error) throw error;
   return data;
 }
+
+export async function fetchReviewsByUser(userId) {
+  const { data, error } = await supabase
+    .from('ressenyes')
+    .select('*, user:user_id(id, username, avatar_url)')
+    .eq('user_id', userId);
+  if (error) throw error;
+  return data;
+}

@@ -3,6 +3,7 @@ import { Modal, View, Text, StyleSheet, TouchableOpacity, Image } from 'react-na
 import { BlurView } from 'expo-blur';
 import { Linking } from 'react-native';
 import Button from '../../buttons/button';
+import typography from '../../../styles/typography';
 
 const friends = [
   { id: 1, name: 'Amic 1', icon: require('../../../assets/images/SharePopupIcons/friendicon.png') },
@@ -56,14 +57,22 @@ export default function SharePopup({ visible, onCancel }) {
         alert('No s\'ha pogut obrir la plataforma seleccionada.');
       }
     };
+    //const handleOnCancel = () => setShareVisible(false);
   
     return (
       <Modal visible={visible} transparent animationType="fade" onRequestClose={onCancel}  statusBarTranslucent>
         <View style={styles.modalContainer}>
           <BlurView style={styles.blurBackground} intensity={100} tint="dark" />
+          <TouchableOpacity
+            //onPress={console.log('close share popup')}
+            //onPress={() => onCancel()}
+            //onPress={setShareVisible(false)}
+            //onPress={handleOnCancel()}
+            //onPress={onCancel}
+          />
   
           <View style={styles.modalContent}>
-            <Text style={styles.title}>Comparteix</Text>
+            <Text style={[styles.title, typography.H2SemiBold]}>Comparteix</Text>
   
             <View style={styles.friendRow}>
               {friends.map(friend => (
@@ -74,8 +83,8 @@ export default function SharePopup({ visible, onCancel }) {
               ))}
             </View>
   
-            <View style={styles.separator} />
-  
+          <View style={styles.separator} />
+
             <View style={styles.platformRow}>
               {platforms.map(platform => (
                 <TouchableOpacity
@@ -88,8 +97,12 @@ export default function SharePopup({ visible, onCancel }) {
                 </TouchableOpacity>
               ))}
             </View>
-  
-            <Button title="Cancel·lar" onPress={onCancel} color={'#EFEFEF'} fontcolor={'#626262'} />
+            <View style={styles.buttonContainer}>
+              <TouchableOpacity onPress={onCancel}>
+                <Text style={styles.cancelButton}>Cancel·lar</Text>
+              </TouchableOpacity>
+              {/*<Button title="Cancel·lar" onPress={onCancel} color={'#f8794a'} fontcolor={'#ffffff'} />*/}
+            </View>
           </View>
         </View>
       </Modal>
@@ -162,5 +175,20 @@ export default function SharePopup({ visible, onCancel }) {
       fontSize: 14,
       marginTop: 4,
       color: '#626262',
+    },
+    buttonContainer: {
+      marginTop: 10,
+      flexDirection: 'row',
+      justifyContent: 'center',
+    },
+    cancelButton: {
+      fontSize: 16,
+      color:'#ffffff',
+      backgroundColor: '#f8794a',
+      borderWidth: 1,
+      borderColor: '#f8794a',
+      borderRadius: 5, 
+      paddingVertical: 12,
+      paddingHorizontal: 30,
     },
   });

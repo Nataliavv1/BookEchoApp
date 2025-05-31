@@ -93,40 +93,42 @@ export default function EditProfileScreen({ navigation }) {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <Text style={[typography.H2SemiBold, styles.title]}>Edita el teu perfil</Text>
+        <Text style={[typography.H2SemiBold, styles.title]}>Edita el teu perfil</Text>
 
-      {/* Avatars */}
-      <View style={{ marginBottom: 20 }}>
-        <Text style={[typography.labelRegular, { marginBottom: 10 }]}>Selecciona un avatar:</Text>
-        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-          {avatars.map((avatar) => (
-            <TouchableOpacity
-              key={avatar.name}
-              onPress={() => setSelectedAvatar(avatar.url)}
-              style={[
-                styles.avatarImageWrapper,
-                selectedAvatar === avatar.url && styles.avatarSelected,
-              ]}
-            >
-              <Image source={{ uri: avatar.url }} style={styles.avatarImage} />
-            </TouchableOpacity>
-          ))}
-        </ScrollView>
-      </View>
+        <Text style={[styles.paragraph, typography.subtitleMedium]}>Pots canviar una o més dades del teu perfil. Enrecorda't de guardar quan acabis!</Text>
 
-      {/* Inputs */}
-      <FormInput label="Nom:" value={name} onChangeText={setName} icon="user" />
-      <FormInput label="Cognoms:" value={surname} onChangeText={setSurname} icon="user" />
-      <FormInput label="Nom d'usuari:" value={username} onChangeText={setUsername} icon="book" />
-      <FormInput label="Correu electrònic:" value={email} onChangeText={setEmail} icon="mail" />
+        {/* Avatars */}
+        <View style={{ marginBottom: 20, marginTop: 20 }}>
+            <Text style={[typography.labelRegular, { marginBottom: 10 }]}>Selecciona un avatar:</Text>
+            <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+            {avatars.map((avatar) => (
+                <TouchableOpacity
+                key={avatar.name}
+                onPress={() => setSelectedAvatar(avatar.url)}
+                style={[
+                    styles.avatarImageWrapper,
+                    selectedAvatar === avatar.url && styles.avatarSelected,
+                ]}
+                >
+                <Image source={{ uri: avatar.url }} style={styles.avatarImage} />
+                </TouchableOpacity>
+            ))}
+            </ScrollView>
+        </View>
 
-      <TouchableOpacity style={styles.button} onPress={handleSave} disabled={loading}>
-        <TextButton
-          title={loading ? 'Guardant...' : 'Guardar canvis'}
-          onPress={handleSave}
-          variant="filledTurquoise"
-        />
-      </TouchableOpacity>
+        {/* Inputs */}
+        <FormInput label="Nom:" placeholder="Nom" value={name} onChangeText={setName} icon="user" />
+        <FormInput label="Cognoms:" placeholder="Cognoms" value={surname} onChangeText={setSurname} icon="user" />
+        <FormInput label="Nom d'usuari:" placeholder="Nom d'usuari" value={username} onChangeText={setUsername} icon="book" />
+        {/*<FormInput label="Correu electrònic:" placeholder="Correu electrònic" value={email} onChangeText={setEmail} icon="mail" keyboardType="email-address" autoCapitalize="none" />*/}
+
+        <TouchableOpacity style={styles.button} onPress={handleSave} disabled={loading}>
+            <TextButton
+            title={loading ? 'Guardant...' : 'Guardar canvis'}
+            onPress={handleSave}
+            variant="filledTurquoise"
+            />
+        </TouchableOpacity>
     </ScrollView>
   );
 }

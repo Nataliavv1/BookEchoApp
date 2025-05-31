@@ -34,12 +34,12 @@ import { useUser } from "../context/UserContext";
 const DetailScreen = () => {
   const navigation = useNavigation();
   const route = useRoute();
-  const { titol, imatge, autors, id } = route.params;
+  const { titol, imatge, autors, id, preselectedOption } = route.params;
 
   const [book, setBook] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [selectedOption, setSelectedOption] = useState("option1");
+  const [selectedOption, setSelectedOption] = useState(preselectedOption || 'option1');
   const { userProfile } = useUser();
   const [userReview, setUserReview] = useState(null);
   const [altresRessenyes, setAltresRessenyes] = useState([]);

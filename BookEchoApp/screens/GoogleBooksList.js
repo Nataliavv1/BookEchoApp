@@ -4,7 +4,7 @@ import { View, Text, FlatList, Image, StyleSheet, TouchableOpacity } from "react
 
 const API_KEY = "AIzaSyAdrMfk5xKeXebgngAXQjrKshHuhAAklyM";
 
-const GoogleBooksList = ({ query, style }) => {
+const GoogleBooksList = ({ query, style, detailsPreselectedOption, bookIds }) => {
   const [books, setBooks] = useState([]);
   const navigation = useNavigation();
 
@@ -13,11 +13,19 @@ const GoogleBooksList = ({ query, style }) => {
 
     const fetchBooks = async () => {
       try {
-        const response = await fetch(
-          `https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(query)}&key=${API_KEY}`
-        );
-        const data = await response.json();
-        setBooks(data.items || []);
+        if (bookIds != undefined) {
+          const responses = await Promise.all(
+            bookIds.map(id => fetch(`https://www.googleapis.com/books/v1/volumes/${id}?key=${API_KEY}`))
+          )
+          const data = await Promise.all(responses.map(r => r.json()));
+          setBooks(data)
+          } else {
+          const response = await fetch(
+            `https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(query)}&key=${API_KEY}`
+          );
+          const data = await response.json();
+          setBooks(data.items || []);
+        }
       } catch (error) {
         console.error("Error fetching books:", error);
       }
@@ -43,6 +51,7 @@ const GoogleBooksList = ({ query, style }) => {
                   autors: volume.authors,
                   id: item.id,
                   imatge: volume.imageLinks?.thumbnail,
+                  preselectedOption: detailsPreselectedOption || 'option1'
                 })
               }>
                 <View style={styles.bookItem}>
