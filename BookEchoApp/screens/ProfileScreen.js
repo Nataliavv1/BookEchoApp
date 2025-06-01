@@ -173,36 +173,6 @@ export default function ProfileScreen() {
     setShowSettings(false);
   };
 
- 
-  // Aquest codi s'ha substituït per l'ús del context useUser
-  /*
-  const [userName, setUserName] = useState('');
-
-  useEffect(() => {
-      const fetchUserName = async () => {
-          const { data: { user }, error: userError } = await supabase.auth.getUser();
-          if (userError || !user) {
-          console.log('Error obtenint usuari:', userError);
-          return;
-          }
-
-          const { data, error } = await supabase
-          .from('profiles')
-          .select('name')
-          .eq('id', user.id)
-          .single();
-
-          if (error) {
-          console.log('Error obtenint perfil:', error.message);
-          } else {
-          setUserName(data.name);
-          }
-      };
-
-      fetchUserName();
-  }, []);
-  */
-
   return (
     <View style={styles.container}>
       <BackButton />
@@ -233,21 +203,17 @@ export default function ProfileScreen() {
         </View>
 
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Les meves ressenyes</Text>
-          {bookIds && <GoogleBooksList bookIds={bookIds} style={styles.listOverlay} detailsPreselectedOption='option2' query='fakeQuery'/>}
+          
+          <Text style={styles.ressenyesTitle}>Les meves ressenyes</Text>
+          <View horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 100 }}>
+            {bookIds && <GoogleBooksList bookIds={bookIds} style={styles.listOverlay} detailsPreselectedOption='option2' query='fakeQuery'/>}
+          </View>
+          
         </View>
 
-        <View style={styles.section}>
-          <ActiveChallengesSection />{/* TODO no funciona? */}
-          <Text style={styles.sectionTitle}>Els meus reptes</Text>
-          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-            
-            {/* Afegeix més trofeus si cal */}
-          </ScrollView>
-          <TouchableOpacity>
-            <Text style={styles.seeMoreText}>Veure més</Text>
-          </TouchableOpacity>
-        </View>
+        <ScrollView style={styles.reptesSection}>
+          <ActiveChallengesSection />{/* TODO no funciona? si funciona, pero primer has de seleccionar reptes */}
+        </ScrollView>
 
         {showSettings && (
           <View style={styles.modalOverlay}>
@@ -256,35 +222,8 @@ export default function ProfileScreen() {
               onPress={() => setShowSettings(false)}
             />
             <View style={styles.settingsCard}>
-              {/*}
-              <View style={styles.avatarSelection}>
-                <Text style={styles.sectionTitle}>Tria un nou avatar</Text>
-                <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                  {avatars.map((avatar) => (
-                    <TouchableOpacity
-                      key={avatar.name}
-                      onPress={() => handleUpdateAvatar(avatar.url)}
-                    >
-                      <Image
-                        source={{ uri: avatar.url }}
-                        style={[
-                          styles.avatarOption,
-                          selectedAvatar === avatar.url && styles.selectedAvatar,
-                        ]}
-                      />
-                    </TouchableOpacity>
-                  ))}
-                </ScrollView>
-              </View>
-              */}
-
-              {/*  
-              <TouchableOpacity >
-                <Text style={styles.option}>📷 Edita la foto de perfil</Text>
-              </TouchableOpacity>
-              */}
-              <TouchableOpacity onPress={handleEditProfile}>
-                {/*<AntDesign type="share-alt" />
+                <TouchableOpacity onPress={handleEditProfile}>
+                {/*<AntDesign type="share-alt" /> // no aconegeuixo que funcionin les icones d'antdesign
                 <AntDesign name="share-alt" size={24} color="#000" />*/}
                 <Text style={styles.option}>✏️ Edita el meu perfil</Text>
               </TouchableOpacity>
@@ -362,7 +301,7 @@ const styles = StyleSheet.create({
     paddingTop: 20,
   },
   scrollContent: {
-    padding: 16,
+    padding: 0,
   },
   profileHeader: {
     padding: 10,
@@ -397,6 +336,7 @@ const styles = StyleSheet.create({
   },
   section: {
     marginBottom: 30,
+    paddingHorizontal: 20,
   },
   sectionTitle: {
     fontSize: 20,
@@ -435,15 +375,15 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   modalOverlay: {
-  position: 'absolute',
-  top: 0,
-  left: 0,
-  right: 0,
-  bottom: 0,
-  backgroundColor: 'rgba(0,0,0,0.4)',
-  justifyContent: 'center',
-  alignItems: 'center',
-  zIndex: 100,
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: 'rgba(0,0,0,0.4)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 100,
   },
   backdrop: {
     ...StyleSheet.absoluteFillObject,
@@ -456,7 +396,7 @@ const styles = StyleSheet.create({
     width: '85%',
   },
   avatarSelection: {
-  marginVertical: 10,
+    marginVertical: 10,
   },
   avatarOption: {
     width: 60,
@@ -526,5 +466,14 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
   },
 
+  ressenyesTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#000000',
+  },
+
+  reptesSection: {
+    paddingBottom: 100,
+  },
 
 });
