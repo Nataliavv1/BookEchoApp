@@ -14,6 +14,8 @@ import ChallengeCard from '../cards/ChallengeCard';
 import colors from '../../styles/colors';
 import typography from '../../styles/typography';
 import { fetchUserChallenges } from '../data/challengesData';
+import { useUser } from '../../context/UserContext';
+import challengesData from '../data/challengesData';
 
 const screenWidth = Dimensions.get('window').width;
 const horizontalPadding = 20;
@@ -23,13 +25,15 @@ export default function ActiveChallengesSection() {
   const [challenges, setChallenges] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  const { userProfile: user } = useUser(); // Usuari actual
+
   // Carrega reptes de Supabase
   useEffect(() => {
     const loadChallenges = async () => {
       try {
-        const allChallenges = await fetchUserChallenges();
+        const allChallenges = await fetchUserChallenges(user.id);
         const active = allChallenges.filter(
-          ch => ch.completed > 0 || ch.status === 'active'
+          ch => ch.completat || ch.status === 'active'
         );
         setChallenges(active);
       } catch (error) {
@@ -102,8 +106,9 @@ export default function ActiveChallengesSection() {
         horizontal={hasMultipleChallenges}
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={{ paddingBottom: 20, paddingLeft: hasMultipleChallenges ? 5 : 0 }}
-        renderItem={({ item }) => (
-          <TouchableOpacity
+        renderItem={({ item }) => {
+          const completedItem = {...item, ...challengesData.find(c => c.id == item.idrepte)};
+          return (<TouchableOpacity
             onPress={() => navigation.navigate('AllChallengesScreen')}
             activeOpacity={0.8}
             style={[
@@ -116,17 +121,18 @@ export default function ActiveChallengesSection() {
             ]}
           >
             <ChallengeCard
-              isActive={item.completed > 0}
-              image={item.image}
-              title={item.title}
-              description={item.description}
-              completed={item.completed || 0}
-              total={item.total || 1}
-              backgroundColor={item.backgroundColor || '#fff'}
-              progressColor={item.progressColor || '#47AC9E'}
+              isActive={completedItem.progres > 0}
+              image={completedItem.image}
+              title={completedItem.title}
+              description={completedItem.description}
+              completed={completedItem.completat || 0}
+              total={completedItem.total || 1}
+              backgroundColor={completedItem.backgroundColor || '#fff'}
+              progressColor={completedItem.progressColor || '#47AC9E'}
             />
-          </TouchableOpacity>
-        )}
+          </TouchableOpacity>)
+        }
+        }
       />
     </View>
   );
