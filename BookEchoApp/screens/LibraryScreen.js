@@ -13,7 +13,8 @@ import perLlegir from "../assets/images/perLlegir.png";
 import { fetchLlistes, selectCount } from "../Model/FetchLlistes";
 import { useUser } from '../context/UserContext';
 import { useNavigation } from '@react-navigation/native';
-
+import { fetchLlibresGuardats } from '../Model/fetchLlibresGuardats';
+import BookCard from '../components/books/BookCard';
 
 const LibraryScreen = () => {
     const [llistes, setLlistes] = useState([]);
@@ -21,15 +22,16 @@ const LibraryScreen = () => {
     const [selectedOption, setSelectedOption] = useState("option1");
     const { userProfile } = useUser();
     const navigation = useNavigation();
-    /*useEffect(() => {
-        async function carregarLlistes() {
-            if (!userProfile) return;
-            const data = await fetchLlistes(userProfile);
-            if (data) setLlistes(data);
-            setLoading(false);
+    const [llibresGuardats, setLlibresGuardats] = useState([]);
+
+    useEffect(() => {
+        async function carregar() {
+            const result = await fetchLlibresGuardats(userProfile.id);
+            setLlibresGuardats(result);
         }
-        carregarLlistes();
-    }, [userProfile]);*/
+        carregar();
+    }, [userProfile.id]);
+
 
     useEffect(() => {
         async function carregarLlistes() {
@@ -98,6 +100,11 @@ const LibraryScreen = () => {
 
                     {selectedOption === "option2" && (
                         <View>
+                            {llibresGuardats.map(book => (
+                                <BookCard key={book.id} book={book} />
+                            ))}
+
+
                         </View>
                     )}
 

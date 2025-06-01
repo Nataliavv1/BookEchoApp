@@ -42,20 +42,19 @@ const LlistaDetall = ({ route, navigation }) => {
                 {error && <Text style={{ color: 'red', marginVertical: 10 }}>{error}</Text>}
 
                 {/* Aquí mostrem la llista de llibres */}
-                <View>
-                    {llibres.map((llibre) => (
-                     <View>
- <BookCard
-                            key={llibre.id}
-                            book={{ volumeInfo: llibre }}
-                            onPress={() => navigation.navigate('DetallLlibre', { id: llibre.id })}
-                        />
-                        <Text>{llibre.titol}</Text>
-                     </View>
-                    
+<View style={styles.booksContainer}>
+  {llibres.map((book) => (
+    <BookCard
+      key={book.id}
+      book={book}                             
+      onPress={() =>
+        navigation.navigate('DetallLlibre', { id: book.id })
+      }
+    />
+  ))}
+  
+</View>
 
-                    ))}
-                </View>
             </View>
         </ScrollView>
     );

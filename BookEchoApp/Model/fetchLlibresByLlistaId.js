@@ -1,8 +1,6 @@
 import { supabase } from '../screens/Supabase/lib/supabaseClient';
 
 export async function fetchLlibresByLlistaId(llistaId) {
-  // Aquesta consulta busca a la taula llibrellista (que relaciona llista i llibre)
-  // i a més agafa totes les dades de la taula llibres fent un join
   const { data, error } = await supabase
     .from('llibrellista')
     .select(`
@@ -16,8 +14,22 @@ export async function fetchLlibresByLlistaId(llistaId) {
     throw error;
   }
 
-  // Torna només les dades dels llibres
-  return data.map(item => item.llibre);
+  // ➜ CONVERTIM cada registre al format que vol BookCard
+  return data.map(({ llibre }) => ({
+    id: llibre.id,                                   // per al key
+    volumeInfo: {
+      title:        llibre.titol,
+      authors:      llibre.autors ? llibre.autors.split(', ') : [],
+      description:  llibre.descripcio,
+      categories:   llibre.categories ? llibre.categories.split(', ') : [],
+      averageRating: llibre.puntuaciogoogle ?? 0,
+      ratingsCount:  llibre.npuntuaciogoogle ?? 0,
+      industryIdentifiers: [
+        { identifier: llibre.isbn ?? llibre.id, type: 'ISBN_13' }
+      ],
+      imageLinks: {
+        thumbnail: llibre.imatge || ''              // URL de la imatge
+      }
+    }
+  }));
 }
-
-
