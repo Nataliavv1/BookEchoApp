@@ -12,6 +12,8 @@ import { fetchLlistes } from '../../../Model/FetchLlistes';
 import { BookToList } from '../../../Model/BookTableModel';
 import { useUser } from '../../../context/UserContext';
 import { supabase } from '../../../screens/Supabase/lib/supabaseClient';
+import TextButton from '../../buttons/TextButton';
+import Overlay from '../Overlay';
 
 export default function AddBookToList({ visible, onCancel, bookTitle, book }) {
     const { userProfile } = useUser();
@@ -150,7 +152,11 @@ const afegirLlibreALlista = async (llistaId, book) => {
                     })}
                 </View>
 
-                <Text style={[styles.Title2, typography.H2Bold]}>Les meves llistes</Text>
+              {/*}  <Text style={[styles.Title2, typography.H2Bold]}>Les meves llistes</Text>*/}
+            <View style={styles.newlist}>
+                <Overlay icon={'plus'} contentType={'CreateList'} color={'#FEFEFE'}></Overlay>
+                <Text style={[styles.Title2, typography.H3Bold]}>Crear Nova Llista</Text>
+            </View>      
             </View>
 
         </Modal>
@@ -162,6 +168,15 @@ const afegirLlibreALlista = async (llistaId, book) => {
 
 
 const styles = StyleSheet.create({
+   newlist: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    backgroundColor: colors.NormalOrange,
+    paddingHorizontal: 8,
+    paddingVertical: 8,
+    borderRadius: 4,
+   },
     Modal: {
         paddingVertical: 27,
         gap: 24,
@@ -171,7 +186,7 @@ const styles = StyleSheet.create({
         color: colors.DarkGrey,
     },
     Title2: {
-        color: colors.NormalGrey,
+        color: colors.NormalWhite,
     },
     greenLine: {
         height: 2,
