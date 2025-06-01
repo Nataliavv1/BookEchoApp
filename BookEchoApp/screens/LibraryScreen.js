@@ -13,7 +13,7 @@ import perLlegir from "../assets/images/perLlegir.png";
 import { fetchLlistes, selectCount } from "../Model/FetchLlistes";
 import { useUser } from '../context/UserContext';
 import { useNavigation } from '@react-navigation/native';
-import { fetchLlibresByLlistaId } from '../Model/fetchLlibresByLlistaId';
+
 
 const LibraryScreen = () => {
     const [llistes, setLlistes] = useState([]);
