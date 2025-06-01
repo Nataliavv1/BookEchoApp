@@ -16,7 +16,7 @@ import challenges, { fetchUserChallenges } from '../components/data/challengesDa
 
 export default function ChallengeScreen({ navigation }) {  
   
-  const { user } = useUser(); // Usuari actual
+  const { userProfile: user } = useUser(); // Usuari actual
    
   const [myChallenges, setMyChallenges] = useState([]);
 
