@@ -44,6 +44,7 @@ export function useToggleReadState(book, listIds) {
           );
         }
       } else {
+        console.log("book to list", listIds, key2ctx, next, listIds[key2ctx[next]]);
         await BookToList(
           listIds[key2ctx[next]],
           book.id

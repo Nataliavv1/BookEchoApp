@@ -18,26 +18,19 @@ import typography from '../styles/typography';
 import { useNavigation } from '@react-navigation/native';
 import { AntDesign } from '@expo/vector-icons';
 
-// Importamos el contexto de usuario para acceder al perfil
+// Importamem el context d'usuari per accedir al perfil
 import { useUser } from '../context/UserContext';
-
-import { Modal } from 'react-native-web';
 
 import SharePopup from '../components/overlays&popups/contentForOverlay/SharePopup';
 import ActiveChallengesSection from '../components/challenges/ActiveChallengesSection';
 import { fetchReviewsByUser } from '../Model/ReviewModel';
 import GoogleBooksList from './GoogleBooksList';
 
-
 export default function ProfileScreen() {
   const navigation = useNavigation();
-  const { userProfile, setUserProfile } = useUser(); // Obtenim les dades del perfil des del context
+  const { userProfile, setUserProfile } = useUser(); // D'aquí obtenim les dades del perfil des del context
   const [shareVisible, setShareVisible] = useState(false);
   const [bookIds, setBookIds] = useState();
-
-  const handleEditPhoto = () => { // TODO mirar si això ja no fa res
-    navigation.navigate('EditPhotoScreen');
-  };
 
   const handleEditProfile = () => {
     navigation.navigate('EditProfile');
@@ -50,40 +43,16 @@ export default function ProfileScreen() {
   const [selectedAvatar, setSelectedAvatar] = useState(null);  
 
   useEffect(() => {
-    const fetchAvatars = async () => {
-      const { data, error } = await supabase.storage.from('avatars').list('', {
-        limit: 100,
-        offset: 0,
-      });
-
-      if (error) {
-        console.error('Error al obtenir imatges:', error.message);
-      } else {
-        const urls = await Promise.all(
-          data.map(async (file) => {
-            const { data: publicUrl } = supabase.storage
-              .from('avatars')
-              .getPublicUrl(file.name);
-            return {
-              name: file.name,
-              url: publicUrl.publicUrl,
-            };
-          })
-        );
-        setAvatars(urls);
-      }
-    };
-
+    // Agafa les reviews de l'usuari
     const fetchReviews = async () => {
       const reviews = await fetchReviewsByUser(userProfile.id);
       setBookIds(reviews.map(r => r.book_id));
     }
 
-    fetchAvatars();
     fetchReviews();
   }, []);
 
-
+  // Obre els "modals" de logout i delete quan es toqui el botó, i també tanca el "modal" de settings
   const handleLogoutModalViewState = () => { 
     setShowSettings(false);
     setShowLogoutModal(true);
@@ -130,49 +99,7 @@ export default function ProfileScreen() {
     navigation.reset({ index: 0, routes: [{ name: 'Login' }] });
   };
 
-  const handleUpdateAvatar = async (url) => { // TODO mirar si això ja no fa res
-    const { data: { user }, error: userError } = await supabase.auth.getUser();
-
-    if (userError || !user) {
-      console.error('No s\'ha pogut obtenir l\'usuari:', userError?.message);
-      console.log('no es pot accedir a l\'usuari');
-      return;
-    }
-
-    // 🔄 Actualitza l'avatar a la base de dades
-    const { error: updateError } = await supabase
-      .from('profiles')
-      .update({ avatar_url: selectedAvatar, })
-      .eq('id', user.id);
-      console.log(selectedAvatar);
-
-    if (updateError) {
-      console.error('Error actualitzant avatar:', updateError.message);
-      console.log('error al canviar avatar');
-      return;
-    }
-
-    // ✅ Torna a obtenir el perfil actualitzat
-    const { data: updatedProfile, error: fetchError } = await supabase
-      .from('profiles')
-      .select('*')
-      .eq('id', user.id)
-      .single();
-      console.log('avatar canviat!');
-
-    if (fetchError) {
-      console.error('Error refrescant perfil:', fetchError.message);
-      return;
-    }
-
-    // 🧠 Actualitza el context amb el nou perfil
-    setUserProfile(updatedProfile);
-
-    // ✅ Opcional: tancar el popup
-    setSelectedAvatar(url);
-    setShowSettings(false);
-  };
-
+  
   return (
     <View style={styles.container}>
       <BackButton />
@@ -206,7 +133,7 @@ export default function ProfileScreen() {
           
           <Text style={styles.ressenyesTitle}>Les meves ressenyes</Text>
           <View horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 100 }}>
-            {bookIds && <GoogleBooksList bookIds={bookIds} style={styles.listOverlay} detailsPreselectedOption='option2' query='fakeQuery'/>}
+            {bookIds && <GoogleBooksList bookIds={bookIds} style={styles.listContent} detailsPreselectedOption='option2' query='fakeQuery'/>}
           </View>
           
         </View>

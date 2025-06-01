@@ -29,7 +29,7 @@ export async function fetchLlistes(userProfile) {
 export async function fetchLlistesPredet(userProfile) {
   const { data, error } = await supabase
     .from('llista')
-    .select('id, tipus_predeterminat')
+    .select('id, tipus_predeterminat, nom')
     .eq('usuari_id', userProfile.id)
     .eq('es_predeterminada', true);
 

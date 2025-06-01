@@ -1,13 +1,56 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, ScrollView, StyleSheet, Text, TouchableOpacity, Image } from 'react-native';
+
+// Context per accedir al perfil
+import { supabase } from './Supabase/lib/supabaseClient';
+import { useUser } from '../context/UserContext';
+
+
 import ChallengeCard from '../components/cards/ChallengeCard';
 import TrophyCard from '../components/cards/TrophyCard';
 import BackButton from '../components/buttons/backbutton';
 import Button from '../components/buttons/button';
 import { useChallenges } from '../context/ChallengeContext';
+import challenges, { fetchUserChallenges } from '../components/data/challengesData';
 
-export default function ChallengeScreen({ navigation }) {
-  const { myChallenges } = useChallenges();
+
+export default function ChallengeScreen({ navigation }) {  
+  
+  const { user } = useUser(); // Usuari actual
+   
+  const [myChallenges, setMyChallenges] = useState([]);
+
+  useEffect(() => {
+    if (user?.id) {
+      loadChallenges();
+    }
+  }, [user]);
+
+  const loadChallenges = async () => {
+    try {
+      const userChallenges = await fetchUserChallenges(user.id);
+
+      // Encreuar amb l'array local `challenges`
+      const mergedChallenges = userChallenges.map((uc) => {
+        const match = challenges.find((c) => c.id === uc.idrepte.toString());
+        if (!match) return null;
+        return {
+          ...match,
+          completed: uc.progres,
+          total: match.total,
+        };
+      }).filter(Boolean); // eliminar nulls
+
+      setMyChallenges(mergedChallenges);
+    } catch (error) {
+      console.error('Error carregant reptes de l’usuari:', error);
+    }
+  };
+
+  if (!user) {
+    return <Text>Carregant usuari...</Text>;
+  }
+
 
   const handleSeeAll = () => {
     navigation.navigate('AllChallengesScreen');

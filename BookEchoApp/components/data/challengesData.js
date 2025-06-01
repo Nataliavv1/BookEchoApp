@@ -1,3 +1,15 @@
+import { supabase } from '../../screens/Supabase/lib/supabaseClient';
+// Funció per obtenir els reptes que tñe l'usuari
+export async function fetchUserChallenges(userId) {
+  const { data, error } = await supabase
+    .from('usuarirepte')
+    .select('*')
+    //.select('*, user:idusuari(idrepte, completat, progres, datacompletat)')
+    .eq('idusuari', userId);
+  if (error) throw error;
+  return data;
+}
+
 const challenges = [
   {
     id: '1',

@@ -5,12 +5,13 @@ import { Linking } from 'react-native';
 import Button from '../../buttons/button';
 import typography from '../../../styles/typography';
 
-const friends = [
+/*const friends = [
+// En un futur afegir la llista d'amics dins l'app per compartir llibres en un xat
   { id: 1, name: 'Amic 1', icon: require('../../../assets/images/SharePopupIcons/friendicon.png') },
   { id: 2, name: 'Amic 2', icon: require('../../../assets/images/SharePopupIcons/friendicon.png') },
   { id: 3, name: 'Amic 3', icon: require('../../../assets/images/SharePopupIcons/friendicon.png') },
   { id: 4, name: 'Amic 4', icon: require('../../../assets/images/SharePopupIcons/friendicon.png') },
-];
+];*/
 
 const platforms = [
   { name: 'WhatsApp', icon: require('../../../assets/images/SharePopupIcons/whatsapplogo.png') },
@@ -23,7 +24,7 @@ export default function SharePopup({ visible, onCancel }) {
     const handleShare = async (platform) => {
       let appUrl = '';
       let webFallbackUrl = '';
-  
+      // Segons l'aplicació escollida , es determina la URL per compartir
       switch (platform) {
         case 'WhatsApp':
           appUrl = 'whatsapp://send?text=Hola! Mira aquesta app BookEcho!';
@@ -44,7 +45,8 @@ export default function SharePopup({ visible, onCancel }) {
         default:
           return;
       }
-  
+      
+      // Per obrir els links o enviar un missatge d'error
       try {
         const supported = await Linking.canOpenURL(appUrl);
         if (supported) {
@@ -61,9 +63,11 @@ export default function SharePopup({ visible, onCancel }) {
   
     return (
       <Modal visible={visible} transparent animationType="fade" onRequestClose={onCancel}  statusBarTranslucent>
+        {/* Mostra el contingut del modal */}
         <View style={styles.modalContainer}>
           <BlurView style={styles.blurBackground} intensity={100} tint="dark" />
           <TouchableOpacity
+          style={styles.closeButton}// Intents per fer que al clickar fora del contingut del modal es tanqui (no funciona)
             //onPress={console.log('close share popup')}
             //onPress={() => onCancel()}
             //onPress={setShareVisible(false)}
@@ -73,7 +77,8 @@ export default function SharePopup({ visible, onCancel }) {
   
           <View style={styles.modalContent}>
             <Text style={[styles.title, typography.H2SemiBold]}>Comparteix</Text>
-  
+            
+            {/*
             <View style={styles.friendRow}>
               {friends.map(friend => (
                 <View key={friend.id} style={styles.friendItem}>
@@ -83,7 +88,7 @@ export default function SharePopup({ visible, onCancel }) {
               ))}
             </View>
   
-          <View style={styles.separator} />
+          <View style={styles.separator} />*/}
 
             <View style={styles.platformRow}>
               {platforms.map(platform => (
