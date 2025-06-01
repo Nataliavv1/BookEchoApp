@@ -115,7 +115,7 @@ const DetailScreen = () => {
           style={[styles.overlay, typography.subtitleRegular]}
           contentType="BookOptions"
           bookTitle={book.title}
-          bookId={book.id}
+          book={book}
           library={"MaterialCommunityIcons"}
           icon={"dots-vertical"}
         />

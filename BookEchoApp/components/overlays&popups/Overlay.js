@@ -19,7 +19,7 @@ import CreateList from './contentForOverlay/CreateList';
 import BookOptions from './contentForOverlay/BookOptions';
 import ReviewOptions from './contentForOverlay/ReviewOptions';
 
-export default function Overlay({ title, delateText, editText, contentType, color, icon, bookTitle, library = 'AntDesign', reviewId, onDelete, }) {
+export default function Overlay({ title, delateText, editText, contentType, color, icon, bookTitle, book, library = 'AntDesign', reviewId, onDelete, }) {
     const [visible, setVisible] = useState(false);
     const fadeAnim = useRef(new Animated.Value(0)).current;
     const slideAnim = useRef(new Animated.Value(0)).current;
@@ -72,7 +72,7 @@ export default function Overlay({ title, delateText, editText, contentType, colo
             },
         })
     ).current;
-
+console.log("Objecte book rebut a Overlay:", book);
     return (
 
         <SafeAreaView style={styles.fill}>
@@ -116,7 +116,7 @@ export default function Overlay({ title, delateText, editText, contentType, colo
                     ) : contentType === 'AddBook' ? (
                         <AddBook />
                     ) : contentType === 'BookOptions' ? (
-                        <BookOptions bookTitle={bookTitle} />
+                        <BookOptions bookTitle={bookTitle} book={book} />
                     ) : contentType === 'CreateList' ? (
                         <CreateList />
                     ) : contentType === 'ReviewOptions' ? (
