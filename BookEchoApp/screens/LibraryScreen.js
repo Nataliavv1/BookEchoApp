@@ -69,7 +69,7 @@ const LibraryScreen = () => {
                     selected={selectedOption}
                     onChange={setSelectedOption} />
                 <View style={styles.modifyList}>
-                    <Dropdown></Dropdown>
+                    {/*<Dropdown></Dropdown>*/}
                     <Overlay icon={'plus'} contentType={'CreateList'}></Overlay>
                 </View>
 
@@ -99,7 +99,7 @@ const LibraryScreen = () => {
                     )}
 
                     {selectedOption === "option2" && (
-                        <View>
+                        <View style={styles.llibresGuardats}>
                             {llibresGuardats.map(book => (
                                 <BookCard key={book.id} book={book} />
                             ))}
@@ -115,6 +115,14 @@ const LibraryScreen = () => {
 };
 
 const styles = StyleSheet.create({
+    llibresGuardats: {
+  flexDirection: 'row',
+  flexWrap: 'wrap',
+  justifyContent: 'flex-start',
+  gap: 16,
+  padding: 14,
+  width: '100%',
+},
     container: {
         marginTop: 100,
         flex: 1,
