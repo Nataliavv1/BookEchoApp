@@ -1,26 +1,62 @@
-import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, FlatList, Dimensions } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  FlatList,
+  Dimensions,
+  ActivityIndicator,
+} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { useChallenges } from '../../context/ChallengeContext';
+import { AntDesign } from '@expo/vector-icons';
 import ChallengeCard from '../cards/ChallengeCard';
 import colors from '../../styles/colors';
 import typography from '../../styles/typography';
-import { AntDesign } from '@expo/vector-icons'; // <-- IMPORTAR ICONO
+import { fetchUserChallenges } from '../data/challengesData';
 
 const screenWidth = Dimensions.get('window').width;
 const horizontalPadding = 20;
 
 export default function ActiveChallengesSection() {
   const navigation = useNavigation();
-  const { myChallenges } = useChallenges();
+  const [challenges, setChallenges] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const hasMultipleChallenges = myChallenges && myChallenges.length > 1;
+  // Carrega reptes de Supabase
+  useEffect(() => {
+    const loadChallenges = async () => {
+      try {
+        const allChallenges = await fetchUserChallenges();
+        const active = allChallenges.filter(
+          ch => ch.completed > 0 || ch.status === 'active'
+        );
+        setChallenges(active);
+      } catch (error) {
+        console.error('Error carregant reptes:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    console.log('dades de reptes actius carregades!');
 
+    loadChallenges();
+  }, []);
+
+  const hasMultipleChallenges = challenges.length > 1;
   const cardWidth = hasMultipleChallenges
     ? screenWidth * 0.75
     : screenWidth - horizontalPadding * 2;
 
-  if (!myChallenges || myChallenges.length === 0) {
+  if (loading) {
+    return (
+      <View style={styles.container}>
+        <ActivityIndicator size="large" color={colors.NormalTurquoise} />
+      </View>
+    );
+  }
+
+  if (challenges.length === 0) {
     return (
       <View style={styles.container}>
         <Text style={[typography.H2Bold, { color: colors.HoverDarkGrey, marginBottom: 15 }]}>
@@ -29,7 +65,7 @@ export default function ActiveChallengesSection() {
         <Text style={styles.message}>
           No tens reptes actius. Ves a{' '}
           <Text style={styles.link} onPress={() => navigation.navigate('AllChallengesScreen')}>
-            "Reptes"
+            "Tots els reptes"
           </Text>{' '}
           per començar-ne un!
         </Text>
@@ -39,7 +75,7 @@ export default function ActiveChallengesSection() {
 
   return (
     <View style={styles.container}>
-      {/* Contenedor fila título + botón */}
+      {/* Títol + botó "veure més" */}
       <View style={styles.headerRow}>
         <Text style={[typography.H2Bold, { color: colors.HoverDarkGrey }]}>Reptes Actius</Text>
 
@@ -61,11 +97,10 @@ export default function ActiveChallengesSection() {
       </View>
 
       <FlatList
-        data={myChallenges.slice(0, 10)}
+        data={challenges.slice(0, 10)}
         keyExtractor={item => item.id}
         horizontal={hasMultipleChallenges}
         showsHorizontalScrollIndicator={false}
-        showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingBottom: 20, paddingLeft: hasMultipleChallenges ? 5 : 0 }}
         renderItem={({ item }) => (
           <TouchableOpacity
@@ -81,6 +116,7 @@ export default function ActiveChallengesSection() {
             ]}
           >
             <ChallengeCard
+              isActive={item.completed > 0}
               image={item.image}
               title={item.title}
               description={item.description}
@@ -92,8 +128,6 @@ export default function ActiveChallengesSection() {
           </TouchableOpacity>
         )}
       />
-
-      {/* Eliminamos botón "Veure tots els reptes" porque ahora está al lado del título */}
     </View>
   );
 }

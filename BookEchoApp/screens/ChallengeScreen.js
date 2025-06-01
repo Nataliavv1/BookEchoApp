@@ -2,15 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { View, ScrollView, StyleSheet, Text, TouchableOpacity, Image } from 'react-native';
 
 // Context per accedir al perfil
-import { supabase } from './Supabase/lib/supabaseClient';
+//import { supabase } from './Supabase/lib/supabaseClient';
 import { useUser } from '../context/UserContext';
-
 
 import ChallengeCard from '../components/cards/ChallengeCard';
 import TrophyCard from '../components/cards/TrophyCard';
 import BackButton from '../components/buttons/backbutton';
 import Button from '../components/buttons/button';
-import { useChallenges } from '../context/ChallengeContext';
+//import { useChallenges } from '../context/ChallengeContext';
 import challenges, { fetchUserChallenges } from '../components/data/challengesData';
 
 
@@ -27,25 +26,44 @@ export default function ChallengeScreen({ navigation }) {
   }, [user]);
 
   const loadChallenges = async () => {
-    try {
-      const userChallenges = await fetchUserChallenges(user.id);
+  try {
+    const userChallenges = await fetchUserChallenges(user.id);
 
-      // Encreuar amb l'array local `challenges`
-      const mergedChallenges = userChallenges.map((uc) => {
-        const match = challenges.find((c) => c.id === uc.idrepte.toString());
-        if (!match) return null;
-        return {
-          ...match,
-          completed: uc.progres,
-          total: match.total,
-        };
-      }).filter(Boolean); // eliminar nulls
+    const userChallengeMap = {};
+    userChallenges.forEach((uc) => {
+      userChallengeMap[uc.idrepte.toString()] = uc;
+    });
 
-      setMyChallenges(mergedChallenges);
-    } catch (error) {
-      console.error('Error carregant reptes de l’usuari:', error);
-    }
-  };
+    const mergedChallenges = challenges.map((c) => {
+      const userData = userChallengeMap[c.id];
+      return {
+        ...c,
+        completed: userData ? userData.progres : 0,
+        total: c.total,
+        isActive: !!userData, // true si l'usuari ha començat aquest repte
+      };
+    });
+
+    myChallenges.slice(0, 5).map((item) => (
+      <ChallengeCard
+        key={item.id}
+        image={item.image}
+        title={item.title}
+        description={item.description}
+        completed={item.completed || 0}
+        total={item.total || 1}
+        backgroundColor={item.backgroundColor}
+        progressColor={item.progressColor}
+        isActive={item.completed > 0}
+      />
+    ))
+
+
+    setMyChallenges(mergedChallenges);
+  } catch (error) {
+    console.error('Error carregant reptes de l’usuari:', error);
+  }
+};
 
   if (!user) {
     return <Text>Carregant usuari...</Text>;
@@ -85,14 +103,15 @@ export default function ChallengeScreen({ navigation }) {
             />
           </View>
         ) : (
-          myChallenges.slice(0, 3).map((item) => (
+          myChallenges.slice(0, 5).map((item) => (
             <ChallengeCard
+              isActive={item.completed > 0}
               key={item.id}
               image={item.image}
               title={item.title}
               description={item.description}
-              completed={item.completed}
-              total={item.total}
+              completed={item.completed || 0}
+              total={item.total || 1}
               backgroundColor={item.backgroundColor}
               progressColor={item.progressColor}
             />

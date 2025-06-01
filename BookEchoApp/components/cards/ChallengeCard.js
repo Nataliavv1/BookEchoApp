@@ -1,22 +1,55 @@
 import React from 'react';
 import { View, Text, StyleSheet, Image } from 'react-native';
 
-export default function ChallengeCard({ image, title, description, completed, total, backgroundColor, progressColor }) {
+export default function ChallengeCard({
+  image,
+  title,
+  description,
+  completed,
+  total,
+  backgroundColor,
+  progressColor,
+  isActive = true, // nova prop
+}) {
   const progress = completed / total;
 
   return (
-    <View style={[styles.card, { backgroundColor }]}>
+    <View
+      style={[
+        styles.card,
+        {
+          backgroundColor: isActive ? backgroundColor : '#EDEDED',
+          opacity: isActive ? 1 : 0.95, // fa tot més apagat
+        },
+      ]}
+    >
       <Image source={image} style={styles.image} resizeMode="cover" />
       <View style={styles.content}>
-        <Text style={styles.title}>{title}</Text>
-        <Text style={styles.description}>{description}</Text>
+        <Text style={[styles.title, !isActive && { color: '#999' }]}>{title}</Text>
+        <Text style={[styles.description, !isActive && { color: '#AAA' }]}>{description}</Text>
         <View style={styles.progressBackground}>
-          <View style={[styles.progressBar, { width: `${progress * 100}%`, backgroundColor: progressColor }]} />
+          {isActive && (
+            <View
+              style={[
+                styles.progressBar,
+                {
+                  width: `${progress * 100}%`,
+                  backgroundColor: progressColor,
+                },
+              ]}
+            />
+          )}
         </View>
       </View>
+      {!isActive && (
+        <View style={styles.badge}>
+          <Text style={styles.badgeText}>No iniciat</Text>
+        </View>
+      )}
     </View>
   );
 }
+
 
 const styles = StyleSheet.create({
   card: {
@@ -71,4 +104,23 @@ const styles = StyleSheet.create({
   progressBar: {
     height: '100%',
   },
+
+  badge: {
+    position: 'absolute',
+    top: 8,
+    right: 8,
+    backgroundColor: '#B0B0B0',
+    paddingHorizontal: 8,
+    paddingVertical: 2,
+    borderRadius: 10,
+    zIndex: 1,
+  },
+
+  badgeText: {
+    color: '#fff',
+    fontSize: 10,
+    fontWeight: 'bold',
+    fontFamily: 'Raleway_700Bold',
+  },
+
 });

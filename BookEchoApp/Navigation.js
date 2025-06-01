@@ -169,6 +169,7 @@ export default function Navigation() {
                     <Stack.Screen name="Scan" component={ScanScreen} options={{ headerShown: false }} />
                     <Stack.Screen name="Entrada" component={EntradaScreen} options={{ headerShown: false }} />
                     <Stack.Screen name="Entrada2" component={EntradaScreen2} options={{ headerShown: false }} />
+                    <Stack.Screen name="ChallengsScreen" component={ChallengeScreen} options={{ headerShown: false }} />
                     <Stack.Screen name="AllChallengesScreen" component={AllChallengesScreen} options={{ headerShown: false }} />
                     <Stack.Screen name="EditReviewScreen" component={EditReviewScreen} options={{ headerShown: false }} />
                     <Stack.Screen name="AddReview" component={AddReviewScreen}
@@ -188,7 +189,7 @@ export default function Navigation() {
                     <Stack.Screen name="LlistaDetall" component={LlistaDetall} options={{ headerShown: false }} />
 
                     {/* altres pantalles */}
-                    <Stack.Screen name="EditProfile" component={EditProfileScreen} />
+                    <Stack.Screen name="EditProfile" component={EditProfileScreen} options={{ headerShown: false }} />
 
                 </Stack.Navigator>
             </NavigationContainer>
