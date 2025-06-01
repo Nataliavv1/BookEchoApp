@@ -116,13 +116,13 @@ const LibraryScreen = () => {
 
 const styles = StyleSheet.create({
     llibresGuardats: {
-  flexDirection: 'row',
-  flexWrap: 'wrap',
-  justifyContent: 'flex-start',
-  gap: 16,
-  padding: 14,
-  width: '100%',
-},
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        justifyContent: 'flex-start',
+        gap: 16,
+        padding: 14,
+        width: '100%',
+    },
     container: {
         marginTop: 100,
         flex: 1,
@@ -133,7 +133,7 @@ const styles = StyleSheet.create({
         width: '100%',
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'space-between',
+        justifyContent: 'flex-end',
         paddingLeft: 14,
         paddingRight: 14,
     },

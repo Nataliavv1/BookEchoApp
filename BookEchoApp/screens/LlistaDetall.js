@@ -42,18 +42,18 @@ const LlistaDetall = ({ route, navigation }) => {
                 {error && <Text style={{ color: 'red', marginVertical: 10 }}>{error}</Text>}
 
                 {/* Aquí mostrem la llista de llibres */}
-<View style={styles.booksContainer}>
-  {llibres.map((book) => (
-    <BookCard
-      key={book.id}
-      book={book}                             
-      onPress={() =>
-        navigation.navigate('DetallLlibre', { id: book.id })
-      }
-    />
-  ))}
-  
-</View>
+                <View style={styles.booksContainer}>
+                    {llibres.map((book) => (
+                        <BookCard
+                            key={book.id}
+                            book={book}
+                            onPress={() =>
+                                navigation.navigate('DetallLlibre', { id: book.id })
+                            }
+                        />
+                    ))}
+
+                </View>
 
             </View>
         </ScrollView>
@@ -61,6 +61,16 @@ const LlistaDetall = ({ route, navigation }) => {
 };
 
 const styles = StyleSheet.create({
+  booksContainer: {
+  flexDirection: 'row',
+  flexWrap: 'wrap',
+  justifyContent: 'flex-start',
+  gap: 16,
+  padding: 14,
+  width: '100%',
+
+},
+
     container: {
         paddingVertical: 41,
         paddingHorizontal: 27,
